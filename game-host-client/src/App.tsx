@@ -3,18 +3,16 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import MainPage from "./components/MainPage";
 import GameInProgress from "./components/GameInProgress";
+import MusicMasterRouter from "./router/MusicMasterRouter";
+import { Typography } from "@mui/material";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
-    // <div className="App">
-    //   <MainPage />
-    // </div>
-    <Router>
-      <Routes>
-        <Route path="/game-in-progress" element={<GameInProgress />} />
-        <Route path="/" element={<MainPage />} />
-      </Routes>
-    </Router>
+    <div className="App">
+      <Navbar/>
+      <MusicMasterRouter/>
+   </div>
   );
 }
 

@@ -16,7 +16,6 @@ const MainPage = () => {
   
     return (
       <Stack width="95%" alignItems={"center"} spacing={10}>
-        <Typography variant={"h1"}>Music Master</Typography>
         <Button variant="contained" size="large" onClick={launchNewGame}>
           Host New Game
         </Button>

@@ -1,25 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { Button, Stack, Typography, Box, LinearProgress } from "@mui/material";
-import MusicNoteIcon from "@mui/icons-material/MusicNote";
+import { useState, useEffect } from "react";
+import { Button, Stack, Typography, Box, LinearProgress, Alert } from "@mui/material";
+import AudioPlayer from "./AudioPlayer";
+import CountdownExample from "./Countdown";
+import { Pause, MusicNote } from "@mui/icons-material";
+import { useSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
 
 const GameInProgress = () => {
-  const [progress, setProgress] = React.useState(0);
+  const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const [showCountdown, setShowCountdown] = useState<boolean>(false);
+  const { enqueueSnackbar} = useSnackbar();
 
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((oldProgress) => {
-        if (oldProgress === 100) {
-          return 0;
-        }
-        const diff = 0.5 * 10; // 5% increase
-        return Math.min(oldProgress + diff, 100);
-      });
-    }, 500); // In total, increase 5% per half a second
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+  const navigate = useNavigate();
 
   const launchNewGame = () => {
     // TODO: send request to start new game to server
@@ -28,23 +20,48 @@ const GameInProgress = () => {
   return (
     <Stack width="95%">
       <Stack spacing={3} alignItems={"center"}>
-        <Typography variant={"h1"}>Music Master</Typography>
-        <Typography variant={"h4"}>Song is Playing</Typography>
-        <Typography variant={"h5"}>Take a guess...</Typography>
+        <Typography variant={"h4"}>{isPlaying ? 'Song is Playing' : 'Song is Paused'}</Typography>
+        <Typography variant={"h5"}>{isPlaying ? 'Someone knows?...' : 'Take a guess...'}</Typography>
       </Stack>
-
+      {/* <AudioPlayer  src={'/wow.mp3'}/> */}
       <Stack spacing={5} alignItems={"center"}>
         <Stack spacing={1} />
-        <MusicNoteIcon sx={{ fontSize: 50 }} />
-        <Box sx={{ width: "25%" }}>
-          <LinearProgress variant="determinate" value={progress} />
-        </Box>
-
+        {isPlaying ? <MusicNote sx={{ fontSize: 50 }} /> : <Pause sx={{ fontSize: 50 }}/> }
+        <AudioPlayer src="/devotion.mp3" isPlaying={isPlaying} onEnded={() => setIsPlaying(false)}/>
+        {isPlaying  ? <Button
+          variant="contained"
+          size="large"
+          color="secondary"
+          onClick={() => setIsPlaying(false)}
+        >
+          Pause
+        </Button> : <div>
+        <Button
+          variant="contained"
+          size="large"
+          color="error"
+          onClick={() => enqueueSnackbar('wrong answer', {variant:'error', autoHideDuration:1000,
+           anchorOrigin : {horizontal : 'center', vertical : 'top'},
+           onClose: () => setShowCountdown(true)})}
+        >
+          Wrong Answer
+        </Button>
+        <Button
+          variant="contained"
+          size="large"
+          color="success"
+          onClick={() => enqueueSnackbar('correct answer', {variant:'success', autoHideDuration:1000,
+          anchorOrigin : {horizontal : 'center', vertical : 'top'},
+          onClose: () => navigate('/answer-revail', {state : {songName : 'Devotion'}})})}
+        >
+          Correct Answer
+        </Button>
+        </div>}
         <Button
           variant="contained"
           size="large"
           color="secondary"
-          onClick={launchNewGame}
+          onClick={() => navigate('/answer-revail', {state : {songName : 'Devotion'}})}
         >
           Skip Song
         </Button>
@@ -56,6 +73,7 @@ const GameInProgress = () => {
         >
           End Game
         </Button>
+        {showCountdown && <CountdownExample onEnd={() => {setIsPlaying(true); setShowCountdown(false);}}/>}
       </Stack>
     </Stack>
   );
