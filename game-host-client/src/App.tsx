@@ -6,8 +6,10 @@ import GameInProgress from "./components/GameInProgress";
 import MusicMasterRouter from "./router/MusicMasterRouter";
 import { Typography } from "@mui/material";
 import Navbar from "./components/Navbar";
+import useSocket from "./hooks/useSocket";
 
 function App() {
+
   return (
     <div className="App">
       <Navbar/>

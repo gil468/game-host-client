@@ -1,17 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Stack,
   Typography,
 } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
+import axios, { HttpStatusCode } from "axios";
+import useSocket from "../hooks/useSocket";
+import useRequests from "../hooks/useRequests";
 
 const MainPage = () => {
-    const navigate = useNavigate();
+    useSocket();
+    const {nextSong, createGame} = useRequests();
 
-    const launchNewGame = () => {
+    const launchNewGame = async () => {
         // TODO: send request to start new game to server
-        navigate('/game-in-progress');
+        const createGameRes = await createGame();
+        if (createGameRes.status === HttpStatusCode.Ok)
+        {
+          nextSong();
+        }
     };
   
     return (

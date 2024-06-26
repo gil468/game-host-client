@@ -4,18 +4,45 @@ import AudioPlayer from "./AudioPlayer";
 import CountdownExample from "./Countdown";
 import { Pause, MusicNote } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import useRequests from "../hooks/useRequests";
+import { HttpStatusCode } from "axios";
+import { io } from "socket.io-client";
 
 const GameInProgress = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
   const { enqueueSnackbar} = useSnackbar();
+  const { endGame, skipRound } = useRequests();
 
   const navigate = useNavigate();
+  const songId = useLocation().state.songId;
 
-  const launchNewGame = () => {
-    // TODO: send request to start new game to server
-  };
+  useEffect(()=>{
+    const socket = io('http://localhost:3000');
+
+    socket.connect();
+
+    socket.on("buzzerGranted",() => {
+        setIsPlaying(true);
+        socket.on("correctAnswer", (x) => {
+            console.log(x);
+            enqueueSnackbar('correct answer', {variant:'success', autoHideDuration:1000,
+          anchorOrigin : {horizontal : 'center', vertical : 'top'},
+          onClose: () => navigate('/answer-revail', {state : {songName : x}})})
+        })
+        socket.on("wrongAnswer", (x) => {
+            console.log(x);
+            enqueueSnackbar('wrong answer', {variant:'error', autoHideDuration:1000,
+            anchorOrigin : {horizontal : 'center', vertical : 'top'},
+            onClose: () => setShowCountdown(true)})
+        })
+    })
+
+    return () => {
+        socket.disconnect();
+    }
+},[])
 
   return (
     <Stack width="95%">
@@ -27,7 +54,8 @@ const GameInProgress = () => {
       <Stack spacing={5} alignItems={"center"}>
         <Stack spacing={1} />
         {isPlaying ? <MusicNote sx={{ fontSize: 50 }} /> : <Pause sx={{ fontSize: 50 }}/> }
-        <AudioPlayer src="/devotion.mp3" isPlaying={isPlaying} onEnded={() => setIsPlaying(false)}/>
+        <AudioPlayer src={`http://localhost:3000/songs/${songId}.mp3`} isPlaying={isPlaying} onEnded={() => setIsPlaying(false)}/>
+        {/* Todo : remove that after connection */}
         {isPlaying  ? <Button
           variant="contained"
           size="large"
@@ -52,7 +80,7 @@ const GameInProgress = () => {
           color="success"
           onClick={() => enqueueSnackbar('correct answer', {variant:'success', autoHideDuration:1000,
           anchorOrigin : {horizontal : 'center', vertical : 'top'},
-          onClose: () => navigate('/answer-revail', {state : {songName : 'Devotion'}})})}
+          onClose: () => navigate('/answer-revail', {state : {songName : 'Devotion 2'}})})}
         >
           Correct Answer
         </Button>
@@ -61,7 +89,11 @@ const GameInProgress = () => {
           variant="contained"
           size="large"
           color="secondary"
-          onClick={() => navigate('/answer-revail', {state : {songName : 'Devotion'}})}
+          onClick={async () => {
+            const res = await skipRound();
+            res.status === HttpStatusCode.Ok && 
+            navigate('/answer-revail', {state : {songName : res.data}})
+          }}
         >
           Skip Song
         </Button>
@@ -69,7 +101,7 @@ const GameInProgress = () => {
           variant="contained"
           size="large"
           color="error"
-          onClick={launchNewGame}
+          onClick={endGame}
         >
           End Game
         </Button>
