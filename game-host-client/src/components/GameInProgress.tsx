@@ -101,7 +101,11 @@ const GameInProgress = () => {
           variant="contained"
           size="large"
           color="error"
-          onClick={endGame}
+          onClick={async () => {
+              const res = await endGame();
+              res.status === HttpStatusCode.Ok && 
+              navigate('/end-game', {state : {gameWinner : res.data}})
+            }}
         >
           End Game
         </Button>
