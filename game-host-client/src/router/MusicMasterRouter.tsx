@@ -10,21 +10,22 @@ import { io } from "socket.io-client";
 const MusicMasterRouter = () => {
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const [showCountdown, setShowCountdown] = useState<boolean>(false);
+    const [waitingPlayers, setWaitingPlayers] = useState<string[]>([]);
     const navigate = useNavigate();
     useEffect(() => {
-      console.log('Im here')
         const socket = io('http://localhost:3000');
-
-        socket.connect();
 
         socket.on('round-started', (x)=> {
             navigate('game-in-progress', {state : {songId : x.songId}})
         })
 
+        socket.on('playerJoined', (player) => {
+          setWaitingPlayers(x => ([...x, player.userName]))
+        })
+
         socket.on("buzzerGranted",() => {
             setIsPlaying(false);
             socket.on("correctAnswer", (x) => {
-                console.log(x);
                 enqueueSnackbar('correct answer', {variant:'success', autoHideDuration:1000,
               anchorOrigin : {horizontal : 'center', vertical : 'top'},
               onClose: () => navigate('/answer-revail', {state : {songName : x}})})
@@ -32,7 +33,6 @@ const MusicMasterRouter = () => {
               socket.off("wrongAnswer")
             })
             socket.on("wrongAnswer", (x) => {
-                console.log(x);
                 enqueueSnackbar('wrong answer', {variant:'error', autoHideDuration:1000,
                 anchorOrigin : {horizontal : 'center', vertical : 'top'},
                 onClose: () => setShowCountdown(true)})
@@ -44,13 +44,14 @@ const MusicMasterRouter = () => {
         return () => {
             socket.close();
         }
+
     },[])
 
     return (
       <Routes>
         <Route path="/game-in-progress" element={<GameInProgress isPlaying={isPlaying} setIsPlaying={setIsPlaying}
          setShowCountdown={setShowCountdown} showCountdown={showCountdown}/>} />
-        <Route path="/" element={<MainPage />} />
+        <Route path="/" element={<MainPage joinedPlayers={waitingPlayers}/>} />
         <Route path="/answer-revail" element={<AnswerPage/>} />
         <Route path="/end-game" element={<EndGamePage/>} />
       </Routes>
