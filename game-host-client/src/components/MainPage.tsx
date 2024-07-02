@@ -6,11 +6,9 @@ import {
 } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import axios, { HttpStatusCode } from "axios";
-import useSocket from "../hooks/useSocket";
 import useRequests from "../hooks/useRequests";
 
 const MainPage = () => {
-    useSocket();
     const {nextSong, createGame} = useRequests();
 
     const launchNewGame = async () => {
@@ -18,7 +16,8 @@ const MainPage = () => {
         const createGameRes = await createGame();
         if (createGameRes.status === HttpStatusCode.Ok)
         {
-          nextSong();
+          console.log(createGameRes.data)
+          setTimeout(nextSong,10000);
         }
     };
   
