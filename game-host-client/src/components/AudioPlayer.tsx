@@ -1,5 +1,5 @@
-import { LinearProgress, Stack, Typography, linearProgressClasses, styled } from '@mui/material';
-import React, { useRef, useState, useEffect, ChangeEvent } from 'react';
+import { LinearProgress, Stack, linearProgressClasses } from '@mui/material';
+import React, { useRef, useState, useEffect } from 'react';
 
 interface CustomAudioPlayerProps extends React.DetailedHTMLProps<React.AudioHTMLAttributes<HTMLAudioElement>, HTMLAudioElement> {
     src : string,

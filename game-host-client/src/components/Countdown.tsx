@@ -12,7 +12,7 @@ const CountdownExample = (props : CountdownProps) => {
     setTimeout(() => {
         countdown > 1 ? setCountdown(countdown - 1) : props.onEnd();
     },1000)
-  }, [countdown]);
+  }, [countdown, props.onEnd]);
 
   return (
     <div className="countdown-popup">

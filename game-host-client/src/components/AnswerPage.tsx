@@ -1,6 +1,6 @@
 import { Button, Stack, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import CountdownExample from "./Countdown";
 import useRequests from "../hooks/useRequests";
 

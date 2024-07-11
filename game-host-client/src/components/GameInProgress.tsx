@@ -1,13 +1,11 @@
-import { useState, useEffect } from "react";
-import { Button, Stack, Typography, Box, LinearProgress, Alert } from "@mui/material";
+import { useEffect } from "react";
+import { Button, Stack, Typography } from "@mui/material";
 import AudioPlayer from "./AudioPlayer";
 import CountdownExample from "./Countdown";
 import { Pause, MusicNote } from "@mui/icons-material";
-import { useSnackbar } from "notistack";
 import { useLocation } from "react-router-dom";
 import useRequests from "../hooks/useRequests";
 import { HttpStatusCode } from "axios";
-import { io } from "socket.io-client";
 import useRelativeNavigate from "../hooks/useRelativeNavigate";
 
 interface GameInProgressProps {
@@ -19,7 +17,7 @@ interface GameInProgressProps {
 
 const GameInProgress = ({isPlaying,setIsPlaying,setShowCountdown,showCountdown} : GameInProgressProps) => {
   const { endGame, skipRound } = useRequests();
-  useEffect(() => setIsPlaying(true),[])
+  useEffect(() => setIsPlaying(true),[setIsPlaying])
 
   const navigate = useRelativeNavigate();
   const songId = useLocation().state.songId;

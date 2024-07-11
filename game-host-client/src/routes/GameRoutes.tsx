@@ -1,6 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import GameInProgress from "../components/GameInProgress";
-import MainPage from "../components/MainPage";
 import AnswerPage from "../components/AnswerPage";
 import EndGamePage from "../components/EndGamePage";
 import { enqueueSnackbar } from "notistack";
@@ -49,7 +48,7 @@ const GameRoutes = () => {
             socket.close();
         }
 
-    },[])
+    },[navigate])
 
     return (
       <Routes>

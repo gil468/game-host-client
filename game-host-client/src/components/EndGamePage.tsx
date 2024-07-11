@@ -1,8 +1,6 @@
 import { Button, Stack, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import { useLocation, useParams } from "react-router-dom";
-import useRequests from "../hooks/useRequests";
+import { useLocation } from "react-router-dom";
 import useRelativeNavigate from "../hooks/useRelativeNavigate";
 
 export interface EndGamePageProps {
