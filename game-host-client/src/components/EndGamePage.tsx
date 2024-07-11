@@ -1,15 +1,16 @@
 import { Button, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import useRequests from "../hooks/useRequests";
+import useRelativeNavigate from "../hooks/useRelativeNavigate";
 
 export interface EndGamePageProps {
   gameWinner: string;
 }
 
 const EndGamePage = () => {
-  const navigate = useNavigate();
+  const navigate = useRelativeNavigate();
   const gameWinner = useLocation().state.gameWinner;
 
   return (

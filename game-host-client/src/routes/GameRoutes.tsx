@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import GameInProgress from "../components/GameInProgress";
 import MainPage from "../components/MainPage";
 import AnswerPage from "../components/AnswerPage";
@@ -6,12 +6,16 @@ import EndGamePage from "../components/EndGamePage";
 import { enqueueSnackbar } from "notistack";
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
+import GameWaitingRoom from "../components/GameWaitingRoom";
+import useRelativeNavigate from "../hooks/useRelativeNavigate";
 
-const MusicMasterRouter = () => {
+const GameRoutes = () => {
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const [showCountdown, setShowCountdown] = useState<boolean>(false);
     const [waitingPlayers, setWaitingPlayers] = useState<string[]>([]);
-    const navigate = useNavigate();
+    const navigate = useRelativeNavigate();
+
+    const pinCode = useLocation().state.pinCode;
     useEffect(() => {
         const socket = io('http://localhost:3000');
 
@@ -49,13 +53,13 @@ const MusicMasterRouter = () => {
 
     return (
       <Routes>
-        <Route path="/game-in-progress" element={<GameInProgress isPlaying={isPlaying} setIsPlaying={setIsPlaying}
+        <Route path="/game-in-progress/*" element={<GameInProgress isPlaying={isPlaying} setIsPlaying={setIsPlaying}
          setShowCountdown={setShowCountdown} showCountdown={showCountdown}/>} />
-        <Route path="/" element={<MainPage joinedPlayers={waitingPlayers}/>} />
-        <Route path="/answer-revail" element={<AnswerPage/>} />
-        <Route path="/end-game" element={<EndGamePage/>} />
+        <Route path="/answer-revail/*" element={<AnswerPage/>} />
+        <Route path="/end-game/*" element={<EndGamePage/>} />
+        <Route path="/" element={<GameWaitingRoom joinedPlayers={waitingPlayers} pinCode={pinCode}/>}></Route>
       </Routes>
     )
 }
 
-export default MusicMasterRouter;
+export default GameRoutes;

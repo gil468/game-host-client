@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import MainPage from "./components/MainPage";
 import GameInProgress from "./components/GameInProgress";
-import MusicMasterRouter from "./router/MusicMasterRouter";
 import { Typography } from "@mui/material";
 import Navbar from "./components/Navbar";
+import GameRoutes from "./routes/GameRoutes";
 
 function App() {
 
@@ -13,7 +13,10 @@ function App() {
     <div className="App">
       <Navbar/>
       <Router>
-        <MusicMasterRouter/>
+        <Routes>
+        <Route path="/" element={<MainPage/>} />
+        <Route path="/game/*" element={<GameRoutes/>}/>
+        </Routes>
       </Router>
    </div>
   );
