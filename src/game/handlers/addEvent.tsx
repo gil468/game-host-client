@@ -1,8 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { io } from 'socket.io-client';
-import { GameStatusContext } from '../providers/GameStatusProvider';
-
-export type GameState = 'None' | 'WaitingRoom' | 'Running' | 'Buzzered' | 'BetweenRounds' | 'Ended';
+import { GameState, GameStatusContext } from '../../providers/GameStatusProvider';
 
 interface AddEventProps {
     eventName: string;
@@ -27,11 +25,9 @@ const useAddEvent = (props: AddEventProps) => {
             }
 
             socket.on(eventName, handleEvent);
-            console.log(gameStatus  + " : " + eventName + ' started');
             
             // Clean up the event listener on unmount or when dependencies change
             return () => {
-                console.log(eventName + ' stopped');
                 socket.off(eventName, handleEvent);
             };
         }

@@ -1,8 +1,8 @@
 import { Button, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import CountdownExample from "./Countdown";
-import { nextSongRequest } from "../hooks/useRequests";
+import CountdownExample from "../../components/Countdown";
+import { nextSongRequest } from "../handlers/GameRequests";
 
 export interface AnswerPageProps {
     songName : string

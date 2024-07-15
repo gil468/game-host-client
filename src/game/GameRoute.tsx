@@ -1,17 +1,17 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import GameInProgress from "../components/GameInProgress";
-import AnswerPage from "../components/AnswerPage";
-import EndGamePage from "../components/EndGamePage";
+import EndGamePage from "./components/EndGamePage";
 import { enqueueSnackbar } from "notistack";
 import { useState } from "react";
-import GameWaitingRoom from "../components/GameWaitingRoom";
-import addEvent from "../events/addEvent";
-import GameNavigations from "../navigations/GameNavigations";
+import useGameNavigation from "./handlers/useGameNavigation";
+import AnswerPage from "./components/AnswerPage";
+import GameInProgress from "./components/GameInProgress";
+import GameWaitingRoom from "./components/GameWaitingRoom";
+import addEvent from "./handlers/addEvent";
 
 const GameRoutes = () => {
     const [showCountdown, setShowCountdown] = useState<boolean>(false);
     const [waitingPlayers, setWaitingPlayers] = useState<string[]>([]);
-    const { startGame,answerRevail } = GameNavigations();
+    const { startGame,answerRevail } = useGameNavigation();
 
     const pinCode = useLocation().state.pinCode;
 

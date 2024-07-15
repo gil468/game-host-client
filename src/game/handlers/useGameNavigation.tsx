@@ -1,8 +1,8 @@
 import { useContext } from "react"
 import { useNavigate } from "react-router-dom";
-import { GameStatusContext } from "../providers/GameStatusProvider";
+import { GameStatusContext } from "../../providers/GameStatusProvider";
 
-const GameNavigations = () => {
+const useGameNavigation = () => {
     const {setGameStatus} = useContext(GameStatusContext);
     const navigate = useNavigate();
 
@@ -29,4 +29,4 @@ const GameNavigations = () => {
     return {backToHome, answerRevail, endGame,startGame}
 }
 
-export default GameNavigations
+export default useGameNavigation

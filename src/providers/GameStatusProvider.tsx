@@ -1,10 +1,11 @@
 import React, { createContext, PropsWithChildren, useState } from 'react';
-import { GameState } from '../events/addEvent';
 
 interface GameStatusContextType {
     gameStatus: GameState;
     setGameStatus: React.Dispatch<React.SetStateAction<GameState>>;
   }
+
+export type GameState = 'None' | 'WaitingRoom' | 'Running' | 'Buzzered' | 'BetweenRounds' | 'Ended';
   
 export const GameStatusContext = createContext<GameStatusContextType>(undefined);  
 

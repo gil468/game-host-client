@@ -1,7 +1,7 @@
 import React from "react";
 import './App.css';
 import Navbar from "./components/Navbar";
-import AppRouter from "./routes/AppRouter";
+import AppRouter from "./router/AppRouter";
 
 function App() {
 

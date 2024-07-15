@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainPage from "../components/MainPage";
 import GameStatusProvider from "../providers/GameStatusProvider";
-import GameRoutes from "./GameRoutes";
+import GameRoutes from "../game/GameRoute";
 
 const AppRouter = () => {
     return (

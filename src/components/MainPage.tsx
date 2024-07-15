@@ -2,8 +2,8 @@ import {
   Button
 } from "@mui/material";
 import { HttpStatusCode } from "axios";
-import { createGameRequest } from "../hooks/useRequests";
 import { useNavigate } from "react-router-dom";
+import { createGameRequest } from "../game/handlers/GameRequests";
 
 const MainPage = () => {
     const navigate = useNavigate();

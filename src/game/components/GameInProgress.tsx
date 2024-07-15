@@ -1,13 +1,13 @@
 import { useContext } from "react";
 import { Button, Stack, Typography } from "@mui/material";
-import AudioPlayer from "./AudioPlayer";
-import CountdownExample from "./Countdown";
 import { Pause, MusicNote } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 import { HttpStatusCode } from "axios";
-import { endGameRequest, skipRoundRequest } from "../hooks/useRequests";
-import GameNavigations from "../navigations/GameNavigations";
-import { GameStatusContext } from "../providers/GameStatusProvider";
+import AudioPlayer from "../../components/AudioPlayer";
+import CountdownExample from "../../components/Countdown";
+import { GameStatusContext } from "../../providers/GameStatusProvider";
+import useGameNavigation from "../handlers/useGameNavigation";
+import { skipRoundRequest, endGameRequest } from "../handlers/GameRequests";
 
 interface GameInProgressProps {
   showCountdown : boolean,
@@ -19,9 +19,8 @@ const GameInProgress = ({setShowCountdown,showCountdown} : GameInProgressProps) 
 
   const isPlaying = gameStatus === 'Running';
 
-  const {answerRevail, endGame} = GameNavigations();
+  const {answerRevail, endGame} = useGameNavigation();
   const songId = useLocation().state.songId;
-  console.log(songId)
 
   return (
     <Stack width="95%">

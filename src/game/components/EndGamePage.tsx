@@ -1,7 +1,7 @@
 import { Button, Stack, Typography } from "@mui/material";
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { useLocation } from "react-router-dom";
-import GameNavigations from "../navigations/GameNavigations";
+import useGameNavigation from "../handlers/useGameNavigation";
 
 export interface EndGamePageProps {
   gameWinner: string;
@@ -10,7 +10,7 @@ export interface EndGamePageProps {
 const EndGamePage = () => {
   const gameWinner = useLocation().state.gameWinner;
 
-  const {backToHome} = GameNavigations()
+  const {backToHome} = useGameNavigation()
 
   return (
     <Stack width="95%" alignItems={"center"} spacing={10}>
