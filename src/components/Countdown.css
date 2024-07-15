@@ -1,42 +1,44 @@
 .countdown-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    margin-top: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.7);
-    /* Semi-transparent background */
-    z-index: 9999;
-    /* Ensure the popup is on top */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  margin-top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  /* Semi-transparent background */
+  z-index: 9999;
+  /* Ensure the popup is on top */
 }
 
 .countdown-number {
-    font-size: 10rem;
-    /* Adjust the font size */
-    color: white;
-    animation: popup-in 0.5s ease forwards, zoom-in 1s ease infinite;
+  font-size: 10rem;
+  /* Adjust the font size */
+  color: white;
+  animation:
+    popup-in 0.5s ease forwards,
+    zoom-in 1s ease infinite;
 }
 
 @keyframes popup-in {
-    0% {
-        opacity: 0;
-    }
+  0% {
+    opacity: 0;
+  }
 
-    100% {
-        opacity: 1;
-    }
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes zoom-in {
-    0% {
-        transform: scale(1);
-    }
+  0% {
+    transform: scale(1);
+  }
 
-    100% {
-        transform: scale(1.5);
-    }
+  100% {
+    transform: scale(1.5);
+  }
 }

@@ -42,3 +42,7 @@
     transform: rotate(360deg);
   }
 }
+@font-face {
+  font-family: 'MusicMasterFont';
+  src: url('../public//PoetsenOne-Regular.ttf') format('truetype');
+}

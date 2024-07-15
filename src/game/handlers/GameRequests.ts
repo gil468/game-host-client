@@ -1,17 +1,19 @@
-import axios from "axios";
+import axios from 'axios';
 
-  export const nextSongRequest = async () => {
-    return await axios.get('http://localhost:3000/next-round');
-  }
+const serverUrl = process.env.REACT_APP_SERVER_URL;
 
-  export const endGameRequest = async () => {
-    return await axios.get('http://localhost:3000/end-game');
-  }
+export const nextSongRequest = async () => {
+  return await axios.get(`${serverUrl}/next-round`);
+};
 
-  export const createGameRequest = async () => {
-    return await axios.get('http://localhost:3000/create-game');
-  }
+export const endGameRequest = async () => {
+  return await axios.get(`${serverUrl}/end-game`);
+};
 
-  export const skipRoundRequest = async () => {
-    return await axios.post('http://localhost:3000/end-round');
-  }
+export const createGameRequest = async () => {
+  return await axios.get(`${serverUrl}/create-game`);
+};
+
+export const skipRoundRequest = async () => {
+  return await axios.post(`${serverUrl}/end-round`);
+};
