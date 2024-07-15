@@ -1,8 +1,8 @@
 @font-face {
-    font-family: 'MyCustomFont';
-    src: url('../fonts/PoetsenOne-Regular.ttf') format('truetype');
+  font-family: 'MyCustomFont';
+  src: url('../fonts/PoetsenOne-Regular.ttf') format('truetype');
 }
 
 .text {
-    font-family: 'MyCustomFont';
+  font-family: 'MyCustomFont';
 }

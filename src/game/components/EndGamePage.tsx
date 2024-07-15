@@ -1,7 +1,7 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from '@mui/material';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import { useLocation } from "react-router-dom";
-import useGameNavigation from "../handlers/useGameNavigation";
+import { useLocation } from 'react-router-dom';
+import useGameNavigation from '../handlers/useGameNavigation';
 
 export interface EndGamePageProps {
   gameWinner: string;
@@ -10,10 +10,10 @@ export interface EndGamePageProps {
 const EndGamePage = () => {
   const gameWinner = useLocation().state.gameWinner;
 
-  const {backToHome} = useGameNavigation()
+  const { backToHome } = useGameNavigation();
 
   return (
-    <Stack width="95%" alignItems={"center"} spacing={10}>
+    <Stack width="95%" alignItems={'center'} spacing={10}>
       <Typography variant="h3">{`${gameWinner}`}</Typography>
       <EmojiEventsIcon sx={{ fontSize: 200 }} />
       <Button variant="contained" size="large" onClick={backToHome}>

@@ -1,15 +1,14 @@
-import React from "react";
+import React from 'react';
 import './App.css';
-import Navbar from "./components/Navbar";
-import AppRouter from "./router/AppRouter";
+import Navbar from './components/Navbar';
+import AppRouter from './router/AppRouter';
 
 function App() {
-
   return (
     <div className="App">
-      <Navbar/>
-      <AppRouter/>
-   </div>
+      <Navbar />
+      <AppRouter />
+    </div>
   );
 }
 

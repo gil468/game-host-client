@@ -1,15 +1,22 @@
 import React, { createContext, PropsWithChildren, useState } from 'react';
 
 interface GameStatusContextType {
-    gameStatus: GameState;
-    setGameStatus: React.Dispatch<React.SetStateAction<GameState>>;
-  }
+  gameStatus: GameState;
+  setGameStatus: React.Dispatch<React.SetStateAction<GameState>>;
+}
 
-export type GameState = 'None' | 'WaitingRoom' | 'Running' | 'Buzzered' | 'BetweenRounds' | 'Ended';
-  
-export const GameStatusContext = createContext<GameStatusContextType>(undefined);  
+export type GameState =
+  | 'None'
+  | 'WaitingRoom'
+  | 'Running'
+  | 'Buzzered'
+  | 'BetweenRounds'
+  | 'Ended';
 
-const GameStatusProvider = ({children} : PropsWithChildren) => {
+export const GameStatusContext =
+  createContext<GameStatusContextType>(undefined);
+
+const GameStatusProvider = ({ children }: PropsWithChildren) => {
   const [gameStatus, setGameStatus] = useState<GameState>('None');
 
   return (
