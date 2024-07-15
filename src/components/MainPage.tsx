@@ -3,14 +3,14 @@ import {
 } from "@mui/material";
 import { HttpStatusCode } from "axios";
 import { createGameRequest } from "../hooks/useRequests";
-import GameNavigations from "../navigations/GameNavigations";
+import { useNavigate } from "react-router-dom";
 
 const MainPage = () => {
-    const {goToWaitingRoom} = GameNavigations();
+    const navigate = useNavigate();
 
     const launchNewGame = async () => {
       const res = await createGameRequest();
-      if (res.status === HttpStatusCode.Ok) goToWaitingRoom(res.data)
+      if (res.status === HttpStatusCode.Ok)  navigate('/game', { state:{pinCode : res.data}})
     };
   
   

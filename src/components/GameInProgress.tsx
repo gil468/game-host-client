@@ -5,9 +5,9 @@ import CountdownExample from "./Countdown";
 import { Pause, MusicNote } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 import { HttpStatusCode } from "axios";
-import { GameStatusContext } from "../routes/GameRoutes";
 import { endGameRequest, skipRoundRequest } from "../hooks/useRequests";
 import GameNavigations from "../navigations/GameNavigations";
+import { GameStatusContext } from "../providers/GameStatusProvider";
 
 interface GameInProgressProps {
   showCountdown : boolean,

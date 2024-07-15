@@ -1,6 +1,6 @@
 import { useContext } from "react"
-import { GameStatusContext } from "../routes/GameRoutes"
 import { useNavigate } from "react-router-dom";
+import { GameStatusContext } from "../providers/GameStatusProvider";
 
 const GameNavigations = () => {
     const {setGameStatus} = useContext(GameStatusContext);
@@ -26,12 +26,7 @@ const GameNavigations = () => {
         setGameStatus('Running')
     }
 
-    const goToWaitingRoom = (pinCode : number) => {
-        navigate('/game', { state:{pinCode : pinCode}})
-        setGameStatus('WaitingRoom')
-    }
-
-    return {backToHome, answerRevail, endGame,startGame, goToWaitingRoom}
+    return {backToHome, answerRevail, endGame,startGame}
 }
 
 export default GameNavigations

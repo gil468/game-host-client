@@ -1,5 +1,7 @@
 import { Button, Typography } from "@mui/material";
 import { nextSongRequest } from "../hooks/useRequests";
+import { useContext, useEffect } from "react";
+import { GameStatusContext } from "../providers/GameStatusProvider";
 
 interface MainPageProps {
     joinedPlayers : string[],
@@ -7,7 +9,10 @@ interface MainPageProps {
   }  
 
 const GameWaitingRoom = (props : MainPageProps) => {
-    
+  const {setGameStatus} = useContext(GameStatusContext);
+
+  useEffect(() => setGameStatus('WaitingRoom'),[])
+
     return (
         <>
          <Button variant="contained" size="large" onClick={nextSongRequest}>
