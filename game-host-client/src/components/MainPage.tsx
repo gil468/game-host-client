@@ -2,16 +2,15 @@ import {
   Button
 } from "@mui/material";
 import { HttpStatusCode } from "axios";
-import useRequests from "../hooks/useRequests";
-import useRelativeNavigate from "../hooks/useRelativeNavigate";
+import { createGameRequest } from "../hooks/useRequests";
+import GameNavigations from "../navigations/GameNavigations";
 
 const MainPage = () => {
-    const {createGame} = useRequests();
-    const navigate = useRelativeNavigate();
+    const {goToWaitingRoom} = GameNavigations();
 
     const launchNewGame = async () => {
-      const res = await createGame();
-      if (res.status === HttpStatusCode.Ok) navigate('/game', { state:{pinCode : res.data}})
+      const res = await createGameRequest();
+      if (res.status === HttpStatusCode.Ok) goToWaitingRoom(res.data)
     };
   
   

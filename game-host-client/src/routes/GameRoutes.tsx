@@ -3,61 +3,69 @@ import GameInProgress from "../components/GameInProgress";
 import AnswerPage from "../components/AnswerPage";
 import EndGamePage from "../components/EndGamePage";
 import { enqueueSnackbar } from "notistack";
-import { useState, useEffect } from "react";
-import { io } from "socket.io-client";
+import { useState, createContext } from "react";
 import GameWaitingRoom from "../components/GameWaitingRoom";
-import useRelativeNavigate from "../hooks/useRelativeNavigate";
+import addEvent, { GameState } from "../events/addEvent";
+import GameNavigations from "../navigations/GameNavigations";
+
+interface GameStatusContextType {
+  gameStatus: GameState;
+  setGameStatus: React.Dispatch<React.SetStateAction<GameState>>;
+}
+
+export const GameStatusContext = createContext<GameStatusContextType>(undefined);
 
 const GameRoutes = () => {
-    const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  
+    const [gameStatus, setGameStatus] = useState<GameState>('None');
+
     const [showCountdown, setShowCountdown] = useState<boolean>(false);
     const [waitingPlayers, setWaitingPlayers] = useState<string[]>([]);
-    const navigate = useRelativeNavigate();
-
+    const { startGame,answerRevail } = GameNavigations();
+    
     const pinCode = useLocation().state.pinCode;
-    useEffect(() => {
-        const socket = io('http://localhost:3000');
 
-        socket.on('round-started', (x)=> {
-            navigate('game-in-progress', {state : {songId : x.songId}})
-        })
+    const FuncAndChangeStatus = (callback: (...args: any[]) => void, newStatus : GameState) => (...args: any[]) => {
+      callback(args);
+      setGameStatus(newStatus)
+    }
 
-        socket.on('playerJoined', (player) => {
-          setWaitingPlayers(x => ([...x, player.userName]))
-        })
+    const handleRoundStarted = (x: [{ songId: number; }])=> {
+      console.log(x)
+      startGame(x[0].songId)
+    }
+    addEvent({eventName : 'round-started', callback : FuncAndChangeStatus(handleRoundStarted, 'Running'), stateArray : ['WaitingRoom','BetweenRounds'] , gameStatus : gameStatus})
 
-        socket.on("buzzerGranted",() => {
-            setIsPlaying(false);
-            socket.on("correctAnswer", (x) => {
-                enqueueSnackbar('correct answer', {variant:'success', autoHideDuration:1000,
-              anchorOrigin : {horizontal : 'center', vertical : 'top'},
-              onClose: () => navigate('/answer-revail', {state : {songName : x}})})
-              socket.off("correctAnswer")
-              socket.off("wrongAnswer")
-            })
-            socket.on("wrongAnswer", (x) => {
-                enqueueSnackbar('wrong answer', {variant:'error', autoHideDuration:1000,
-                anchorOrigin : {horizontal : 'center', vertical : 'top'},
-                onClose: () => setShowCountdown(true)})
-                socket.off("wrongAnswer")
-                socket.off("correctAnswer")
-            })
-        })
+        addEvent({eventName : 'playerJoined', callback : FuncAndChangeStatus((player) => {
+          console.log(player)
+          setWaitingPlayers(x => ([...x, player[0].userName]))
+        },'WaitingRoom'), stateArray : ['WaitingRoom'], gameStatus : gameStatus })
 
-        return () => {
-            socket.close();
-        }
+        addEvent({eventName : 'buzzerGranted', callback : FuncAndChangeStatus(() => {},
+         'Buzzered'), stateArray : ['Running'], gameStatus : gameStatus })
 
-    },[navigate])
+         addEvent({eventName : 'correctAnswer', callback : FuncAndChangeStatus((x) => {
+          enqueueSnackbar('correct answer', 
+          {variant:'success', autoHideDuration:1000, anchorOrigin : {horizontal : 'center', vertical : 'top'},
+            onClose: () => answerRevail(x)})},
+          'BetweenRounds'), stateArray : ['Buzzered'], gameStatus : gameStatus })
+
+         addEvent({eventName : 'wrongAnswer', callback : FuncAndChangeStatus((x) => {
+          enqueueSnackbar('wrong answer', {variant:'error', autoHideDuration:1000,
+          anchorOrigin : {horizontal : 'center', vertical : 'top'},
+          onClose: () => setShowCountdown(true)})},
+         'BetweenRounds'), stateArray : ['Buzzered'], gameStatus : gameStatus })
 
     return (
+      <GameStatusContext.Provider value={{ gameStatus, setGameStatus }}>
       <Routes>
-        <Route path="/game-in-progress/*" element={<GameInProgress isPlaying={isPlaying} setIsPlaying={setIsPlaying}
+        <Route path="/game-in-progress/*" element={<GameInProgress
          setShowCountdown={setShowCountdown} showCountdown={showCountdown}/>} />
         <Route path="/answer-revail/*" element={<AnswerPage/>} />
         <Route path="/end-game/*" element={<EndGamePage/>} />
         <Route path="/" element={<GameWaitingRoom joinedPlayers={waitingPlayers} pinCode={pinCode}/>}></Route>
       </Routes>
+      </GameStatusContext.Provider>
     )
 }
 
