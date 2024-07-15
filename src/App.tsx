@@ -4,7 +4,6 @@ import './App.css';
 import MainPage from "./components/MainPage";
 import GameInProgress from "./components/GameInProgress";
 import MusicMasterRouter from "./router/MusicMasterRouter";
-import { Typography } from "@mui/material";
 import Navbar from "./components/Navbar";
 
 function App() {
