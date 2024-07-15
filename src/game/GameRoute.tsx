@@ -81,7 +81,7 @@ const GameRoutes = () => {
       <Route path="/end-game/*" element={<EndGamePage />} />
       <Route
         path="/"
-    element={
+        element={
           <GameWaitingRoom joinedPlayers={waitingPlayers} pinCode={pinCode} />
         }
       ></Route>

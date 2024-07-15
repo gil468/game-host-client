@@ -44,7 +44,7 @@ const GameInProgress = ({
           <Pause sx={{ fontSize: 50 }} />
         )}
         <AudioPlayer
-          src={`http://localhost:3000/songs/${songId}.mp3`}
+          src={`${process.env.REACT_APP_SERVER_URL}/songs/${songId}.mp3`}
           isPlaying={isPlaying}
         />
         <Button
