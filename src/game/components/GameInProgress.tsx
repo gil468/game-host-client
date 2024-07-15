@@ -1,27 +1,25 @@
-import { useState, useEffect } from "react";
-import { Button, Stack, Typography, Box, LinearProgress, Alert } from "@mui/material";
-import AudioPlayer from "./AudioPlayer";
-import CountdownExample from "./Countdown";
+import { useContext } from "react";
+import { Button, Stack, Typography } from "@mui/material";
 import { Pause, MusicNote } from "@mui/icons-material";
-import { useSnackbar } from "notistack";
-import { useLocation, useNavigate } from "react-router-dom";
-import useRequests from "../hooks/useRequests";
+import { useLocation } from "react-router-dom";
 import { HttpStatusCode } from "axios";
-import { io } from "socket.io-client";
+import AudioPlayer from "../../components/AudioPlayer";
+import CountdownExample from "../../components/Countdown";
+import { GameStatusContext } from "../../providers/GameStatusProvider";
+import useGameNavigation from "../handlers/useGameNavigation";
+import { skipRoundRequest, endGameRequest } from "../handlers/GameRequests";
 
 interface GameInProgressProps {
-  isPlaying : boolean,
-  setIsPlaying : React.Dispatch<React.SetStateAction<boolean>>,
   showCountdown : boolean,
   setShowCountdown : React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const GameInProgress = ({isPlaying,setIsPlaying,setShowCountdown,showCountdown} : GameInProgressProps) => {
-  const { endGame, skipRound } = useRequests();
+const GameInProgress = ({setShowCountdown,showCountdown} : GameInProgressProps) => {
+  const {gameStatus, setGameStatus} = useContext(GameStatusContext);
 
-  useEffect(() => setIsPlaying(true),[])
+  const isPlaying = gameStatus === 'Running';
 
-  const navigate = useNavigate();
+  const {answerRevail, endGame} = useGameNavigation();
   const songId = useLocation().state.songId;
 
   return (
@@ -34,15 +32,15 @@ const GameInProgress = ({isPlaying,setIsPlaying,setShowCountdown,showCountdown} 
       <Stack spacing={5} alignItems={"center"}>
         <Stack spacing={1} />
         {isPlaying ? <MusicNote sx={{ fontSize: 50 }} /> : <Pause sx={{ fontSize: 50 }}/> }
-        <AudioPlayer src={`http://localhost:3000/songs/${songId}.mp3`} isPlaying={isPlaying} onEnded={() => setIsPlaying(false)}/>
+        <AudioPlayer src={`http://localhost:3000/songs/${songId}.mp3`} isPlaying={isPlaying}/>
         <Button
           variant="contained"
           size="large"
           color="secondary"
           onClick={async () => {
-            const res = await skipRound();
+            const res = await skipRoundRequest();
             res.status === HttpStatusCode.Ok && 
-            navigate('/answer-revail', {state : {songName : res.data}})
+            answerRevail(res.data)
           }}
         >
           Skip Song
@@ -52,14 +50,14 @@ const GameInProgress = ({isPlaying,setIsPlaying,setShowCountdown,showCountdown} 
           size="large"
           color="error"
           onClick={async () => {
-              const res = await endGame();
+              const res = await endGameRequest();
               res.status === HttpStatusCode.Ok && 
-              navigate('/end-game', {state : {gameWinner : res.data}})
+              endGame(res.data)
             }}
         >
           End Game
         </Button>
-        {showCountdown && <CountdownExample onEnd={() => {setIsPlaying(true); setShowCountdown(false);}}/>}
+        {showCountdown && <CountdownExample onEnd={() => {setGameStatus('Running'); setShowCountdown(false);}}/>}
       </Stack>
     </Stack>
   );

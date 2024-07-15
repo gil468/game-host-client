@@ -1,6 +1,4 @@
-import { Button, Stack, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Stack, Typography } from "@mui/material";
 import './GameSettingsPage.css';
 import Paper from '@mui/material/Paper';
 

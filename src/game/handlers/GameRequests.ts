@@ -1,23 +1,17 @@
 import axios from "axios";
 
-const useRequests = ()=> {
-  const nextSong = async () => {
+  export const nextSongRequest = async () => {
     return await axios.get('http://localhost:3000/next-round');
   }
 
-  const endGame = async () => {
+  export const endGameRequest = async () => {
     return await axios.get('http://localhost:3000/end-game');
   }
 
-  const createGame = async () => {
+  export const createGameRequest = async () => {
     return await axios.get('http://localhost:3000/create-game');
   }
 
-  const skipRound = async () => {
+  export const skipRoundRequest = async () => {
     return await axios.post('http://localhost:3000/end-round');
   }
-
-  return { nextSong, endGame, createGame, skipRound }
-}
-
-export default useRequests;

@@ -1,8 +1,8 @@
 import { Button, Stack, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import CountdownExample from "./Countdown";
-import useRequests from "../hooks/useRequests";
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
+import CountdownExample from "../../components/Countdown";
+import { nextSongRequest } from "../handlers/GameRequests";
 
 export interface AnswerPageProps {
     songName : string
@@ -10,7 +10,6 @@ export interface AnswerPageProps {
 
 const AnswerPage = () => {
     const [showCountdown, setShowCountdown] = useState<boolean>(false); 
-    const { nextSong } = useRequests();
     const songName = useLocation().state.songName;
 
     return (
@@ -19,7 +18,7 @@ const AnswerPage = () => {
         <Button variant="contained" size="large" onClick={() => setShowCountdown(true)}>
           Next Song
         </Button>
-        {showCountdown && <CountdownExample onEnd={nextSong}/>}
+        {showCountdown && <CountdownExample onEnd={nextSongRequest}/>}
       </Stack>
     )
 }
