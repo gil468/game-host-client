@@ -8,10 +8,11 @@ export const theme = createTheme({
     },
     background: {
       default: '#121212',
-      paper: '#1e1e1e',
+      paper: '#FFEDFB',
     },
     text: {
       primary: '#ffffff',
+      secondary: '#000000',
     },
   },
   typography: {
