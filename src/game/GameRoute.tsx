@@ -4,12 +4,9 @@ import { enqueueSnackbar } from 'notistack';
 import { useState } from 'react';
 import useGameNavigation from './handlers/useGameNavigation';
 import AnswerPage from './components/AnswerPage';
-import GameInProgress from './components/GameInProgress';
+import GameInProgress, { SongProps } from './components/GameInProgress';
 import GameWaitingRoom from './components/waitingRoom/GameWaitingRoom';
 import addEvent from './handlers/addEvent';
-import { Button, Paper, Typography, useTheme } from '@mui/material';
-import MainWrapper from '../components/MainWrapper';
-import { nextSongRequest } from './handlers/GameRequests';
 
 const GameRoutes = () => {
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
@@ -18,11 +15,12 @@ const GameRoutes = () => {
 
   const pinCode = useLocation().state.pinCode;
 
-  const theme = useTheme();
-
   addEvent({
     eventName: 'round-started',
-    callback: (x: [{ songId: number }]) => startGame(x[0].songId),
+    callback: (x: SongProps[]) => {
+      console.log(x);
+      startGame(x[0]);
+    },
     newStatus: 'Running',
     stateArray: ['WaitingRoom', 'BetweenRounds'],
   });
@@ -87,30 +85,7 @@ const GameRoutes = () => {
       <Route
         path="/"
         element={
-          <MainWrapper
-            topContent={
-              <Typography
-                color={theme.palette.text.primary}
-                variant="h4"
-                fontWeight={'bold'}
-              >{`Pincode : ${pinCode}`}</Typography>
-            }
-            bottomContent={
-              waitingPlayers.length ? (
-                <Button
-                  variant="contained"
-                  size="large"
-                  onClick={nextSongRequest}
-                >
-                  Start Game
-                </Button>
-              ) : (
-                <></>
-              )
-            }
-          >
-            <GameWaitingRoom joinedPlayers={waitingPlayers} pinCode={pinCode} />
-          </MainWrapper>
+          <GameWaitingRoom joinedPlayers={waitingPlayers} pinCode={pinCode} />
         }
       ></Route>
     </Routes>

@@ -41,9 +41,9 @@ const CustomAudioPlayer = ({ isPlaying, ...props }: CustomAudioPlayerProps) => {
       <LinearProgress
         color="secondary"
         sx={{
-          width: '20%',
           alignSelf: 'center',
-          height: 10,
+          width: '100%',
+          height: 30,
           borderRadius: 5,
           [`& .${linearProgressClasses.bar}`]: {
             borderRadius: 5,

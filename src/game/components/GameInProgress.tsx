@@ -8,10 +8,16 @@ import CountdownExample from '../../components/Countdown';
 import { GameStatusContext } from '../../providers/GameStatusProvider';
 import useGameNavigation from '../handlers/useGameNavigation';
 import { skipRoundRequest, endGameRequest } from '../handlers/GameRequests';
+import MainWrapper from '../../components/MainWrapper';
 
 interface GameInProgressProps {
   showCountdown: boolean;
   setShowCountdown: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface SongProps {
+  songId: number;
+  round: number;
 }
 
 const GameInProgress = ({
@@ -23,44 +29,26 @@ const GameInProgress = ({
   const isPlaying = gameStatus === 'Running';
 
   const { answerRevail, endGame } = useGameNavigation();
-  const songId = useLocation().state.songId;
+  const songProps = useLocation().state as SongProps;
 
   return (
-    <Stack width="95%">
-      <Stack spacing={3} alignItems={'center'}>
-        <Typography variant={'h4'}>
-          {isPlaying ? 'Song is Playing' : 'Song is Paused'}
-        </Typography>
-        <Typography variant={'h5'}>
-          {isPlaying ? 'Someone knows?...' : 'Take a guess...'}
-        </Typography>
-      </Stack>
-      {/* <AudioPlayer  src={'/wow.mp3'}/> */}
-      <Stack spacing={5} alignItems={'center'}>
-        <Stack spacing={1} />
-        {isPlaying ? (
-          <MusicNote sx={{ fontSize: 50 }} />
-        ) : (
-          <Pause sx={{ fontSize: 50 }} />
-        )}
-        <AudioPlayer
-          src={`${process.env.REACT_APP_SERVER_URL}/songs/${songId}.mp3`}
-          isPlaying={isPlaying}
-        />
+    <MainWrapper
+      topContent={
+        <Typography
+          variant="h4"
+          color={'info.main'}
+        >{`Round ${songProps.round}`}</Typography>
+      }
+      mainComponenetProps={{
+        sx: {
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+        },
+      }}
+      bottomContent={
         <Button
-          variant="contained"
-          size="large"
-          color="secondary"
-          onClick={async () => {
-            const res = await skipRoundRequest();
-            res.status === HttpStatusCode.Ok && answerRevail(res.data);
-          }}
-        >
-          Skip Song
-        </Button>
-        <Button
-          variant="contained"
-          size="large"
           color="error"
           onClick={async () => {
             const res = await endGameRequest();
@@ -69,16 +57,44 @@ const GameInProgress = ({
         >
           End Game
         </Button>
-        {showCountdown && (
-          <CountdownExample
-            onEnd={() => {
-              setGameStatus('Running');
-              setShowCountdown(false);
-            }}
-          />
-        )}
+      }
+    >
+      <Stack gap={2}>
+        <Typography variant={'h4'}>
+          {isPlaying ? 'Song is Playing' : 'Song is Paused'}
+        </Typography>
+        <Typography color="primary" variant={'h5'}>
+          {isPlaying ? 'Someone knows?...' : 'Take a guess...'}
+        </Typography>
       </Stack>
-    </Stack>
+      <Stack gap={2} sx={{ width: '60%', alignItems: 'center' }}>
+        {isPlaying ? (
+          <MusicNote sx={{ fontSize: 120 }} />
+        ) : (
+          <Pause sx={{ fontSize: 120 }} />
+        )}
+        <AudioPlayer
+          src={`${process.env.REACT_APP_SERVER_URL}/songs/${songProps.songId}.mp3`}
+          isPlaying={isPlaying}
+        />
+      </Stack>
+      <Button
+        onClick={async () => {
+          const res = await skipRoundRequest();
+          res.status === HttpStatusCode.Ok && answerRevail(res.data);
+        }}
+      >
+        Skip Song
+      </Button>
+      {showCountdown && (
+        <CountdownExample
+          onEnd={() => {
+            setGameStatus('Running');
+            setShowCountdown(false);
+          }}
+        />
+      )}
+    </MainWrapper>
   );
 };
 

@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GameStatusContext } from '../../providers/GameStatusProvider';
+import { SongProps } from '../components/GameInProgress';
 
 const useGameNavigation = () => {
   const { setGameStatus } = useContext(GameStatusContext);
@@ -21,8 +22,8 @@ const useGameNavigation = () => {
     setGameStatus('Ended');
   };
 
-  const startGame = (songId: number) => {
-    navigate('/game/game-in-progress', { state: { songId: songId } });
+  const startGame = (songProps: SongProps) => {
+    navigate('/game/game-in-progress', { state: songProps });
     setGameStatus('Running');
   };
 
