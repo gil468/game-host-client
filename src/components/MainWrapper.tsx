@@ -1,14 +1,22 @@
 import React, { PropsWithChildren, ReactNode } from 'react';
-import { Paper, Box } from '@mui/material';
+import { Paper, Box, BoxProps, PaperProps } from '@mui/material';
 
-interface MainWrapperProps {
+interface MainWrapperProps extends BoxProps {
   topContent?: ReactNode;
   bottomContent?: ReactNode;
+  mainComponenetProps?: PaperProps;
 }
 
-const MainWrapper = (props: PropsWithChildren<MainWrapperProps>) => {
+const MainWrapper = ({
+  topContent,
+  bottomContent,
+  children,
+  mainComponenetProps,
+  ...props
+}: PropsWithChildren<MainWrapperProps>) => {
   return (
     <Box
+      {...props}
       sx={{
         display: 'grid',
         alignItems: 'center',
@@ -16,18 +24,21 @@ const MainWrapper = (props: PropsWithChildren<MainWrapperProps>) => {
         gridTemplateRows: '1fr 70% 1fr',
         flexGrow: 1,
         gap: 2,
+        ...props.sx,
       }}
     >
-      {props.topContent}
+      {topContent ?? <div></div>}
       <Paper
+        {...mainComponenetProps}
         sx={{
           width: '70%',
           height: '100%',
+          ...mainComponenetProps?.sx,
         }}
       >
-        {props.children}
+        {children}
       </Paper>
-      {props.bottomContent}
+      {bottomContent ?? <div></div>}
     </Box>
   );
 };

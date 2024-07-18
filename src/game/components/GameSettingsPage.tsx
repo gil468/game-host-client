@@ -7,7 +7,7 @@ const GameSettingsPage = () => {
 
   return (
     <Stack width="95%" alignItems={'center'} spacing={10}>
-      <Typography variant="h3" fontFamily={'MyCustomFont'}>
+      <Typography variant="h4" fontFamily={'MyCustomFont'}>
         Game Settings
       </Typography>
       <Paper elevation={24} />

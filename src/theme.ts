@@ -5,17 +5,34 @@ export const theme = createTheme({
     mode: 'dark',
     primary: {
       main: '#bb86fc',
+      contrastText: '#ffffff',
     },
     background: {
       default: '#121212',
       paper: '#FFEDFB',
     },
     text: {
-      primary: '#ffffff',
-      secondary: '#000000',
+      primary: '#000000',
+    },
+    info: {
+      main: '#ffffff',
+    },
+  },
+  components: {
+    MuiButton: {
+      defaultProps: {
+        variant: 'contained',
+      },
+      styleOverrides: {
+        root: {
+          fontSize: '1.5rem',
+          width: '15rem',
+        },
+      },
     },
   },
   typography: {
     fontFamily: 'MusicMasterFont',
+    fontSize: 16 * 1.25,
   },
 });

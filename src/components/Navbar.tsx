@@ -1,8 +1,8 @@
-import { Typography, useTheme } from '@mui/material';
+import { Typography } from '@mui/material';
 
 const Navbar = () => {
   return (
-    <Typography sx={{ marginBottom: '10px' }} variant={'h3'}>
+    <Typography sx={{ marginBottom: '10px' }} variant={'h4'}>
       Music Master
     </Typography>
   );

@@ -12,11 +12,7 @@ const MainPage = () => {
       navigate('/game', { state: { pinCode: res.data } });
   };
 
-  return (
-    <Button variant="contained" size="large" onClick={launchNewGame}>
-      Host New Game
-    </Button>
-  );
+  return <Button onClick={launchNewGame}>Host New Game</Button>;
 };
 
 export default MainPage;
