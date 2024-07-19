@@ -26,14 +26,16 @@ const GameInProgress = ({
 }: GameInProgressProps) => {
   const { gameStatus, setGameStatus } = useContext(GameStatusContext);
 
-  useEffect(() => {
-    console.log('here');
-  }, []);
-
   const isPlaying = gameStatus === 'Running';
 
-  const { answerRevail, endGame } = useGameNavigation();
+  const { answerRevail, endGame, backToHome } = useGameNavigation();
   const songProps = useLocation().state as SongProps;
+
+  useEffect(() => {
+    if (!songProps) {
+      backToHome();
+    }
+  }, [songProps]);
 
   return (
     <MainWrapper
@@ -41,7 +43,7 @@ const GameInProgress = ({
         <Typography
           variant="h4"
           color={'info.main'}
-        >{`Round ${songProps.round}`}</Typography>
+        >{`Round ${songProps?.round}`}</Typography>
       }
       mainComponenetProps={{
         sx: {
@@ -79,7 +81,7 @@ const GameInProgress = ({
           <Pause sx={{ fontSize: 120 }} />
         )}
         <AudioPlayer
-          src={`${import.meta.env.VITE_SERVER_URL}/songs/${songProps.songId}.mp3`}
+          src={`${import.meta.env.VITE_SERVER_URL}/songs/${songProps?.songId}.mp3`}
           isPlaying={isPlaying}
         />
       </Stack>

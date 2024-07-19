@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import EndGamePage from './components/EndGamePage';
 import GameSettingsPage from './components/GameSettingsPage';
 import { enqueueSnackbar } from 'notistack';
@@ -8,18 +8,16 @@ import AnswerPage from './components/AnswerPage';
 import GameInProgress, { SongProps } from './components/GameInProgress';
 import GameWaitingRoom from './components/waitingRoom/GameWaitingRoom';
 import addEvent from './handlers/addEvent';
+import GameLeaderboardPage from './components/GameLeaderboardPage';
 
 const GameRoutes = () => {
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
   const [waitingPlayers, setWaitingPlayers] = useState<string[]>([]);
   const { startGame, answerRevail } = useGameNavigation();
 
-  const pinCode = useLocation().state.pinCode;
-
   addEvent({
     eventName: 'round-started',
     callback: (x: SongProps[]) => {
-      console.log(x);
       startGame(x[0]);
     },
     newStatus: 'Running',
@@ -73,23 +71,33 @@ const GameRoutes = () => {
   return (
     <Routes>
       <Route
-        path="/game-in-progress/*"
+        path="/game-in-progress"
         element={
           <GameInProgress
-            setShowCountdown={setShowCountdown}
             showCountdown={showCountdown}
+            setShowCountdown={setShowCountdown}
           />
         }
       />
-      <Route path="/answer-revail/*" element={<AnswerPage />} />
-      <Route path="/end-game/*" element={<EndGamePage />} />
+      <Route path="/answer-revail" element={<AnswerPage />} />
+      <Route path="/end-game" element={<EndGamePage />} />
       <Route
         path="/"
-        element={
-          <GameWaitingRoom joinedPlayers={waitingPlayers} pinCode={pinCode} />
-        }
+        element={<GameWaitingRoom joinedPlayers={waitingPlayers} />}
       ></Route>
-      <Route path="/settings/" element={<GameSettingsPage />} />
+      <Route path="/settings" element={<GameSettingsPage />} />
+      <Route
+        path="/leaderboard"
+        element={
+          <GameLeaderboardPage
+            players={waitingPlayers.map((x, index) => ({
+              name: x,
+              score: (index + 1) * 10,
+            }))}
+          />
+        }
+      />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 };

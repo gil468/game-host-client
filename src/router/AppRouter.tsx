@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 import MainPage from '../components/MainPage';
 import GameStatusProvider from '../providers/GameStatusProvider';
 import GameRoutes from '../game/GameRoute';
@@ -15,7 +20,8 @@ const AppRouter = () => {
               <GameRoutes />
             </GameStatusProvider>
           }
-        />
+        ></Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );

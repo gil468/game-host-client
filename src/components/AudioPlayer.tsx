@@ -1,5 +1,5 @@
 import { LinearProgress, Stack, linearProgressClasses } from '@mui/material';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 
 interface CustomAudioPlayerProps
   extends React.DetailedHTMLProps<
@@ -18,25 +18,28 @@ const CustomAudioPlayer = ({ isPlaying, ...props }: CustomAudioPlayerProps) => {
     if (audioRef.current) {
       const currentProgress =
         (audioRef.current.currentTime / audioRef.current.duration) * 100;
-      setProgress(currentProgress);
+      setProgress(currentProgress % 100);
     }
   };
 
-  useEffect(() => {
+  const handleSongPlaying = useCallback(() => {
     if (isPlaying) {
-      console.log('play');
       audioRef.current?.play();
     } else {
-      console.log('pause');
       audioRef.current?.pause();
     }
   }, [isPlaying]);
+
+  useEffect(() => {
+    handleSongPlaying();
+  }, [handleSongPlaying]);
 
   return (
     <Stack sx={{ width: '100%', marginTop: '10px' }}>
       <audio
         autoPlay
         onTimeUpdate={handleTimeUpdate}
+        onEnded={handleSongPlaying}
         {...props}
         ref={audioRef}
       />
