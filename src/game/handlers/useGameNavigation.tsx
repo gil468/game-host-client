@@ -27,7 +27,12 @@ const useGameNavigation = () => {
     setGameStatus('Running');
   };
 
-  return { backToHome, answerRevail, endGame, startGame };
+  const gameSettings = () => {
+    navigate('/game/settings');
+    setGameStatus('None');
+  };
+
+  return { backToHome, answerRevail, endGame, startGame, gameSettings };
 };
 
 export default useGameNavigation;

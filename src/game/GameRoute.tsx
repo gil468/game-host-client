@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import EndGamePage from './components/EndGamePage';
+import GameSettingsPage from './components/GameSettingsPage';
 import { enqueueSnackbar } from 'notistack';
 import { useState } from 'react';
 import useGameNavigation from './handlers/useGameNavigation';
@@ -57,7 +58,7 @@ const GameRoutes = () => {
 
   addEvent({
     eventName: 'wrongAnswer',
-    callback: (x) => {
+    callback: () => {
       enqueueSnackbar('wrong answer', {
         variant: 'error',
         autoHideDuration: 1000,
@@ -88,6 +89,7 @@ const GameRoutes = () => {
           <GameWaitingRoom joinedPlayers={waitingPlayers} pinCode={pinCode} />
         }
       ></Route>
+      <Route path="/settings/" element={<GameSettingsPage />} />
     </Routes>
   );
 };

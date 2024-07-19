@@ -1,8 +1,24 @@
 @font-face {
-  font-family: 'MyCustomFont';
-  src: url('../fonts/PoetsenOne-Regular.ttf') format('truetype');
+  font-family: 'MusicMasterFont';
+  src: url('../../../public/PoetsenOne-Regular.ttf') format('truetype');
 }
 
-.text {
-  font-family: 'MyCustomFont';
+.number-input input {
+  width: 60px;
+  color: black;
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+.switch {
+  transform: scale(1.5);
+}
+
+.switch .MuiSwitch-track {
+  background-color: black;
+}
+
+.continue-button {
+  width: 150px;
+  height: 50px;
 }
