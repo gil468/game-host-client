@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Typography, Stack } from '@mui/material';
 import { useContext, useEffect } from 'react';
 import { GameStatusContext } from '../../../providers/GameStatusProvider';
 import { nextSongRequest } from '../../handlers/GameRequests';
@@ -34,9 +34,18 @@ const GameWaitingRoom = (props: MainPageProps) => {
       }
       bottomContent={
         props.joinedPlayers.length ? (
-          <Button variant="contained" onClick={nextSongRequest}>
-            Start Game
-          </Button>
+          <Stack width="95%" alignItems={'center'} spacing={3}>
+            <Button
+              variant="contained"
+              size="large"
+              // onClick={gameSettings} TO-DO: Implement GameRequests to the server
+            >
+              Game Settings
+            </Button>
+            <Button variant="contained" onClick={nextSongRequest}>
+              Start Game
+            </Button>
+          </Stack>
         ) : (
           <></>
         )
