@@ -1,7 +1,6 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { Button, Stack, Typography } from '@mui/material';
 import { Pause, MusicNote } from '@mui/icons-material';
-import { useLocation } from 'react-router-dom';
 import { HttpStatusCode } from 'axios';
 import AudioPlayer from '../../components/AudioPlayer';
 import CountdownExample from '../../components/Countdown';
@@ -9,6 +8,7 @@ import { GameStatusContext } from '../../providers/GameStatusProvider';
 import useGameNavigation from '../handlers/useGameNavigation';
 import { skipRoundRequest, endGameRequest } from '../handlers/GameRequests';
 import MainWrapper from '../../components/MainWrapper';
+import useBackHome from '../../hooks/useBackHome';
 
 interface GameInProgressProps {
   showCountdown: boolean;
@@ -26,14 +26,10 @@ const GameInProgress = ({
 }: GameInProgressProps) => {
   const { gameStatus, setGameStatus } = useContext(GameStatusContext);
 
-  useEffect(() => {
-    console.log('here');
-  }, []);
-
   const isPlaying = gameStatus === 'Running';
 
   const { answerRevail, endGame } = useGameNavigation();
-  const songProps = useLocation().state as SongProps;
+  const songProps = useBackHome<SongProps>();
 
   return (
     <MainWrapper
@@ -41,7 +37,7 @@ const GameInProgress = ({
         <Typography
           variant="h4"
           color={'info.main'}
-        >{`Round ${songProps.round}`}</Typography>
+        >{`Round ${songProps?.round}`}</Typography>
       }
       mainComponenetProps={{
         sx: {
@@ -79,7 +75,7 @@ const GameInProgress = ({
           <Pause sx={{ fontSize: 120 }} />
         )}
         <AudioPlayer
-          src={`${import.meta.env.VITE_SERVER_URL}/songs/${songProps.songId}.mp3`}
+          src={`${import.meta.env.VITE_SERVER_URL}/songs/${songProps?.songId}.mp3`}
           isPlaying={isPlaying}
         />
       </Stack>

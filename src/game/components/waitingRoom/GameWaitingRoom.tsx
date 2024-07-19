@@ -5,14 +5,21 @@ import { nextSongRequest } from '../../handlers/GameRequests';
 import './GameWaitingRoom.css';
 import WaitingPlayerBox from './WaitingPlayerBox';
 import MainWrapper from '../../../components/MainWrapper';
+import { useLocation } from 'react-router-dom';
+import useGameNavigation from '../../handlers/useGameNavigation';
 
 interface MainPageProps {
   joinedPlayers: string[];
-  pinCode: number;
 }
 
 const GameWaitingRoom = (props: MainPageProps) => {
   const { setGameStatus } = useContext(GameStatusContext);
+  const { backToHome } = useGameNavigation();
+
+  const state = useLocation().state;
+  useEffect(() => {
+    if (!state) backToHome();
+  }, [state]);
 
   useEffect(() => setGameStatus('WaitingRoom'), []);
 
@@ -23,7 +30,7 @@ const GameWaitingRoom = (props: MainPageProps) => {
           variant="h4"
           color={'info.main'}
           fontWeight={'bold'}
-        >{`Pincode : ${props.pinCode}`}</Typography>
+        >{`Pincode : ${state?.pinCode}`}</Typography>
       }
       bottomContent={
         props.joinedPlayers.length ? (

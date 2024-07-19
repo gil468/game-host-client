@@ -22,6 +22,7 @@ const MainWrapper = ({
         alignItems: 'center',
         justifyItems: 'center',
         gridTemplateRows: '1fr 70% 1fr',
+        height: '100%',
         flexGrow: 1,
         gap: 2,
         ...props.sx,

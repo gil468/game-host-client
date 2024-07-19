@@ -1,14 +1,14 @@
 import { Button, Stack, Typography } from '@mui/material';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import { useLocation } from 'react-router-dom';
 import useGameNavigation from '../handlers/useGameNavigation';
+import useBackHome from '../../hooks/useBackHome';
 
 export interface EndGamePageProps {
   gameWinner: string;
 }
 
 const EndGamePage = () => {
-  const gameWinner = useLocation().state.gameWinner;
+  const gameWinner = useBackHome<EndGamePageProps>()?.gameWinner;
 
   const { backToHome } = useGameNavigation();
 

@@ -32,7 +32,19 @@ const useGameNavigation = () => {
     setGameStatus('None');
   };
 
-  return { backToHome, answerRevail, endGame, startGame, gameSettings };
+  const openLeaderboard = () => {
+    navigate('/game/leaderboard');
+    setGameStatus('BetweenRounds');
+  };
+
+  return {
+    backToHome,
+    answerRevail,
+    endGame,
+    startGame,
+    gameSettings,
+    openLeaderboard,
+  };
 };
 
 export default useGameNavigation;
