@@ -2,7 +2,6 @@ import { Stack, Typography, TextField, Switch, Button } from '@mui/material';
 import { useState } from 'react';
 import './GameSettingsPage.css';
 import MainWrapper from '../../components/MainWrapper';
-import { theme } from '../../theme';
 
 const GameSettingsPage = () => {
   const [numberOfRounds, setNumberOfRounds] = useState<number>(10);
@@ -12,7 +11,7 @@ const GameSettingsPage = () => {
   return (
     <MainWrapper
       topContent={
-        <Typography color={theme.palette.text.primary} variant="h4">
+        <Typography color='primary' variant="h4">
           Game Settings
         </Typography>
       }

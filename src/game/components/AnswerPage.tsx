@@ -1,14 +1,14 @@
 import { Button, Stack, Typography } from '@mui/material';
-import { useLocation } from 'react-router-dom';
 import MainWrapper from '../../components/MainWrapper';
 import useGameNavigation from '../handlers/useGameNavigation';
+import useBackHome from '../../hooks/useBackHome';
 
 export interface AnswerPageProps {
   songName: string;
 }
 
 const AnswerPage = () => {
-  const songName = useLocation().state.songName;
+  const songName = useBackHome<AnswerPageProps>()?.songName;
   const { openLeaderboard } = useGameNavigation();
 
   return (

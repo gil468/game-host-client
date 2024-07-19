@@ -1,7 +1,6 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { Button, Stack, Typography } from '@mui/material';
 import { Pause, MusicNote } from '@mui/icons-material';
-import { useLocation } from 'react-router-dom';
 import { HttpStatusCode } from 'axios';
 import AudioPlayer from '../../components/AudioPlayer';
 import CountdownExample from '../../components/Countdown';
@@ -9,6 +8,7 @@ import { GameStatusContext } from '../../providers/GameStatusProvider';
 import useGameNavigation from '../handlers/useGameNavigation';
 import { skipRoundRequest, endGameRequest } from '../handlers/GameRequests';
 import MainWrapper from '../../components/MainWrapper';
+import useBackHome from '../../hooks/useBackHome';
 
 interface GameInProgressProps {
   showCountdown: boolean;
@@ -28,14 +28,8 @@ const GameInProgress = ({
 
   const isPlaying = gameStatus === 'Running';
 
-  const { answerRevail, endGame, backToHome } = useGameNavigation();
-  const songProps = useLocation().state as SongProps;
-
-  useEffect(() => {
-    if (!songProps) {
-      backToHome();
-    }
-  }, [songProps]);
+  const { answerRevail, endGame } = useGameNavigation();
+  const songProps = useBackHome<SongProps>();
 
   return (
     <MainWrapper
