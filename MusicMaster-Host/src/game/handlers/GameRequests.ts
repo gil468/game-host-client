@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const serverUrl = process.env.REACT_APP_SERVER_URL;
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 export const nextSongRequest = async () => {
   return await axios.get(`${serverUrl}/next-round`);

@@ -23,3 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 settings.json
+MusicMaster-Host/node_modules/.bin/
+
+MusicMaster-Host/node_modules/

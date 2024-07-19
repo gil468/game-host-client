@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Button, Stack, Typography } from '@mui/material';
 import { Pause, MusicNote } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
@@ -25,6 +25,8 @@ const GameInProgress = ({
   showCountdown,
 }: GameInProgressProps) => {
   const { gameStatus, setGameStatus } = useContext(GameStatusContext);
+
+  useEffect(()=>{console.log('here')},[])
 
   const isPlaying = gameStatus === 'Running';
 
@@ -74,7 +76,7 @@ const GameInProgress = ({
           <Pause sx={{ fontSize: 120 }} />
         )}
         <AudioPlayer
-          src={`${process.env.REACT_APP_SERVER_URL}/songs/${songProps.songId}.mp3`}
+          src={`${import.meta.env.VITE_SERVER_URL}/songs/${songProps.songId}.mp3`}
           isPlaying={isPlaying}
         />
       </Stack>

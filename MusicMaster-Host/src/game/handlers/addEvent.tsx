@@ -12,7 +12,7 @@ interface AddEventProps {
   newStatus?: GameState;
 }
 
-const socket = io(process.env.REACT_APP_SERVER_URL); // Singleton pattern
+const socket = io(import.meta.env.VITE_SERVER_URL); // Singleton pattern
 
 const useAddEvent = (props: AddEventProps) => {
   const { eventName, callback, stateArray, newStatus } = props;
