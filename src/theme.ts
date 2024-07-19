@@ -20,19 +20,19 @@ export const theme = createTheme({
   },
   components: {
     MuiButton: {
-      defaultProps: {
-        variant: 'contained',
-      },
       styleOverrides: {
         root: {
           fontSize: '1.5rem',
           width: '15rem',
         },
       },
+      defaultProps: {
+        variant: 'contained',
+      },
     },
   },
   typography: {
     fontFamily: 'MusicMasterFont',
-    fontSize: 16 * 1.25,
+    fontSize: 16,
   },
 });

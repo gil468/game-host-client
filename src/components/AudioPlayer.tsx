@@ -24,8 +24,10 @@ const CustomAudioPlayer = ({ isPlaying, ...props }: CustomAudioPlayerProps) => {
 
   useEffect(() => {
     if (isPlaying) {
+      console.log('play');
       audioRef.current?.play();
     } else {
+      console.log('pause');
       audioRef.current?.pause();
     }
   }, [isPlaying]);

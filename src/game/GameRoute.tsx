@@ -8,9 +8,6 @@ import AnswerPage from './components/AnswerPage';
 import GameInProgress, { SongProps } from './components/GameInProgress';
 import GameWaitingRoom from './components/waitingRoom/GameWaitingRoom';
 import addEvent from './handlers/addEvent';
-import { Button, Stack, Typography, useTheme } from '@mui/material';
-import MainWrapper from '../components/MainWrapper';
-import { nextSongRequest } from './handlers/GameRequests';
 
 const GameRoutes = () => {
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
@@ -18,8 +15,6 @@ const GameRoutes = () => {
   const { startGame, answerRevail } = useGameNavigation();
 
   const pinCode = useLocation().state.pinCode;
-
-  const theme = useTheme();
 
   addEvent({
     eventName: 'round-started',
@@ -63,7 +58,7 @@ const GameRoutes = () => {
 
   addEvent({
     eventName: 'wrongAnswer',
-    callback: (x) => {
+    callback: () => {
       enqueueSnackbar('wrong answer', {
         variant: 'error',
         autoHideDuration: 1000,
@@ -91,69 +86,10 @@ const GameRoutes = () => {
       <Route
         path="/"
         element={
-          <MainWrapper
-            topContent={
-              <Typography
-                color={theme.palette.text.primary}
-                variant="h4"
-                fontWeight={'bold'}
-              >{`Pincode : ${pinCode}`}</Typography>
-            }
-            bottomContent={
-              waitingPlayers.length ? (
-                <Stack width="95%" alignItems={'center'} spacing={3}>
-                  <Button
-                    variant="contained"
-                    size="large"
-                    // onClick={gameSettings} TO-DO: Implement GameRequests to the server
-                  >
-                    Game Settings
-                  </Button>
-                  <Button
-                    variant="contained"
-                    size="large"
-                    onClick={nextSongRequest}
-                  >
-                    Start Game
-                  </Button>
-                </Stack>
-              ) : (
-                <></>
-              )
-            }
-          >
-            <GameWaitingRoom joinedPlayers={waitingPlayers} pinCode={pinCode} />
-          </MainWrapper>
+          <GameWaitingRoom joinedPlayers={waitingPlayers} pinCode={pinCode} />
         }
       ></Route>
-      <Route
-        path="/settings/*"
-        element={
-          <MainWrapper
-            topContent={
-              <Typography
-                color={theme.palette.text.primary}
-                variant="h4"
-                fontWeight={'bold'}
-              >
-                Game Settings
-              </Typography>
-            }
-            bottomContent={
-              <Button
-                variant="contained"
-                color="error"
-                className="continue-button"
-                sx={{ fontSize: '1.5rem' }}
-              >
-                Continue
-              </Button>
-            }
-          >
-            <GameSettingsPage />
-          </MainWrapper>
-        }
-      />
+      <Route path="/settings/" element={<GameSettingsPage />} />
     </Routes>
   );
 };

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Button, Stack, Typography } from '@mui/material';
 import { Pause, MusicNote } from '@mui/icons-material';
 import { useLocation } from 'react-router-dom';
@@ -26,6 +26,10 @@ const GameInProgress = ({
 }: GameInProgressProps) => {
   const { gameStatus, setGameStatus } = useContext(GameStatusContext);
 
+  useEffect(() => {
+    console.log('here');
+  }, []);
+
   const isPlaying = gameStatus === 'Running';
 
   const { answerRevail, endGame } = useGameNavigation();
@@ -49,6 +53,7 @@ const GameInProgress = ({
       }}
       bottomContent={
         <Button
+          variant="contained"
           color="error"
           onClick={async () => {
             const res = await endGameRequest();
@@ -74,11 +79,12 @@ const GameInProgress = ({
           <Pause sx={{ fontSize: 120 }} />
         )}
         <AudioPlayer
-          src={`${process.env.REACT_APP_SERVER_URL}/songs/${songProps.songId}.mp3`}
+          src={`${import.meta.env.VITE_SERVER_URL}/songs/${songProps.songId}.mp3`}
           isPlaying={isPlaying}
         />
       </Stack>
       <Button
+        variant="contained"
         onClick={async () => {
           const res = await skipRoundRequest();
           res.status === HttpStatusCode.Ok && answerRevail(res.data);

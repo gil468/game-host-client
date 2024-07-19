@@ -16,7 +16,9 @@ const EndGamePage = () => {
     <Stack width="95%" alignItems={'center'} spacing={10}>
       <Typography variant="h4">{`${gameWinner}`}</Typography>
       <EmojiEventsIcon sx={{ fontSize: 200 }} />
-      <Button onClick={backToHome}>Back To Main Page</Button>
+      <Button variant="contained" onClick={backToHome}>
+        Back To Main Page
+      </Button>
     </Stack>
   );
 };

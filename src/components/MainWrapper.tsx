@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactNode } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 import { Paper, Box, BoxProps, PaperProps } from '@mui/material';
 
 interface MainWrapperProps extends BoxProps {
