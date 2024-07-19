@@ -27,7 +27,9 @@ const GameWaitingRoom = (props: MainPageProps) => {
       }
       bottomContent={
         props.joinedPlayers.length ? (
-          <Button onClick={nextSongRequest}>Start Game</Button>
+          <Button variant="contained" onClick={nextSongRequest}>
+            Start Game
+          </Button>
         ) : (
           <></>
         )

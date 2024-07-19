@@ -24,10 +24,10 @@ const CustomAudioPlayer = ({ isPlaying, ...props }: CustomAudioPlayerProps) => {
 
   useEffect(() => {
     if (isPlaying) {
-      console.log('play')
+      console.log('play');
       audioRef.current?.play();
     } else {
-      console.log('pause')
+      console.log('pause');
       audioRef.current?.pause();
     }
   }, [isPlaying]);
@@ -35,7 +35,7 @@ const CustomAudioPlayer = ({ isPlaying, ...props }: CustomAudioPlayerProps) => {
   return (
     <Stack sx={{ width: '100%', marginTop: '10px' }}>
       <audio
-       autoPlay
+        autoPlay
         onTimeUpdate={handleTimeUpdate}
         {...props}
         ref={audioRef}

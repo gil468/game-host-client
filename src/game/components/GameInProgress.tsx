@@ -26,7 +26,9 @@ const GameInProgress = ({
 }: GameInProgressProps) => {
   const { gameStatus, setGameStatus } = useContext(GameStatusContext);
 
-  useEffect(()=>{console.log('here')},[])
+  useEffect(() => {
+    console.log('here');
+  }, []);
 
   const isPlaying = gameStatus === 'Running';
 
@@ -51,6 +53,7 @@ const GameInProgress = ({
       }}
       bottomContent={
         <Button
+          variant="contained"
           color="error"
           onClick={async () => {
             const res = await endGameRequest();
@@ -81,6 +84,7 @@ const GameInProgress = ({
         />
       </Stack>
       <Button
+        variant="contained"
         onClick={async () => {
           const res = await skipRoundRequest();
           res.status === HttpStatusCode.Ok && answerRevail(res.data);

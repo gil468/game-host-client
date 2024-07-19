@@ -21,7 +21,9 @@ const AnswerPage = () => {
     >
       <Stack width="95%" alignItems={'center'} spacing={10}>
         <Typography variant="h3">{`The song is ${songName}`}</Typography>
-        <Button onClick={() => setShowCountdown(true)}>Next Song</Button>
+        <Button variant="contained" onClick={() => setShowCountdown(true)}>
+          Next Song
+        </Button>
       </Stack>
     </MainWrapper>
   );
