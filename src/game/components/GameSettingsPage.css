@@ -3,18 +3,6 @@
   src: url('../../../public/PoetsenOne-Regular.ttf') format('truetype');
 }
 
-.Title {
-  color: #ffffff;
-}
-
-.settings-box {
-  background-color: #FFEDFB;
-  border-radius: 15px;
-  padding: 20px;
-  width: 80%;
-  max-width: 600px;
-}
-
 .number-input input {
   width: 60px;
   color: black;

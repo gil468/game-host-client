@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import EndGamePage from './components/EndGamePage';
+import GameSettingsPage from './components/GameSettingsPage';
 import { enqueueSnackbar } from 'notistack';
 import { useState } from 'react';
 import useGameNavigation from './handlers/useGameNavigation';
@@ -7,7 +8,7 @@ import AnswerPage from './components/AnswerPage';
 import GameInProgress from './components/GameInProgress';
 import GameWaitingRoom from './components/waitingRoom/GameWaitingRoom';
 import addEvent from './handlers/addEvent';
-import { Button, Paper, Typography, useTheme } from '@mui/material';
+import { Button, Stack, Typography, useTheme } from '@mui/material';
 import MainWrapper from '../components/MainWrapper';
 import { nextSongRequest } from './handlers/GameRequests';
 
@@ -97,13 +98,22 @@ const GameRoutes = () => {
             }
             bottomContent={
               waitingPlayers.length ? (
-                <Button
-                  variant="contained"
-                  size="large"
-                  onClick={nextSongRequest}
-                >
-                  Start Game
-                </Button>
+                <Stack width="95%" alignItems={'center'} spacing={3}>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    // onClick={gameSettings} TO-DO: Implement GameRequests to the server
+                  >
+                    Game Settings
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    onClick={nextSongRequest}
+                  >
+                    Start Game
+                  </Button>
+                </Stack>
               ) : (
                 <></>
               )
@@ -113,6 +123,34 @@ const GameRoutes = () => {
           </MainWrapper>
         }
       ></Route>
+      <Route
+        path="/settings/*"
+        element={
+          <MainWrapper
+            topContent={
+              <Typography
+                color={theme.palette.text.primary}
+                variant="h4"
+                fontWeight={'bold'}
+              >
+                Game Settings
+              </Typography>
+            }
+            bottomContent={
+              <Button
+                variant="contained"
+                color="error"
+                className="continue-button"
+                sx={{ fontSize: '1.5rem' }}
+              >
+                Continue
+              </Button>
+            }
+          >
+            <GameSettingsPage />
+          </MainWrapper>
+        }
+      />
     </Routes>
   );
 };
