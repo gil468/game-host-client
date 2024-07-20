@@ -1,9 +1,9 @@
 import { useContext, useEffect } from 'react';
-import { io } from 'socket.io-client';
 import {
   GameState,
   GameStatusContext,
 } from '../../providers/GameStatusProvider';
+import { socket } from '../../socketIO/SocketEmits';
 
 interface AddEventProps {
   eventName: string;
@@ -11,8 +11,6 @@ interface AddEventProps {
   stateArray: GameState[];
   newStatus?: GameState;
 }
-
-const socket = io(import.meta.env.VITE_SERVER_URL); // Singleton pattern
 
 const useAddEvent = (props: AddEventProps) => {
   const { eventName, callback, stateArray, newStatus } = props;

@@ -11,7 +11,7 @@ const GameSettingsPage = () => {
   return (
     <MainWrapper
       topContent={
-        <Typography color='primary' variant="h4">
+        <Typography color="primary" variant="h4">
           Game Settings
         </Typography>
       }

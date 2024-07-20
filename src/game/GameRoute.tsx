@@ -5,7 +5,7 @@ import { enqueueSnackbar } from 'notistack';
 import { useState } from 'react';
 import useGameNavigation from './handlers/useGameNavigation';
 import AnswerPage from './components/AnswerPage';
-import GameInProgress, { SongProps } from './components/GameInProgress';
+import GameInProgress from './components/GameInProgress';
 import GameWaitingRoom from './components/waitingRoom/GameWaitingRoom';
 import addEvent from './handlers/addEvent';
 import GameLeaderboardPage from './components/GameLeaderboardPage';
@@ -13,19 +13,21 @@ import GameLeaderboardPage from './components/GameLeaderboardPage';
 const GameRoutes = () => {
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
   const [waitingPlayers, setWaitingPlayers] = useState<string[]>([]);
-  const { startGame, answerRevail } = useGameNavigation();
+  const { answerRevail } = useGameNavigation();
+
+  // //remove
+  // addEvent({
+  //   eventName: 'round-started',
+  //   callback: (x: SongProps[]) => {
+  //     console.log(x)
+  //     startGame(x[0]);
+  //   },
+  //   newStatus: 'Running',
+  //   stateArray: ['WaitingRoom', 'BetweenRounds'],
+  // });
 
   addEvent({
-    eventName: 'round-started',
-    callback: (x: SongProps[]) => {
-      startGame(x[0]);
-    },
-    newStatus: 'Running',
-    stateArray: ['WaitingRoom', 'BetweenRounds'],
-  });
-
-  addEvent({
-    eventName: 'playerJoined',
+    eventName: 'player-joined',
     callback: (player) => {
       setWaitingPlayers((x) => [...x, player[0].userName]);
     },
@@ -34,14 +36,14 @@ const GameRoutes = () => {
   });
 
   addEvent({
-    eventName: 'buzzerGranted',
+    eventName: 'buzzer-granted',
     callback: () => {},
     newStatus: 'Buzzered',
     stateArray: ['Running'],
   });
-
+  //remove
   addEvent({
-    eventName: 'correctAnswer',
+    eventName: 'correct-answer',
     callback: (x) => {
       enqueueSnackbar('correct answer', {
         variant: 'success',

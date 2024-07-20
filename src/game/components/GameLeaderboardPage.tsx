@@ -2,8 +2,9 @@ import { Button, Typography } from '@mui/material';
 import { FaMedal } from 'react-icons/fa';
 import MainWrapper from '../../components/MainWrapper';
 import CountdownExample from '../../components/Countdown';
-import { nextSongRequest } from '../handlers/GameRequests';
 import { useState } from 'react';
+import { SongProps } from './GameInProgress';
+import useGameRequests from '../handlers/useGameRequests';
 interface GameLeaderboardPageProps {
   players: PlayingPlayerProps[];
 }
@@ -15,6 +16,9 @@ interface PlayingPlayerProps {
 
 const GameLeaderboardPage = (props: GameLeaderboardPageProps) => {
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
+  const [songProps, setSongProps] = useState<SongProps>();
+
+  const { nextSongRequest, startRoundRequest } = useGameRequests();
 
   return (
     <MainWrapper
@@ -22,7 +26,16 @@ const GameLeaderboardPage = (props: GameLeaderboardPageProps) => {
         sx: { overflowY: 'scroll', '::-webkit-scrollbar': { width: 0 } },
       }}
       bottomContent={
-        <Button variant="contained" onClick={() => setShowCountdown(true)}>
+        <Button
+          variant="contained"
+          onClick={async () => {
+            const res = await nextSongRequest();
+            if (res) {
+              setSongProps(res);
+              setShowCountdown(true);
+            }
+          }}
+        >
           Next Song
         </Button>
       }
@@ -59,7 +72,13 @@ const GameLeaderboardPage = (props: GameLeaderboardPageProps) => {
           </div>
         ))}
       </div>
-      {showCountdown && <CountdownExample onEnd={nextSongRequest} />}
+      {showCountdown && (
+        <CountdownExample
+          onEnd={async () => {
+            songProps && (await startRoundRequest(songProps));
+          }}
+        />
+      )}
     </MainWrapper>
   );
 };

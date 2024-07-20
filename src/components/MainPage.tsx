@@ -1,15 +1,15 @@
 import { Button } from '@mui/material';
-import { HttpStatusCode } from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { createGameRequest } from '../game/handlers/GameRequests';
+import { createGameRequest } from '../socketIO/SocketEmits';
 
 const MainPage = () => {
   const navigate = useNavigate();
 
   const launchNewGame = async () => {
     const res = await createGameRequest();
-    if (res.status === HttpStatusCode.Ok)
-      navigate('/game', { state: { pinCode: res.data } });
+    if (res) {
+      navigate('/game', { state: { pinCode: res.gameId } });
+    }
   };
 
   return (

@@ -1,14 +1,12 @@
 import { useContext } from 'react';
 import { Button, Stack, Typography } from '@mui/material';
 import { Pause, MusicNote } from '@mui/icons-material';
-import { HttpStatusCode } from 'axios';
 import AudioPlayer from '../../components/AudioPlayer';
 import CountdownExample from '../../components/Countdown';
 import { GameStatusContext } from '../../providers/GameStatusProvider';
-import useGameNavigation from '../handlers/useGameNavigation';
-import { skipRoundRequest, endGameRequest } from '../handlers/GameRequests';
 import MainWrapper from '../../components/MainWrapper';
 import useBackHome from '../../hooks/useBackHome';
+import useGameRequests from '../handlers/useGameRequests';
 
 interface GameInProgressProps {
   showCountdown: boolean;
@@ -28,7 +26,7 @@ const GameInProgress = ({
 
   const isPlaying = gameStatus === 'Running';
 
-  const { answerRevail, endGame } = useGameNavigation();
+  const { endGameRequest, endRoundRequest } = useGameRequests();
   const songProps = useBackHome<SongProps>();
 
   return (
@@ -48,14 +46,7 @@ const GameInProgress = ({
         },
       }}
       bottomContent={
-        <Button
-          variant="contained"
-          color="error"
-          onClick={async () => {
-            const res = await endGameRequest();
-            res.status === HttpStatusCode.Ok && endGame(res.data);
-          }}
-        >
+        <Button variant="contained" color="error" onClick={endGameRequest}>
           End Game
         </Button>
       }
@@ -79,13 +70,7 @@ const GameInProgress = ({
           isPlaying={isPlaying}
         />
       </Stack>
-      <Button
-        variant="contained"
-        onClick={async () => {
-          const res = await skipRoundRequest();
-          res.status === HttpStatusCode.Ok && answerRevail(res.data);
-        }}
-      >
+      <Button variant="contained" onClick={endRoundRequest}>
         Skip Song
       </Button>
       {showCountdown && (
