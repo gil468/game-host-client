@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GameStatusContext } from '../../providers/GameStatusProvider';
 import { SongProps } from '../components/GameInProgress';
+import { ScoresProps } from '../GameInterfaces';
 
 const useGameNavigation = () => {
   const { setGameStatus } = useContext(GameStatusContext);
@@ -12,13 +13,15 @@ const useGameNavigation = () => {
     setGameStatus('None');
   };
 
-  const answerRevail = (songName: string) => {
-    navigate('/game/answer-revail', { state: { songName: songName } });
+  const answerRevail = (songName: string, scores: ScoresProps) => {
+    navigate('/game/answer-revail', {
+      state: { songName: songName, scores: scores },
+    });
     setGameStatus('BetweenRounds');
   };
 
-  const endGame = (winnerName: string) => {
-    navigate('/game/end-game', { state: { gameWinner: winnerName } });
+  const endGame = (scores: ScoresProps) => {
+    navigate('/game/end-game', { state: { scores: scores } });
     setGameStatus('Ended');
   };
 
@@ -32,8 +35,8 @@ const useGameNavigation = () => {
     setGameStatus('None');
   };
 
-  const openLeaderboard = () => {
-    navigate('/game/leaderboard');
+  const openLeaderboard = (scores: ScoresProps) => {
+    navigate('/game/leaderboard', { state: { scores: scores } });
     setGameStatus('BetweenRounds');
   };
 

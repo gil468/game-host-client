@@ -8,7 +8,7 @@ const Navbar = () => {
       spacing={10}
       sx={{ marginTop: 1 }}
     >
-      <img src="/public/music-master-logo.svg" alt="logo" />
+      <img src="/music-master-logo.svg" alt="logo" />
     </Stack>
   );
 };

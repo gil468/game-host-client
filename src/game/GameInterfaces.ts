@@ -2,8 +2,10 @@ export type EndRoundResponse = {
   songGuessedBy: string | null;
   artistGuessedBy: string | null;
   correctAnswer: Song;
-  scores: Omit<Player, 'id'>[];
+  scores: ScoresProps;
 };
+
+export type ScoresProps = Omit<Player, 'id'>[];
 
 export type Song = {
   title: string;
@@ -14,4 +16,10 @@ export type Player = {
   id: string;
   userName: string;
   score: number;
+};
+
+export type BuzzerRevokedProps = {
+  answeredBy: string;
+  title?: string;
+  artist?: string;
 };

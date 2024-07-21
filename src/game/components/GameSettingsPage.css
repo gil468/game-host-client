@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'MusicMasterFont';
-  src: url('../../../public/PoetsenOne-Regular.ttf') format('truetype');
+  src: url('/PoetsenOne-Regular.ttf') format('truetype');
 }
 
 .number-input input {

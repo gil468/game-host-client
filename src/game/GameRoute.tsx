@@ -9,6 +9,7 @@ import GameInProgress from './components/GameInProgress';
 import GameWaitingRoom from './components/waitingRoom/GameWaitingRoom';
 import addEvent from './handlers/addEvent';
 import GameLeaderboardPage from './components/GameLeaderboardPage';
+import { BuzzerRevokedProps, EndRoundResponse } from './GameInterfaces';
 
 const GameRoutes = () => {
   const [waitingPlayers, setWaitingPlayers] = useState<string[]>([]);
@@ -43,12 +44,16 @@ const GameRoutes = () => {
 
   addEvent({
     eventName: 'buzzer-revoked',
-    callback: () => {
-      enqueueSnackbar('wrong answer', {
-        variant: 'error',
-        autoHideDuration: 1000,
-        anchorOrigin: { horizontal: 'center', vertical: 'top' },
-      });
+    callback: (answerResponse: BuzzerRevokedProps[]) => {
+      const halfAnswer = answerResponse[0].artist || answerResponse[0].title;
+      enqueueSnackbar(
+        `${halfAnswer ? 'half' : 'wrong'} answer by ${answerResponse[0].answeredBy} ${answerResponse[0].artist ?? answerResponse[0].title ?? ''}`,
+        {
+          variant: 'error',
+          autoHideDuration: 1000,
+          anchorOrigin: { horizontal: 'center', vertical: 'top' },
+        }
+      );
     },
     newStatus: 'Running',
     stateArray: ['Buzzered'],
@@ -57,12 +62,16 @@ const GameRoutes = () => {
   // Ask Oren to send back the correct answer
   addEvent({
     eventName: 'round-ended',
-    callback: (x) => {
+    callback: (x: EndRoundResponse[]) => {
       enqueueSnackbar('correct answer', {
         variant: 'success',
         autoHideDuration: 1000,
         anchorOrigin: { horizontal: 'center', vertical: 'top' },
-        onClose: () => answerRevail(`${x.correctAnswer.title} By ${x.correctAnswer.artist}`),
+        onClose: () =>
+          answerRevail(
+            `${x[0].correctAnswer.title} By ${x[0].correctAnswer.artist}`,
+            x[0].scores
+          ),
       });
     },
     newStatus: 'BetweenRounds',
@@ -79,17 +88,7 @@ const GameRoutes = () => {
         element={<GameWaitingRoom joinedPlayers={waitingPlayers} />}
       ></Route>
       <Route path="/settings" element={<GameSettingsPage />} />
-      <Route
-        path="/leaderboard"
-        element={
-          <GameLeaderboardPage
-            players={waitingPlayers.map((x, index) => ({
-              name: x,
-              score: (index + 1) * 10,
-            }))}
-          />
-        }
-      />
+      <Route path="/leaderboard" element={<GameLeaderboardPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

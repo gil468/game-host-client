@@ -41,14 +41,16 @@ const GameWaitingRoom = (props: MainPageProps) => {
             >
               Game Settings
             </Button>
-            <Button
-              variant="contained"
-              onClick={async () => {
-                await startRoundRequest(await nextSongRequest());
-              }}
-            >
-              Start Game
-            </Button>
+            {props.joinedPlayers.length > 0 && (
+              <Button
+                variant="contained"
+                onClick={async () => {
+                  await startRoundRequest(await nextSongRequest());
+                }}
+              >
+                Start Game
+              </Button>
+            )}
           </Stack>
         ) : (
           <></>
