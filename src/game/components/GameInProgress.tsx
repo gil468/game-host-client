@@ -2,27 +2,18 @@ import { useContext } from 'react';
 import { Button, Stack, Typography } from '@mui/material';
 import { Pause, MusicNote } from '@mui/icons-material';
 import AudioPlayer from '../../components/AudioPlayer';
-import CountdownExample from '../../components/Countdown';
 import { GameStatusContext } from '../../providers/GameStatusProvider';
 import MainWrapper from '../../components/MainWrapper';
 import useBackHome from '../../hooks/useBackHome';
 import useGameRequests from '../handlers/useGameRequests';
-
-interface GameInProgressProps {
-  showCountdown: boolean;
-  setShowCountdown: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
 export interface SongProps {
   songId: number;
   round: number;
 }
 
-const GameInProgress = ({
-  setShowCountdown,
-  showCountdown,
-}: GameInProgressProps) => {
-  const { gameStatus, setGameStatus } = useContext(GameStatusContext);
+const GameInProgress = () => {
+  const { gameStatus } = useContext(GameStatusContext);
 
   const isPlaying = gameStatus === 'Running';
 
@@ -73,14 +64,14 @@ const GameInProgress = ({
       <Button variant="contained" onClick={endRoundRequest}>
         Skip Song
       </Button>
-      {showCountdown && (
+      {/* {showCountdown && (
         <CountdownExample
           onEnd={() => {
             setGameStatus('Running');
             setShowCountdown(false);
           }}
         />
-      )}
+      )} */}
     </MainWrapper>
   );
 };

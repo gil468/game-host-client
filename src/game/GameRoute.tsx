@@ -11,7 +11,6 @@ import addEvent from './handlers/addEvent';
 import GameLeaderboardPage from './components/GameLeaderboardPage';
 
 const GameRoutes = () => {
-  const [showCountdown, setShowCountdown] = useState<boolean>(false);
   const [waitingPlayers, setWaitingPlayers] = useState<string[]>([]);
   const { answerRevail } = useGameNavigation();
 
@@ -41,29 +40,29 @@ const GameRoutes = () => {
     newStatus: 'Buzzered',
     stateArray: ['Running'],
   });
-  //remove
-  addEvent({
-    eventName: 'correct-answer',
-    callback: (x) => {
-      enqueueSnackbar('correct answer', {
-        variant: 'success',
-        autoHideDuration: 1000,
-        anchorOrigin: { horizontal: 'center', vertical: 'top' },
-        onClose: () => answerRevail(x),
-      });
-    },
-    newStatus: 'BetweenRounds',
-    stateArray: ['Buzzered'],
-  });
 
   addEvent({
-    eventName: 'wrongAnswer',
+    eventName: 'buzzer-revoked',
     callback: () => {
       enqueueSnackbar('wrong answer', {
         variant: 'error',
         autoHideDuration: 1000,
         anchorOrigin: { horizontal: 'center', vertical: 'top' },
-        onClose: () => setShowCountdown(true),
+      });
+    },
+    newStatus: 'Running',
+    stateArray: ['Buzzered'],
+  });
+
+  // Ask Oren to send back the correct answer
+  addEvent({
+    eventName: 'round-ended',
+    callback: (x) => {
+      enqueueSnackbar('correct answer', {
+        variant: 'success',
+        autoHideDuration: 1000,
+        anchorOrigin: { horizontal: 'center', vertical: 'top' },
+        onClose: () => answerRevail(`${x.correctAnswer.title} By ${x.correctAnswer.artist}`),
       });
     },
     newStatus: 'BetweenRounds',
@@ -72,15 +71,7 @@ const GameRoutes = () => {
 
   return (
     <Routes>
-      <Route
-        path="/game-in-progress"
-        element={
-          <GameInProgress
-            showCountdown={showCountdown}
-            setShowCountdown={setShowCountdown}
-          />
-        }
-      />
+      <Route path="/game-in-progress" element={<GameInProgress />} />
       <Route path="/answer-revail" element={<AnswerPage />} />
       <Route path="/end-game" element={<EndGamePage />} />
       <Route
