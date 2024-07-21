@@ -1,10 +1,15 @@
-import { Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 
 const Navbar = () => {
   return (
-    <Typography sx={{ marginBottom: '10px' }} variant={'h4'}>
-      Music Master
-    </Typography>
+    <Stack
+      width="100%"
+      alignItems={'center'}
+      spacing={10}
+      sx={{ marginTop: 1 }}
+    >
+      <img src="/public/music-master-logo.svg" alt="logo" />
+    </Stack>
   );
 };
 
