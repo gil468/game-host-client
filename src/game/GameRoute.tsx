@@ -59,7 +59,7 @@ const GameRoutes = () => {
     stateArray: ['Buzzered'],
   });
 
-  // Ask Oren to send back the correct answer
+  // Tell Oren to change the array that sent back
   addEvent({
     eventName: 'round-ended',
     callback: (x: EndRoundResponse[]) => {
