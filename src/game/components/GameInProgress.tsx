@@ -1,34 +1,23 @@
 import { useContext } from 'react';
 import { Button, Stack, Typography } from '@mui/material';
 import { Pause, MusicNote } from '@mui/icons-material';
-import { HttpStatusCode } from 'axios';
 import AudioPlayer from '../../components/AudioPlayer';
-import CountdownExample from '../../components/Countdown';
 import { GameStatusContext } from '../../providers/GameStatusProvider';
-import useGameNavigation from '../handlers/useGameNavigation';
-import { skipRoundRequest, endGameRequest } from '../handlers/GameRequests';
 import MainWrapper from '../../components/MainWrapper';
 import useBackHome from '../../hooks/useBackHome';
-
-interface GameInProgressProps {
-  showCountdown: boolean;
-  setShowCountdown: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import useGameRequests from '../handlers/useGameRequests';
 
 export interface SongProps {
   songId: number;
   round: number;
 }
 
-const GameInProgress = ({
-  setShowCountdown,
-  showCountdown,
-}: GameInProgressProps) => {
-  const { gameStatus, setGameStatus } = useContext(GameStatusContext);
+const GameInProgress = () => {
+  const { gameStatus } = useContext(GameStatusContext);
 
   const isPlaying = gameStatus === 'Running';
 
-  const { answerRevail, endGame } = useGameNavigation();
+  const { endGameRequest, endRoundRequest } = useGameRequests();
   const songProps = useBackHome<SongProps>();
 
   return (
@@ -48,14 +37,7 @@ const GameInProgress = ({
         },
       }}
       bottomContent={
-        <Button
-          variant="contained"
-          color="error"
-          onClick={async () => {
-            const res = await endGameRequest();
-            res.status === HttpStatusCode.Ok && endGame(res.data);
-          }}
-        >
+        <Button variant="contained" color="error" onClick={endGameRequest}>
           End Game
         </Button>
       }
@@ -79,23 +61,17 @@ const GameInProgress = ({
           isPlaying={isPlaying}
         />
       </Stack>
-      <Button
-        variant="contained"
-        onClick={async () => {
-          const res = await skipRoundRequest();
-          res.status === HttpStatusCode.Ok && answerRevail(res.data);
-        }}
-      >
+      <Button variant="contained" onClick={endRoundRequest}>
         Skip Song
       </Button>
-      {showCountdown && (
+      {/* {showCountdown && (
         <CountdownExample
           onEnd={() => {
             setGameStatus('Running');
             setShowCountdown(false);
           }}
         />
-      )}
+      )} */}
     </MainWrapper>
   );
 };

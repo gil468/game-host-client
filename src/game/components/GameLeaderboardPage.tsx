@@ -2,19 +2,24 @@ import { Button, Typography } from '@mui/material';
 import { FaMedal } from 'react-icons/fa';
 import MainWrapper from '../../components/MainWrapper';
 import CountdownExample from '../../components/Countdown';
-import { nextSongRequest } from '../handlers/GameRequests';
-import { useState } from 'react';
-interface GameLeaderboardPageProps {
-  players: PlayingPlayerProps[];
-}
+import { useMemo, useState } from 'react';
+import { SongProps } from './GameInProgress';
+import useGameRequests from '../handlers/useGameRequests';
+import useBackHome from '../../hooks/useBackHome';
+import { ScoresProps } from '../GameInterfaces';
 
-interface PlayingPlayerProps {
-  name: string;
-  score: number;
-}
-
-const GameLeaderboardPage = (props: GameLeaderboardPageProps) => {
+const GameLeaderboardPage = () => {
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
+  const [songProps, setSongProps] = useState<SongProps>();
+
+  const { nextSongRequest, startRoundRequest } = useGameRequests();
+
+  const scores = useBackHome<{ scores: ScoresProps }>()?.scores ?? [];
+
+  const sortedScores = useMemo(
+    () => scores.sort((a, b) => b.score - a.score),
+    [scores]
+  );
 
   return (
     <MainWrapper
@@ -22,13 +27,22 @@ const GameLeaderboardPage = (props: GameLeaderboardPageProps) => {
         sx: { overflowY: 'scroll', '::-webkit-scrollbar': { width: 0 } },
       }}
       bottomContent={
-        <Button variant="contained" onClick={() => setShowCountdown(true)}>
+        <Button
+          variant="contained"
+          onClick={async () => {
+            const res = await nextSongRequest();
+            if (res) {
+              setSongProps(res);
+              setShowCountdown(true);
+            }
+          }}
+        >
           Next Song
         </Button>
       }
     >
       <div style={{ gap: '0.5rem', display: 'grid', padding: '1rem' }}>
-        {props.players.map((player, index) => (
+        {sortedScores.map((player, index) => (
           <div
             key={index}
             style={{ display: 'grid', gridTemplateColumns: '5% 95%', gap: 10 }}
@@ -53,13 +67,19 @@ const GameLeaderboardPage = (props: GameLeaderboardPageProps) => {
                 justifyContent: 'space-between',
               }}
             >
-              <Typography>{player.name}</Typography>
+              <Typography>{player.userName}</Typography>
               <Typography>{player.score}</Typography>
             </div>
           </div>
         ))}
       </div>
-      {showCountdown && <CountdownExample onEnd={nextSongRequest} />}
+      {showCountdown && (
+        <CountdownExample
+          onEnd={async () => {
+            songProps && (await startRoundRequest(songProps));
+          }}
+        />
+      )}
     </MainWrapper>
   );
 };

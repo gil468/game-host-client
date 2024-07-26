@@ -5,27 +5,29 @@ import { enqueueSnackbar } from 'notistack';
 import { useState } from 'react';
 import useGameNavigation from './handlers/useGameNavigation';
 import AnswerPage from './components/AnswerPage';
-import GameInProgress, { SongProps } from './components/GameInProgress';
+import GameInProgress from './components/GameInProgress';
 import GameWaitingRoom from './components/waitingRoom/GameWaitingRoom';
 import addEvent from './handlers/addEvent';
 import GameLeaderboardPage from './components/GameLeaderboardPage';
+import { BuzzerRevokedProps, EndRoundResponse } from './GameInterfaces';
 
 const GameRoutes = () => {
-  const [showCountdown, setShowCountdown] = useState<boolean>(false);
   const [waitingPlayers, setWaitingPlayers] = useState<string[]>([]);
-  const { startGame, answerRevail } = useGameNavigation();
+  const { answerRevail } = useGameNavigation();
+
+  // //remove
+  // addEvent({
+  //   eventName: 'round-started',
+  //   callback: (x: SongProps[]) => {
+  //     console.log(x)
+  //     startGame(x[0]);
+  //   },
+  //   newStatus: 'Running',
+  //   stateArray: ['WaitingRoom', 'BetweenRounds'],
+  // });
 
   addEvent({
-    eventName: 'round-started',
-    callback: (x: SongProps[]) => {
-      startGame(x[0]);
-    },
-    newStatus: 'Running',
-    stateArray: ['WaitingRoom', 'BetweenRounds'],
-  });
-
-  addEvent({
-    eventName: 'playerJoined',
+    eventName: 'player-joined',
     callback: (player) => {
       setWaitingPlayers((x) => [...x, player[0].userName]);
     },
@@ -34,34 +36,42 @@ const GameRoutes = () => {
   });
 
   addEvent({
-    eventName: 'buzzerGranted',
+    eventName: 'buzzer-granted',
     callback: () => {},
     newStatus: 'Buzzered',
     stateArray: ['Running'],
   });
 
   addEvent({
-    eventName: 'correctAnswer',
-    callback: (x) => {
+    eventName: 'buzzer-revoked',
+    callback: (answerResponse: BuzzerRevokedProps[]) => {
+      const halfAnswer = answerResponse[0].artist || answerResponse[0].title;
+      enqueueSnackbar(
+        `${halfAnswer ? 'half' : 'wrong'} answer by ${answerResponse[0].answeredBy} ${answerResponse[0].artist ?? answerResponse[0].title ?? ''}`,
+        {
+          variant: 'error',
+          autoHideDuration: 1000,
+          anchorOrigin: { horizontal: 'center', vertical: 'top' },
+        }
+      );
+    },
+    newStatus: 'Running',
+    stateArray: ['Buzzered'],
+  });
+
+  // Tell Oren to change the array that sent back
+  addEvent({
+    eventName: 'round-ended',
+    callback: (x: EndRoundResponse[]) => {
       enqueueSnackbar('correct answer', {
         variant: 'success',
         autoHideDuration: 1000,
         anchorOrigin: { horizontal: 'center', vertical: 'top' },
-        onClose: () => answerRevail(x),
-      });
-    },
-    newStatus: 'BetweenRounds',
-    stateArray: ['Buzzered'],
-  });
-
-  addEvent({
-    eventName: 'wrongAnswer',
-    callback: () => {
-      enqueueSnackbar('wrong answer', {
-        variant: 'error',
-        autoHideDuration: 1000,
-        anchorOrigin: { horizontal: 'center', vertical: 'top' },
-        onClose: () => setShowCountdown(true),
+        onClose: () =>
+          answerRevail(
+            `${x[0].correctAnswer.title} By ${x[0].correctAnswer.artist}`,
+            x[0].scores
+          ),
       });
     },
     newStatus: 'BetweenRounds',
@@ -70,15 +80,7 @@ const GameRoutes = () => {
 
   return (
     <Routes>
-      <Route
-        path="/game-in-progress"
-        element={
-          <GameInProgress
-            showCountdown={showCountdown}
-            setShowCountdown={setShowCountdown}
-          />
-        }
-      />
+      <Route path="/game-in-progress" element={<GameInProgress />} />
       <Route path="/answer-revail" element={<AnswerPage />} />
       <Route path="/end-game" element={<EndGamePage />} />
       <Route
@@ -86,17 +88,7 @@ const GameRoutes = () => {
         element={<GameWaitingRoom joinedPlayers={waitingPlayers} />}
       ></Route>
       <Route path="/settings" element={<GameSettingsPage />} />
-      <Route
-        path="/leaderboard"
-        element={
-          <GameLeaderboardPage
-            players={waitingPlayers.map((x, index) => ({
-              name: x,
-              score: (index + 1) * 10,
-            }))}
-          />
-        }
-      />
+      <Route path="/leaderboard" element={<GameLeaderboardPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

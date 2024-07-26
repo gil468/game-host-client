@@ -1,27 +1,26 @@
 import { Box, Button, Typography, Stack } from '@mui/material';
 import { useContext, useEffect } from 'react';
 import { GameStatusContext } from '../../../providers/GameStatusProvider';
-import { nextSongRequest } from '../../handlers/GameRequests';
 import './GameWaitingRoom.css';
 import WaitingPlayerBox from './WaitingPlayerBox';
 import MainWrapper from '../../../components/MainWrapper';
-import { useLocation } from 'react-router-dom';
-import useGameNavigation from '../../handlers/useGameNavigation';
+import useBackHome from '../../../hooks/useBackHome';
+import useGameRequests from '../../handlers/useGameRequests';
 
 interface MainPageProps {
   joinedPlayers: string[];
 }
 
 const GameWaitingRoom = (props: MainPageProps) => {
-  const { setGameStatus } = useContext(GameStatusContext);
-  const { backToHome } = useGameNavigation();
+  const { setGameStatus, setPinCode, pinCode } = useContext(GameStatusContext);
+  const { nextSongRequest, startRoundRequest } = useGameRequests();
 
-  const state = useLocation().state;
+  const state = useBackHome<{ pinCode: number }>();
+
   useEffect(() => {
-    if (!state) backToHome();
-  }, [state]);
-
-  useEffect(() => setGameStatus('WaitingRoom'), []);
+    setGameStatus('WaitingRoom');
+    setPinCode(state?.pinCode);
+  }, []);
 
   return (
     <MainWrapper
@@ -30,10 +29,10 @@ const GameWaitingRoom = (props: MainPageProps) => {
           variant="h4"
           color={'info.main'}
           fontWeight={'bold'}
-        >{`Pincode : ${state?.pinCode}`}</Typography>
+        >{`Pincode : ${pinCode}`}</Typography>
       }
       bottomContent={
-        props.joinedPlayers.length ? (
+        true ? (
           <Stack width="95%" alignItems={'center'} spacing={3}>
             <Button
               variant="contained"
@@ -42,9 +41,16 @@ const GameWaitingRoom = (props: MainPageProps) => {
             >
               Game Settings
             </Button>
-            <Button variant="contained" onClick={nextSongRequest}>
-              Start Game
-            </Button>
+            {props.joinedPlayers.length > 0 && (
+              <Button
+                variant="contained"
+                onClick={async () => {
+                  await startRoundRequest(await nextSongRequest());
+                }}
+              >
+                Start Game
+              </Button>
+            )}
           </Stack>
         ) : (
           <></>
