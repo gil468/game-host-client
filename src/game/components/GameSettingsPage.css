@@ -4,10 +4,20 @@
 }
 
 .number-input input {
-  width: 60px;
-  color: black;
   background-color: #ffffff;
   border-radius: 10px;
+}
+
+.number-input:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: #bb86fc;
+}
+
+.number-input .MuiInputBase-input {
+  font-size: 1.5rem;
+}
+
+.image-with-shadow {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 .switch {

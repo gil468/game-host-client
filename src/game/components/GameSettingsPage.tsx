@@ -1,87 +1,163 @@
-import { Stack, Typography, TextField, Switch, Button } from '@mui/material';
+import {
+  Stack,
+  Typography,
+  TextField,
+  Switch,
+  Button,
+  Paper,
+  Box,
+  Fade,
+} from '@mui/material';
 import { useState } from 'react';
 import './GameSettingsPage.css';
 import MainWrapper from '../../components/MainWrapper';
+import { theme } from '../../theme';
+import useGameRequests from '../handlers/useGameRequests';
+
+const Explanation = ({ text }: { text: string }) => (
+  <Paper
+    sx={{ m: 0, width: 120, height: 110, backgroundColor: 'white' }}
+    elevation={6}
+  >
+    <Typography>{text}</Typography>
+  </Paper>
+);
 
 const GameSettingsPage = () => {
   const [numberOfRounds, setNumberOfRounds] = useState<number>(10);
-  const [timePerSong, setTimePerSong] = useState<number>(5);
-  const [bonusPointsEnabled, setBonusPointsEnabled] = useState<boolean>(false);
+  const [timeBasedPointsEnabled, setTimeBasedPointsEnabled] =
+    useState<boolean>(false);
+  const [punishmentPointsEnabled, setPunishmentPointsEnabled] =
+    useState<boolean>(false);
+  const [permitBuzzerTwiceEnabled, setPermitBuzzerTwiceEnabled] =
+    useState<boolean>(false);
+  const isError = numberOfRounds < 1 || numberOfRounds > 30;
+  const isEmpty = Number.isNaN(numberOfRounds);
+  const { nextSongRequest, startRoundRequest } = useGameRequests();
+
+  const getTextFieldProps = () => {
+    if (isError) {
+      return {
+        label: 'Range of 1-30',
+        error: true,
+      };
+    }
+    if (isEmpty) {
+      return {
+        label: 'Required',
+        error: true,
+      };
+    }
+    return {};
+  };
+
+  const handleChange = (
+    setter: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+    setter((prev) => !prev);
+  };
 
   return (
     <MainWrapper
       topContent={
-        <Typography color="primary" variant="h4">
+        <Typography color={theme.palette.text.primary} variant="h2">
           Game Settings
         </Typography>
       }
       bottomContent={
         <Button
           variant="contained"
-          color="error"
-          className="continue-button"
-          sx={{ fontSize: '1.5rem' }}
+          onClick={async () => {
+            await startRoundRequest(await nextSongRequest());
+          }}
+          disabled={isError || isEmpty}
         >
-          Continue
+          Start Game
         </Button>
       }
     >
-      <Stack width="95%" alignItems={'center'} spacing={10}>
-        <Stack spacing={2}>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="flex-start"
-            spacing={2}
-          >
-            <Typography variant="h5" sx={{ color: 'black' }}>
-              Number of rounds:
-            </Typography>
-            <TextField
-              type="number"
-              value={numberOfRounds}
-              onChange={(e) => setNumberOfRounds(parseInt(e.target.value, 10))}
-              inputProps={{ min: 1 }}
-              className="number-input"
-            />
-          </Stack>
+      <Stack width="100%" alignItems={'center'} spacing={2}>
+        <Stack></Stack>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="flex-start"
+          spacing={3}
+        >
+          <Typography variant="h4">Number of rounds:</Typography>
+          <TextField
+            type="number"
+            value={numberOfRounds}
+            onChange={(e) => setNumberOfRounds(parseInt(e.target.value, 10))}
+            inputProps={{ min: 1, max: 30 }}
+            className="number-input"
+            sx={{ width: '8rem' }}
+            {...getTextFieldProps()}
+          />
+        </Stack>
 
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="flex-start"
-            spacing={2}
-          >
-            <Typography variant="h5" sx={{ color: 'black' }}>
-              Time per song:
-            </Typography>
-            <TextField
-              type="number"
-              value={timePerSong}
-              onChange={(e) => setTimePerSong(parseInt(e.target.value, 10))}
-              inputProps={{ min: 1 }}
-              className="number-input"
-            />
-            <Typography variant="h6" sx={{ color: 'black' }}>
-              seconds
-            </Typography>
-          </Stack>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="flex-start"
+          spacing={3}
+        >
+          <Typography variant="h4" sx={{ display: 'flex-end' }}>
+            Time based points:
+          </Typography>
+          <Switch
+            checked={timeBasedPointsEnabled}
+            onChange={() => handleChange(setTimeBasedPointsEnabled)}
+            className="switch"
+          />
 
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="flex-start"
-            spacing={2}
-          >
-            <Typography variant="h5" sx={{ color: 'black' }}>
-              Enable bonus points:
-            </Typography>
-            <Switch
-              checked={bonusPointsEnabled}
-              onChange={(e) => setBonusPointsEnabled(e.target.checked)}
-              className="switch"
-            />
-          </Stack>
+          <Fade in={timeBasedPointsEnabled}>
+            <Box sx={{ display: 'flex' }}>
+              <Explanation text="Earn more points for faster answers" />
+            </Box>
+          </Fade>
+        </Stack>
+
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="flex-start"
+          spacing={3}
+        >
+          <Typography variant="h4">Enable punishment points:</Typography>
+
+          <Switch
+            checked={punishmentPointsEnabled}
+            onChange={() => handleChange(setPunishmentPointsEnabled)}
+            className="switch"
+          />
+
+          <Fade in={punishmentPointsEnabled}>
+            <Box sx={{ display: 'flex' }}>
+              <Explanation text="Lose points for incorrect guesses" />
+            </Box>
+          </Fade>
+        </Stack>
+
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="flex-start"
+          spacing={3}
+        >
+          <Typography variant="h4">Permit buzzzer twice:</Typography>
+
+          <Switch
+            checked={permitBuzzerTwiceEnabled}
+            onChange={() => handleChange(setPermitBuzzerTwiceEnabled)}
+            className="switch"
+          />
+
+          <Fade in={permitBuzzerTwiceEnabled}>
+            <Box sx={{ display: 'flex' }}>
+              <Explanation text="Buzz in twice in a row per round" />
+            </Box>
+          </Fade>
         </Stack>
       </Stack>
     </MainWrapper>
