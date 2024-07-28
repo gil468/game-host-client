@@ -16,6 +16,7 @@ const AnswerPage = () => {
 
   return (
     <MainWrapper
+      topContent={<Typography variant="h3">Round 1/5</Typography>}
       bottomContent={
         <Button
           variant="contained"
@@ -25,22 +26,27 @@ const AnswerPage = () => {
         </Button>
       }
     >
-      <Stack width="100%" alignItems={'center'} spacing={10}>
+      <Stack width="100%" alignItems={'center'}>
         <Stack
           direction="column"
           alignItems="center"
           justifyContent="flex-start"
-          spacing={6}
+          spacing={8}
           sx={{ padding: '4rem' }}
         >
-          <Typography variant="h3">{`The song is:`}</Typography>
+          <Typography variant="h3">The song is</Typography>
           <Typography
             variant="h2"
             sx={{ color: theme.palette.primary.main }}
           >{`${state?.songName}`}</Typography>
           <img
             src="/public/album-cover.jpg"
-            style={{ width: '18rem', height: '18rem', borderRadius: '2%' }}
+            style={{
+              width: '18rem',
+              height: '18rem',
+              borderRadius: '2%',
+              boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.8)',
+            }}
           />
         </Stack>
       </Stack>
