@@ -3,7 +3,7 @@ import MainWrapper from '../../components/MainWrapper';
 import useGameNavigation from '../handlers/useGameNavigation';
 import useBackHome from '../../hooks/useBackHome';
 import { ScoresProps } from '../GameInterfaces';
-import { Height } from '@mui/icons-material';
+import { theme } from '../../theme';
 
 export interface AnswerPageProps {
   songName: string;
@@ -26,11 +26,23 @@ const AnswerPage = () => {
       }
     >
       <Stack width="100%" alignItems={'center'} spacing={10}>
-        <Typography variant="h3">{`The song is ${state?.songName}`}</Typography>
-        <img
-          src="/public/album-cover.jpg"
-          style={{ width: '200px', height: '200px' }}
-        />
+        <Stack
+          direction="column"
+          alignItems="center"
+          justifyContent="flex-start"
+          spacing={6}
+          sx={{ padding: '4rem' }}
+        >
+          <Typography variant="h3">{`The song is:`}</Typography>
+          <Typography
+            variant="h2"
+            sx={{ color: theme.palette.primary.main }}
+          >{`${state?.songName}`}</Typography>
+          <img
+            src="/public/album-cover.jpg"
+            style={{ width: '18rem', height: '18rem', borderRadius: '2%' }}
+          />
+        </Stack>
       </Stack>
     </MainWrapper>
   );
