@@ -3,6 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import { createGameRequest } from '../socketIO/SocketEmits';
 import { TypeAnimation } from 'react-type-animation';
 
+import { styled } from '@mui/material/styles';
+import { theme } from '../theme';
+
+const StyledButton = styled(Button)`
+  ${() => `
+  cursor: pointer;
+  transition: ${theme.transitions.create(['background-color', 'transform'], {
+    duration: theme.transitions.duration.standard,
+  })};
+  &:hover {
+    background-color: ${theme.palette.secondary.main};
+    transform: scale(1.1); /* Adjust scale as per your need */
+  }
+  `}
+`;
+
 const MainPage = () => {
   const navigate = useNavigate();
 
@@ -20,11 +36,14 @@ const MainPage = () => {
       spacing={10}
       sx={{ marginTop: 8 }}
     >
-      <Button variant="contained" onClick={launchNewGame}>
+      <StyledButton variant="contained" onClick={launchNewGame}>
         Host New Game
-      </Button>
+      </StyledButton>
 
-      <Typography variant={'h4'}>
+      <Typography
+        variant={'h4'}
+        sx={{ color: theme.palette.primary.contrastText }}
+      >
         <TypeAnimation
           sequence={[
             'Music Master, Rock',
@@ -36,13 +55,13 @@ const MainPage = () => {
             'Music Master, Hip Hop',
             1000,
           ]}
-          wrapper="span"
           speed={50}
           style={{
             fontSize: '2em',
             display: 'inline-block',
           }}
           repeat={Infinity}
+          preRenderFirstString={true}
         />
       </Typography>
     </Stack>
