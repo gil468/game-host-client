@@ -1,5 +1,6 @@
-import { Button, Typography } from '@mui/material';
+import { Button, Typography, Stack } from '@mui/material';
 import { FaMedal } from 'react-icons/fa';
+import { SiFireship } from 'react-icons/si';
 import MainWrapper from '../../components/MainWrapper';
 import CountdownExample from '../../components/Countdown';
 import { useMemo, useState } from 'react';
@@ -41,6 +42,7 @@ const GameLeaderboardPage = () => {
         </Button>
       }
     >
+      <Typography variant="h3">Leaderboard</Typography>
       <div style={{ gap: '0.5rem', display: 'grid', padding: '1rem' }}>
         {sortedScores.map((player, index) => (
           <div
@@ -67,7 +69,15 @@ const GameLeaderboardPage = () => {
                 justifyContent: 'space-between',
               }}
             >
-              <Typography>{player.userName}</Typography>
+              <Stack direction="row" spacing={2}>
+                <Typography>{player.userName}</Typography>
+                <Typography sx={{ color: '#00CC00' }}>+100</Typography>{' '}
+                {/* To-Do: Add functionality for scoring */}
+                <SiFireship
+                  style={{ color: 'orangered', width: '2rem', height: '2rem' }}
+                />
+                {/* To-Do: Add functionality for streak */}
+              </Stack>
               <Typography>{player.score}</Typography>
             </div>
           </div>

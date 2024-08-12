@@ -40,6 +40,11 @@ const useGameNavigation = () => {
     setGameStatus('BetweenRounds');
   };
 
+  const genreSelection = () => {
+    navigate('/game/genre-selection'); // TO-DO: Implement Genre Selection state
+    setGameStatus('None');
+  };
+
   return {
     backToHome,
     answerRevail,
@@ -47,6 +52,7 @@ const useGameNavigation = () => {
     startGame,
     gameSettings,
     openLeaderboard,
+    genreSelection,
   };
 };
 

@@ -17,7 +17,7 @@ export const theme = createTheme({
     info: {
       main: '#ffffff',
     },
-    secondary: {
+    success: {
       main: '#f50057',
     },
   },

@@ -12,7 +12,8 @@ import { useState } from 'react';
 import './GameSettingsPage.css';
 import MainWrapper from '../../components/MainWrapper';
 import { theme } from '../../theme';
-import useGameRequests from '../handlers/useGameRequests';
+// import useGameRequests from '../handlers/useGameRequests';
+import useGameNavigation from '../handlers/useGameNavigation';
 
 const Explanation = ({ text }: { text: string }) => (
   <Paper
@@ -33,7 +34,9 @@ const GameSettingsPage = () => {
     useState<boolean>(false);
   const isError = numberOfRounds < 1 || numberOfRounds > 30;
   const isEmpty = Number.isNaN(numberOfRounds);
-  const { nextSongRequest, startRoundRequest } = useGameRequests();
+  // const { nextSongRequest, startRoundRequest } = useGameRequests();
+
+  const { genreSelection } = useGameNavigation();
 
   const getTextFieldProps = () => {
     if (isError) {
@@ -60,19 +63,26 @@ const GameSettingsPage = () => {
   return (
     <MainWrapper
       topContent={
-        <Typography color={theme.palette.text.primary} variant="h2">
+        <Typography color={theme.palette.primary.contrastText} variant="h2">
           Game Settings
         </Typography>
       }
       bottomContent={
+        // <Button
+        //   variant="contained"
+        //   onClick={async () => {
+        //     await startRoundRequest(await nextSongRequest());
+        //   }}
+        //   disabled={isError || isEmpty}
+        // >
+        //   Start Game
+        // </Button>
         <Button
           variant="contained"
-          onClick={async () => {
-            await startRoundRequest(await nextSongRequest());
-          }}
+          onClick={genreSelection}
           disabled={isError || isEmpty}
         >
-          Start Game
+          Continue
         </Button>
       }
     >

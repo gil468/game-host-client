@@ -13,7 +13,7 @@ const StyledButton = styled(Button)`
     duration: theme.transitions.duration.standard,
   })};
   &:hover {
-    background-color: ${theme.palette.secondary.main};
+    background-color: ${theme.palette.success.main};
     transform: scale(1.1); /* Adjust scale as per your need */
   }
   `}
@@ -22,10 +22,20 @@ const StyledButton = styled(Button)`
 const MainPage = () => {
   const navigate = useNavigate();
 
+  const saveToLocalStorage = (key: string, value: any, expirationMinutes: number) => {
+    const expirationTime = new Date().getTime() + expirationMinutes * 60 * 1000; // Convert minutes to milliseconds
+    const data = { value, expirationTime };
+    localStorage.setItem(key, JSON.stringify(data));
+  };
+
   const launchNewGame = async () => {
     const res = await createGameRequest();
     if (res) {
-      navigate('/game', { state: { pinCode: res.gameId } });
+      saveToLocalStorage('pinCode', res.gameId, 0.1);
+      saveToLocalStorage('gameSecret', res.gameSecret, 0.1);
+      navigate('/game', {
+        state: { pinCode: res.gameId, gameSecret: res.gameSecret },
+      });
     }
   };
 

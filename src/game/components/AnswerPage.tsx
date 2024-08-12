@@ -16,7 +16,6 @@ const AnswerPage = () => {
 
   return (
     <MainWrapper
-      topContent={<Typography variant="h3">Round 1/5</Typography>}
       bottomContent={
         <Button
           variant="contained"

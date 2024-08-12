@@ -6,6 +6,7 @@ import { useState } from 'react';
 import useGameNavigation from './handlers/useGameNavigation';
 import AnswerPage from './components/AnswerPage';
 import GameInProgress from './components/GameInProgress';
+import GenreSelectionPage from './components/GenreSelectionPage';
 import GameWaitingRoom from './components/waitingRoom/GameWaitingRoom';
 import addEvent from './handlers/addEvent';
 import GameLeaderboardPage from './components/GameLeaderboardPage';
@@ -88,6 +89,7 @@ const GameRoutes = () => {
         element={<GameWaitingRoom joinedPlayers={waitingPlayers} />}
       ></Route>
       <Route path="/settings" element={<GameSettingsPage />} />
+      <Route path="/genre-selection" element={<GenreSelectionPage />} />
       <Route path="/leaderboard" element={<GameLeaderboardPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

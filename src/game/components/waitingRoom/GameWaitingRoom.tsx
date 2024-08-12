@@ -36,12 +36,12 @@ const GameWaitingRoom = (props: MainPageProps) => {
           <Stack width="95%" alignItems={'center'} spacing={3}>
             {props.joinedPlayers.length > 0 && (
               <Button
-              variant="contained"
-              size="large"
-              onClick={gameSettings} // TO-DO: Implement GameRequests to the server
-            >
-              Game Settings
-            </Button>
+                variant="contained"
+                size="large"
+                onClick={gameSettings} // TO-DO: Implement GameRequests to the server
+              >
+                Game Settings
+              </Button>
             )}
           </Stack>
         ) : (

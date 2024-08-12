@@ -18,5 +18,5 @@ export const socketEmit = async <T extends any>(
 };
 
 export const createGameRequest = async () => {
-  return await socketEmit<{ gameId: string }>('create-game');
+  return await socketEmit<{ gameId: string, gameSecret: string }>('create-game');
 };
