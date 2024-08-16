@@ -1,11 +1,11 @@
-import { Box, Button, Typography, Stack } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useContext, useEffect } from 'react';
 import { GameStatusContext } from '../../../providers/GameStatusProvider';
 import './GameWaitingRoom.css';
 import WaitingPlayerBox from './WaitingPlayerBox';
 import MainWrapper from '../../../components/MainWrapper';
 import useBackHome from '../../../hooks/useBackHome';
-import useGameNavigation from '../../handlers/useGameNavigation';
+import useGameRequests from '../../handlers/useGameRequests';
 
 interface MainPageProps {
   joinedPlayers: string[];
@@ -13,7 +13,7 @@ interface MainPageProps {
 
 const GameWaitingRoom = (props: MainPageProps) => {
   const { setGameStatus, setPinCode, pinCode } = useContext(GameStatusContext);
-  const { gameSettings } = useGameNavigation();
+  const { startRoundRequest, nextSongRequest } = useGameRequests();
 
   const state = useBackHome<{ pinCode: number }>();
 
@@ -21,6 +21,10 @@ const GameWaitingRoom = (props: MainPageProps) => {
     setGameStatus('WaitingRoom');
     setPinCode(state?.pinCode);
   }, []);
+
+  const handleStartGame = async () => {
+    await startRoundRequest(await nextSongRequest());
+  };
 
   return (
     <MainWrapper
@@ -32,21 +36,13 @@ const GameWaitingRoom = (props: MainPageProps) => {
         >{`Pincode : ${pinCode}`}</Typography>
       }
       bottomContent={
-        true ? (
-          <Stack width="95%" alignItems={'center'} spacing={3}>
-            {props.joinedPlayers.length > 0 && (
-              <Button
-                variant="contained"
-                size="large"
-                onClick={gameSettings} // TO-DO: Implement GameRequests to the server
-              >
-                Game Settings
-              </Button>
-            )}
-          </Stack>
-        ) : (
-          <></>
-        )
+        <Button
+          variant="contained"
+          size="large"
+          onClick={handleStartGame} // TO-DO: Implement GameRequests to the server
+        >
+          Start Game
+        </Button>
       }
     >
       <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>

@@ -1,13 +1,17 @@
 import { io } from 'socket.io-client';
+import { GameCreationProps } from '../game/components/GameCreatorPage';
 
 export const socket = io(`${import.meta.env.VITE_SERVER_URL}/game-manager`); // Singleton pattern
 
 export const socketEmit = async <T extends any>(
   eventName: string,
-  room?: number
+  room?: number,
+  ...args: any[]
 ): Promise<T> => {
+  const emitArgs = room !== undefined ? [room, ...args] : [...args];
+
   return await new Promise((resolve, reject) => {
-    socket.emit(eventName, room, (res: any) => {
+    socket.emit(eventName, ...emitArgs, (res: any) => {
       if (res.error) {
         reject(res.error);
       } else {
@@ -17,6 +21,10 @@ export const socketEmit = async <T extends any>(
   });
 };
 
-export const createGameRequest = async () => {
-  return await socketEmit<{ gameId: string, gameSecret: string }>('create-game');
+export const createGameRequest = async (gameSettings: GameCreationProps) => {
+  return await socketEmit<{ gameId: string; gameSecret: string }>(
+    'create-game',
+    undefined,
+    gameSettings
+  );
 };

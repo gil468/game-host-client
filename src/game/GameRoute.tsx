@@ -1,12 +1,10 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import EndGamePage from './components/EndGamePage';
-import GameSettingsPage from './components/GameSettingsPage';
 import { enqueueSnackbar } from 'notistack';
 import { useState } from 'react';
 import useGameNavigation from './handlers/useGameNavigation';
 import AnswerPage from './components/AnswerPage';
 import GameInProgress from './components/GameInProgress';
-import GenreSelectionPage from './components/GenreSelectionPage';
 import GameWaitingRoom from './components/waitingRoom/GameWaitingRoom';
 import addEvent from './handlers/addEvent';
 import GameLeaderboardPage from './components/GameLeaderboardPage';
@@ -16,21 +14,10 @@ const GameRoutes = () => {
   const [waitingPlayers, setWaitingPlayers] = useState<string[]>([]);
   const { answerRevail } = useGameNavigation();
 
-  // //remove
-  // addEvent({
-  //   eventName: 'round-started',
-  //   callback: (x: SongProps[]) => {
-  //     console.log(x)
-  //     startGame(x[0]);
-  //   },
-  //   newStatus: 'Running',
-  //   stateArray: ['WaitingRoom', 'BetweenRounds'],
-  // });
-
   addEvent({
     eventName: 'player-joined',
     callback: (player) => {
-      setWaitingPlayers((x) => [...x, player[0].userName]);
+      setWaitingPlayers((x) => [...x, player.userName]);
     },
     newStatus: 'WaitingRoom',
     stateArray: ['WaitingRoom'],
@@ -45,10 +32,10 @@ const GameRoutes = () => {
 
   addEvent({
     eventName: 'buzzer-revoked',
-    callback: (answerResponse: BuzzerRevokedProps[]) => {
-      const halfAnswer = answerResponse[0].artist || answerResponse[0].title;
+    callback: (answerResponse: BuzzerRevokedProps) => {
+      const halfAnswer = answerResponse.artist || answerResponse.title;
       enqueueSnackbar(
-        `${halfAnswer ? 'half' : 'wrong'} answer by ${answerResponse[0].answeredBy} ${answerResponse[0].artist ?? answerResponse[0].title ?? ''}`,
+        `${halfAnswer ? 'half' : 'wrong'} answer by ${answerResponse.answeredBy} ${answerResponse.artist ?? answerResponse.title ?? ''}`,
         {
           variant: 'error',
           autoHideDuration: 1000,
@@ -63,15 +50,15 @@ const GameRoutes = () => {
   // Tell Oren to change the array that sent back
   addEvent({
     eventName: 'round-ended',
-    callback: (x: EndRoundResponse[]) => {
+    callback: (x: EndRoundResponse) => {
       enqueueSnackbar('correct answer', {
         variant: 'success',
         autoHideDuration: 1000,
         anchorOrigin: { horizontal: 'center', vertical: 'top' },
         onClose: () =>
           answerRevail(
-            `${x[0].correctAnswer.title} By ${x[0].correctAnswer.artist}`,
-            x[0].scores
+            `${x.correctAnswer.title} By ${x.correctAnswer.artist}`,
+            x.scores
           ),
       });
     },
@@ -88,8 +75,6 @@ const GameRoutes = () => {
         path="/"
         element={<GameWaitingRoom joinedPlayers={waitingPlayers} />}
       ></Route>
-      <Route path="/settings" element={<GameSettingsPage />} />
-      <Route path="/genre-selection" element={<GenreSelectionPage />} />
       <Route path="/leaderboard" element={<GameLeaderboardPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
