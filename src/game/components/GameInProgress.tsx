@@ -8,7 +8,7 @@ import useBackHome from '../../hooks/useBackHome';
 import useGameRequests from '../handlers/useGameRequests';
 
 export interface SongProps {
-  songId: number;
+  previewUrl: string;
   round: number;
 }
 
@@ -19,7 +19,6 @@ const GameInProgress = () => {
 
   const { endGameRequest, endRoundRequest } = useGameRequests();
   const songProps = useBackHome<SongProps>();
-
   return (
     <MainWrapper
       topContent={
@@ -56,10 +55,7 @@ const GameInProgress = () => {
         ) : (
           <Pause sx={{ fontSize: 120 }} />
         )}
-        <AudioPlayer
-          src={`${import.meta.env.VITE_SERVER_URL}/songs/${songProps?.songId}.mp3`}
-          isPlaying={isPlaying}
-        />
+        <AudioPlayer src={songProps?.previewUrl ?? ''} isPlaying={isPlaying} />
       </Stack>
       <Button variant="contained" onClick={endRoundRequest}>
         Skip Song

@@ -3,17 +3,11 @@ import {
   Typography,
   TextField,
   Switch,
-  Button,
   Paper,
   Box,
   Fade,
 } from '@mui/material';
-import { useState } from 'react';
 import './GameSettingsPage.css';
-import MainWrapper from '../../components/MainWrapper';
-import { theme } from '../../theme';
-// import useGameRequests from '../handlers/useGameRequests';
-import useGameNavigation from '../handlers/useGameNavigation';
 
 const Explanation = ({ text }: { text: string }) => (
   <Paper
@@ -24,19 +18,25 @@ const Explanation = ({ text }: { text: string }) => (
   </Paper>
 );
 
-const GameSettingsPage = () => {
-  const [numberOfRounds, setNumberOfRounds] = useState<number>(10);
-  const [timeBasedPointsEnabled, setTimeBasedPointsEnabled] =
-    useState<boolean>(false);
-  const [punishmentPointsEnabled, setPunishmentPointsEnabled] =
-    useState<boolean>(false);
-  const [permitBuzzerTwiceEnabled, setPermitBuzzerTwiceEnabled] =
-    useState<boolean>(false);
-  const isError = numberOfRounds < 1 || numberOfRounds > 30;
-  const isEmpty = Number.isNaN(numberOfRounds);
-  // const { nextSongRequest, startRoundRequest } = useGameRequests();
+export interface GameSettings {
+  numberOfRounds: number;
+  timeBasedPointsEnabled: boolean;
+  punishmentPointsEnabled: boolean;
+  permitBuzzerTwiceEnabled: boolean;
+}
 
-  const { genreSelection } = useGameNavigation();
+export interface GameSettingsPageProps {
+  gameSettings: GameSettings;
+  setGameSettings: (props: Partial<GameSettings>) => void;
+}
+
+const GameSettingsPage = ({
+  gameSettings,
+  setGameSettings,
+}: GameSettingsPageProps) => {
+  const isError =
+    gameSettings.numberOfRounds < 1 || gameSettings.numberOfRounds > 30;
+  const isEmpty = Number.isNaN(gameSettings.numberOfRounds);
 
   const getTextFieldProps = () => {
     if (isError) {
@@ -54,123 +54,99 @@ const GameSettingsPage = () => {
     return {};
   };
 
-  const handleChange = (
-    setter: React.Dispatch<React.SetStateAction<boolean>>
-  ) => {
-    setter((prev) => !prev);
-  };
-
   return (
-    <MainWrapper
-      topContent={
-        <Typography color={theme.palette.primary.contrastText} variant="h2">
-          Game Settings
-        </Typography>
-      }
-      bottomContent={
-        // <Button
-        //   variant="contained"
-        //   onClick={async () => {
-        //     await startRoundRequest(await nextSongRequest());
-        //   }}
-        //   disabled={isError || isEmpty}
-        // >
-        //   Start Game
-        // </Button>
-        <Button
-          variant="contained"
-          onClick={genreSelection}
-          disabled={isError || isEmpty}
-        >
-          Continue
-        </Button>
-      }
-    >
-      <Stack width="100%" alignItems={'center'} spacing={2}>
-        <Stack></Stack>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="flex-start"
-          spacing={3}
-        >
-          <Typography variant="h4">Number of rounds:</Typography>
-          <TextField
-            type="number"
-            value={numberOfRounds}
-            onChange={(e) => setNumberOfRounds(parseInt(e.target.value, 10))}
-            inputProps={{ min: 1, max: 30 }}
-            className="number-input"
-            sx={{ width: '8rem' }}
-            {...getTextFieldProps()}
-          />
-        </Stack>
-
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="flex-start"
-          spacing={3}
-        >
-          <Typography variant="h4" sx={{ display: 'flex-end' }}>
-            Time based points:
-          </Typography>
-          <Switch
-            checked={timeBasedPointsEnabled}
-            onChange={() => handleChange(setTimeBasedPointsEnabled)}
-            className="switch"
-          />
-
-          <Fade in={timeBasedPointsEnabled}>
-            <Box sx={{ display: 'flex' }}>
-              <Explanation text="Earn more points for faster answers" />
-            </Box>
-          </Fade>
-        </Stack>
-
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="flex-start"
-          spacing={3}
-        >
-          <Typography variant="h4">Enable punishment points:</Typography>
-
-          <Switch
-            checked={punishmentPointsEnabled}
-            onChange={() => handleChange(setPunishmentPointsEnabled)}
-            className="switch"
-          />
-
-          <Fade in={punishmentPointsEnabled}>
-            <Box sx={{ display: 'flex' }}>
-              <Explanation text="Lose points for incorrect guesses" />
-            </Box>
-          </Fade>
-        </Stack>
-
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="flex-start"
-          spacing={3}
-        >
-          <Typography variant="h4">Permit buzzzer twice:</Typography>
-
-          <Switch
-            checked={permitBuzzerTwiceEnabled}
-            onChange={() => handleChange(setPermitBuzzerTwiceEnabled)}
-            className="switch"
-          />
-
-          <Fade in={permitBuzzerTwiceEnabled}>
-            <Box sx={{ display: 'flex' }}>
-              <Explanation text="Buzz in twice in a row per round" />
-            </Box>
-          </Fade>
-        </Stack>
+    <Stack width="100%" alignItems={'center'} spacing={2}>
+      <Stack></Stack>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="flex-start"
+        spacing={3}
+      >
+        <Typography variant="h4">Number of rounds:</Typography>
+        <TextField
+          type="number"
+          value={gameSettings.numberOfRounds}
+          onChange={(e) =>
+            setGameSettings({ numberOfRounds: parseInt(e.target.value, 10) })
+          }
+          inputProps={{ min: 1, max: 30 }}
+          className="number-input"
+          sx={{ width: '8rem' }}
+          {...getTextFieldProps()}
+        />
       </Stack>
-    </MainWrapper>
+
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="flex-start"
+        spacing={3}
+      >
+        <Typography variant="h4" sx={{ display: 'flex-end' }}>
+          Time based points:
+        </Typography>
+        <Switch
+          checked={gameSettings.timeBasedPointsEnabled}
+          onChange={(_, status) =>
+            setGameSettings({ timeBasedPointsEnabled: status })
+          }
+          className="switch"
+        />
+
+        <Fade in={gameSettings.timeBasedPointsEnabled}>
+          <Box sx={{ display: 'flex' }}>
+            <Explanation text="Earn more points for faster answers" />
+          </Box>
+        </Fade>
+      </Stack>
+
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="flex-start"
+        spacing={3}
+      >
+        <Typography variant="h4">Enable punishment points:</Typography>
+
+        <Switch
+          checked={gameSettings.punishmentPointsEnabled}
+          onChange={(_, status) =>
+            setGameSettings({ punishmentPointsEnabled: status })
+          }
+          className="switch"
+        />
+
+        <Fade in={gameSettings.punishmentPointsEnabled}>
+          <Box sx={{ display: 'flex' }}>
+            <Explanation text="Lose points for incorrect guesses" />
+          </Box>
+        </Fade>
+      </Stack>
+
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="flex-start"
+        spacing={3}
+      >
+        <Typography variant="h4">Permit buzzzer twice:</Typography>
+
+        <Switch
+          checked={gameSettings.permitBuzzerTwiceEnabled}
+          onChange={(_, status) =>
+            setGameSettings({ permitBuzzerTwiceEnabled: status })
+          }
+          className="switch"
+        />
+
+        <Fade in={gameSettings.permitBuzzerTwiceEnabled}>
+          <Box sx={{ display: 'flex' }}>
+            <Explanation text="Buzz in twice in a row per round" />
+          </Box>
+        </Fade>
+      </Stack>
+    </Stack>
   );
 };
 

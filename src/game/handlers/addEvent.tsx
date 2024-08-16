@@ -20,7 +20,7 @@ const useAddEvent = (props: AddEventProps) => {
   useEffect(() => {
     if (stateArray.includes(gameStatus)) {
       const handleEvent = (...args: any[]) => {
-        callback(args);
+        callback(...args);
         newStatus && setGameStatus(newStatus);
       };
 

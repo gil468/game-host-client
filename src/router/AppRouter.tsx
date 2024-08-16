@@ -7,6 +7,7 @@ import {
 import MainPage from '../components/MainPage';
 import GameStatusProvider from '../providers/GameStatusProvider';
 import GameRoutes from '../game/GameRoute';
+import GameCreatorPage from '../game/components/GameCreatorPage';
 
 const AppRouter = () => {
   return (
@@ -21,6 +22,7 @@ const AppRouter = () => {
             </GameStatusProvider>
           }
         ></Route>
+        <Route path="/game-creator" element={<GameCreatorPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>

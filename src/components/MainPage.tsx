@@ -1,6 +1,5 @@
 import { Button, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { createGameRequest } from '../socketIO/SocketEmits';
 import { TypeAnimation } from 'react-type-animation';
 
 import { styled } from '@mui/material/styles';
@@ -13,7 +12,6 @@ const StyledButton = styled(Button)`
     duration: theme.transitions.duration.standard,
   })};
   &:hover {
-    background-color: ${theme.palette.success.main};
     transform: scale(1.1); /* Adjust scale as per your need */
   }
   `}
@@ -22,23 +20,6 @@ const StyledButton = styled(Button)`
 const MainPage = () => {
   const navigate = useNavigate();
 
-  const saveToLocalStorage = (key: string, value: any, expirationMinutes: number) => {
-    const expirationTime = new Date().getTime() + expirationMinutes * 60 * 1000; // Convert minutes to milliseconds
-    const data = { value, expirationTime };
-    localStorage.setItem(key, JSON.stringify(data));
-  };
-
-  const launchNewGame = async () => {
-    const res = await createGameRequest();
-    if (res) {
-      saveToLocalStorage('pinCode', res.gameId, 0.1);
-      saveToLocalStorage('gameSecret', res.gameSecret, 0.1);
-      navigate('/game', {
-        state: { pinCode: res.gameId, gameSecret: res.gameSecret },
-      });
-    }
-  };
-
   return (
     <Stack
       width="100%"
@@ -46,7 +27,10 @@ const MainPage = () => {
       spacing={10}
       sx={{ marginTop: 8 }}
     >
-      <StyledButton variant="contained" onClick={launchNewGame}>
+      <StyledButton
+        variant="contained"
+        onClick={() => navigate('/game-creator')}
+      >
         Host New Game
       </StyledButton>
 
