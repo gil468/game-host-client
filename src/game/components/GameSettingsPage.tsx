@@ -63,7 +63,7 @@ const GameSettingsPage = () => {
   return (
     <MainWrapper
       topContent={
-        <Typography color={theme.palette.primary.contrastText} variant="h2">
+        <Typography color={theme.palette.primary.contrastText} variant="h3">
           Game Settings
         </Typography>
       }
@@ -87,12 +87,12 @@ const GameSettingsPage = () => {
       }
     >
       <Stack width="100%" alignItems={'center'} spacing={2}>
-        <Stack></Stack>
         <Stack
           direction="row"
           alignItems="center"
           justifyContent="flex-start"
           spacing={3}
+          padding={1}
         >
           <Typography variant="h4">Number of rounds:</Typography>
           <TextField
@@ -101,7 +101,7 @@ const GameSettingsPage = () => {
             onChange={(e) => setNumberOfRounds(parseInt(e.target.value, 10))}
             inputProps={{ min: 1, max: 30 }}
             className="number-input"
-            sx={{ width: '8rem' }}
+            sx={{ width: '8vw' }}
             {...getTextFieldProps()}
           />
         </Stack>
@@ -165,7 +165,7 @@ const GameSettingsPage = () => {
 
           <Fade in={permitBuzzerTwiceEnabled}>
             <Box sx={{ display: 'flex' }}>
-              <Explanation text="Buzz in twice in a row per round" />
+              <Explanation text="Buzz twice in a row per round" />
             </Box>
           </Fade>
         </Stack>

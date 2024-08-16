@@ -32,7 +32,7 @@ const GenreSelectionPage = () => {
   return (
     <MainWrapper
       topContent={
-        <Typography color={theme.palette.primary.contrastText} variant="h2">
+        <Typography color={theme.palette.primary.contrastText} variant="h3">
           Genre Selection
         </Typography>
       }
