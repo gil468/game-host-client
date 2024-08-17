@@ -1,9 +1,12 @@
+import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Stack, Typography, Container } from '@mui/material';
+import { Stack, Typography, Container, Box, Tabs, Tab } from '@mui/material';
 import { theme } from '../../theme';
 import Carousel from 'react-carousel-mui';
 import CustomGenreCard from './CustomGenreCard';
 import axios from 'axios';
+import TabsMenu from './TabsMenu';
+
 interface GetPlaylistDto {
   id: string;
   image: string;
@@ -36,13 +39,17 @@ const GenreSelectionPage = (props: GenreSelectionPageProps) => {
 
   return (
     <Stack width="100%" alignItems={'center'}>
+      <Typography variant="h3">Choose Genre</Typography>
+
+      <TabsMenu />
+      
       <Stack
         direction="column"
         alignItems="center"
         justifyContent="flex-start"
         spacing={8}
+        padding={2}
       >
-        <Typography variant="h3">Choose Genre</Typography>
         <Container maxWidth="md">
           <Carousel
             items={playlists}

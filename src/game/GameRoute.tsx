@@ -3,12 +3,12 @@ import EndGamePage from './components/EndGamePage';
 import { enqueueSnackbar } from 'notistack';
 import { useState } from 'react';
 import useGameNavigation from './handlers/useGameNavigation';
-import AnswerPage from './components/AnswerPage';
 import GameInProgress from './components/GameInProgress';
 import GameWaitingRoom from './components/waitingRoom/GameWaitingRoom';
 import addEvent from './handlers/addEvent';
 import GameLeaderboardPage from './components/GameLeaderboardPage';
 import { BuzzerRevokedProps, EndRoundResponse } from './GameInterfaces';
+import RoundResultsPage from './components/RoundResultsPage';
 
 const GameRoutes = () => {
   const [waitingPlayers, setWaitingPlayers] = useState<string[]>([]);
@@ -69,7 +69,7 @@ const GameRoutes = () => {
   return (
     <Routes>
       <Route path="/game-in-progress" element={<GameInProgress />} />
-      <Route path="/answer-revail" element={<AnswerPage />} />
+      <Route path="/answer-revail" element={<RoundResultsPage />} />
       <Route path="/end-game" element={<EndGamePage />} />
       <Route
         path="/"

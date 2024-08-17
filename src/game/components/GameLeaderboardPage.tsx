@@ -10,10 +10,10 @@ import useBackHome from '../../hooks/useBackHome';
 import { ScoresProps } from '../GameInterfaces';
 
 const GameLeaderboardPage = () => {
-  const [showCountdown, setShowCountdown] = useState<boolean>(false);
-  const [songProps, setSongProps] = useState<SongProps>();
+  // const [showCountdown, setShowCountdown] = useState<boolean>(false);
+  // const [songProps, setSongProps] = useState<SongProps>();
 
-  const { nextSongRequest, startRoundRequest } = useGameRequests();
+  // const { nextSongRequest, startRoundRequest } = useGameRequests();
 
   const scores = useBackHome<{ scores: ScoresProps }>()?.scores ?? [];
 
@@ -23,25 +23,7 @@ const GameLeaderboardPage = () => {
   );
 
   return (
-    <MainWrapper
-      mainComponenetProps={{
-        sx: { overflowY: 'scroll', '::-webkit-scrollbar': { width: 0 } },
-      }}
-      bottomContent={
-        <Button
-          variant="contained"
-          onClick={async () => {
-            const res = await nextSongRequest();
-            if (res) {
-              setSongProps(res);
-              setShowCountdown(true);
-            }
-          }}
-        >
-          Next Song
-        </Button>
-      }
-    >
+    <>
       <Typography variant="h3">Leaderboard</Typography>
       <div style={{ gap: '0.5rem', display: 'grid', padding: '1rem' }}>
         {sortedScores.map((player, index) => (
@@ -83,14 +65,7 @@ const GameLeaderboardPage = () => {
           </div>
         ))}
       </div>
-      {showCountdown && (
-        <CountdownExample
-          onEnd={async () => {
-            songProps && (await startRoundRequest(songProps));
-          }}
-        />
-      )}
-    </MainWrapper>
+    </>
   );
 };
 
