@@ -55,11 +55,7 @@ const GameRoutes = () => {
         variant: 'success',
         autoHideDuration: 1000,
         anchorOrigin: { horizontal: 'center', vertical: 'top' },
-        onClose: () =>
-          answerRevail(
-            `${x.correctAnswer.title} By ${x.correctAnswer.artist}`,
-            x.scores
-          ),
+        onClose: () => answerRevail(x.correctAnswer, x.scores),
       });
     },
     newStatus: 'BetweenRounds',

@@ -19,6 +19,7 @@
     "@mui/material": "^5.15.19",
     "axios": "^1.7.2",
     "notistack": "^3.0.1",
+    "query-string": "^9.1.0",
     "react": "^18.3.1",
     "react-carousel-mui": "^1.0.0",
     "react-dom": "^18.3.1",

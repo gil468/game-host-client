@@ -4,6 +4,9 @@ import { TypeAnimation } from 'react-type-animation';
 
 import { styled } from '@mui/material/styles';
 import { theme } from '../theme';
+import { useEffect } from 'react';
+import queryString from 'query-string';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 const StyledButton = styled(Button)`
   ${() => `
@@ -19,6 +22,22 @@ const StyledButton = styled(Button)`
 
 const MainPage = () => {
   const navigate = useNavigate();
+  const [_, setSpotifyAccessToken] = useLocalStorage<string>(
+    'spotify_access_token'
+  );
+  const handleLogin = () => {
+    window.location.href = 'http://localhost:3000/game-manager/login';
+  };
+
+  useEffect(() => {
+    const { access_token } = queryString.parse(window.location.search);
+    if (access_token) {
+      setSpotifyAccessToken(access_token as string);
+      const newUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, document.title, newUrl);
+      // You can now use the access token in your React app
+    }
+  }, []);
 
   return (
     <Stack
@@ -32,6 +51,10 @@ const MainPage = () => {
         onClick={() => navigate('/game-creator')}
       >
         Host New Game
+      </StyledButton>
+
+      <StyledButton variant="contained" onClick={handleLogin}>
+        Spotify
       </StyledButton>
 
       <Typography

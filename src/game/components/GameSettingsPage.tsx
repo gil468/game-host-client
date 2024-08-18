@@ -11,10 +11,17 @@ import './GameSettingsPage.css';
 
 const Explanation = ({ text }: { text: string }) => (
   <Paper
-    sx={{ m: 0, width: {lg: '7vw', xl: '6vw'}, height: {lg: '13vh', xl: '10vh'}, backgroundColor: 'white' }}
+    sx={{
+      m: 0,
+      width: { lg: '7vw', xl: '6vw' },
+      height: { lg: '13vh', xl: '10vh' },
+      backgroundColor: 'white',
+    }}
     elevation={6}
   >
-    <Typography sx={{fontSize: {lg: '0.95rem', xl: '1.7vh'}}}>{text}</Typography>
+    <Typography sx={{ fontSize: { lg: '0.95rem', xl: '1.7vh' } }}>
+      {text}
+    </Typography>
   </Paper>
 );
 

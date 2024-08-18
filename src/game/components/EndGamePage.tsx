@@ -1,8 +1,6 @@
 import { Button, Stack, Typography, Box } from '@mui/material';
 import useGameNavigation from '../handlers/useGameNavigation';
-import useBackHome from '../../hooks/useBackHome';
 import { ScoresProps } from '../GameInterfaces';
-import { useMemo } from 'react';
 import { Fireworks } from '@fireworks-js/react';
 import type { FireworksHandlers } from '@fireworks-js/react';
 import { useRef } from 'react';
@@ -12,8 +10,6 @@ export interface EndGamePageProps {
 }
 
 const EndGamePage = () => {
-  const scores = useBackHome<EndGamePageProps>()?.scores ?? [];
-
   const ref = useRef<FireworksHandlers>(null);
 
   // const winner = useMemo(() => {

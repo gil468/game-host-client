@@ -10,6 +10,7 @@ export type ScoresProps = Omit<Player, 'id'>[];
 export type Song = {
   title: string;
   artist: string;
+  albumCoverUrl: string;
 };
 
 export type Player = {

@@ -1,17 +1,21 @@
 import * as React from 'react';
 import { Box, Tabs, Tab } from '@mui/material';
 import { theme } from '../../theme';
+import { PlaylistOptions } from './GenreSelectionPage';
 // import Box from '@mui/joy/Box';
 // import Tabs from '@mui/joy/Tabs';
 // import TabList from '@mui/joy/TabList';
 // import Tab from '@mui/joy/Tab';
 // import { CssVarsProvider } from '@mui/joy/styles';
 
-const TabsMenu = () => {
-  const [value, setValue] = React.useState(0);
+interface GenreTabsMenuProps {
+  currTab: PlaylistOptions;
+  setCurrTab: React.Dispatch<React.SetStateAction<PlaylistOptions>>;
+}
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+const TabsMenu = (props: GenreTabsMenuProps) => {
+  const handleChange = (_: React.SyntheticEvent, newValue: PlaylistOptions) => {
+    props.setCurrTab(newValue);
   };
 
   const tabLabels = [
@@ -23,7 +27,7 @@ const TabsMenu = () => {
   return (
     <Box sx={{ width: '100%' }}>
       <Tabs
-        value={value}
+        value={props.currTab}
         onChange={handleChange}
         variant="scrollable"
         scrollButtons="auto"

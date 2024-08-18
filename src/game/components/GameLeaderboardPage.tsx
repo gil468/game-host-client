@@ -1,11 +1,7 @@
-import { Button, Typography, Stack } from '@mui/material';
+import { Typography, Stack } from '@mui/material';
 import { FaMedal } from 'react-icons/fa';
 import { SiFireship } from 'react-icons/si';
-import MainWrapper from '../../components/MainWrapper';
-import CountdownExample from '../../components/Countdown';
-import { useMemo, useState } from 'react';
-import { SongProps } from './GameInProgress';
-import useGameRequests from '../handlers/useGameRequests';
+import { useMemo } from 'react';
 import useBackHome from '../../hooks/useBackHome';
 import { ScoresProps } from '../GameInterfaces';
 

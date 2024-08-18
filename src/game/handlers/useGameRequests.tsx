@@ -20,11 +20,7 @@ const useGameRequests = () => {
 
   const endRoundRequest = async () => {
     const res = await socketEmit<EndRoundResponse>('end-round', pinCode);
-    if (res)
-      answerRevail(
-        `${res.correctAnswer.title} By ${res.correctAnswer.artist}`,
-        res.scores
-      );
+    if (res) answerRevail(res.correctAnswer, res.scores);
   };
 
   const startRoundRequest = async (songProps: SongProps) => {

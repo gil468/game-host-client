@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GameStatusContext } from '../../providers/GameStatusProvider';
 import { SongProps } from '../components/GameInProgress';
-import { ScoresProps } from '../GameInterfaces';
+import { ScoresProps, Song } from '../GameInterfaces';
 
 const useGameNavigation = () => {
   const { setGameStatus } = useContext(GameStatusContext);
@@ -13,9 +13,13 @@ const useGameNavigation = () => {
     setGameStatus('None');
   };
 
-  const answerRevail = (songName: string, scores: ScoresProps) => {
+  const answerRevail = (correctAnswer: Song, scores: ScoresProps) => {
     navigate('/game/answer-revail', {
-      state: { songName: songName, scores: scores },
+      state: {
+        songName: `${correctAnswer.title} By ${correctAnswer.artist}`,
+        scores: scores,
+        albumCoverUrl: correctAnswer.albumCoverUrl,
+      },
     });
     setGameStatus('BetweenRounds');
   };

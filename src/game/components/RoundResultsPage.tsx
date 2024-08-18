@@ -12,18 +12,14 @@ import GameLeaderboardPage from './GameLeaderboardPage';
 import { useState } from 'react';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import MainWrapper from '../../components/MainWrapper';
-import { useNavigate } from 'react-router-dom';
 import useGameRequests from '../handlers/useGameRequests';
 import { SongProps } from './GameInProgress';
 import CountdownExample from '../../components/Countdown';
 
 const RoundResultsPage = () => {
   const [currStep, setCurrStep] = useState<number>(0);
-  const navigate = useNavigate();
   const handleBack = () => setCurrStep((x) => x - 1);
-  const handleForward = () => {
-    setCurrStep((x) => x + 1);
-  };
+  const handleForward = () => setCurrStep((x) => x + 1);
 
   const { nextSongRequest, startRoundRequest } = useGameRequests();
   const [songProps, setSongProps] = useState<SongProps>();

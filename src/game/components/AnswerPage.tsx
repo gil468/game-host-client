@@ -5,6 +5,7 @@ import { theme } from '../../theme';
 
 export interface AnswerPageProps {
   songName: string;
+  albumCoverUrl: string;
   scores: ScoresProps;
 }
 
@@ -17,18 +18,19 @@ const AnswerPage = () => {
         direction="column"
         alignItems="center"
         justifyContent="flex-start"
-        spacing={4}
+        spacing={8}
+        sx={{ padding: '4rem' }}
       >
         <Typography variant="h3">The song is</Typography>
         <Typography
-          variant="h4"
+          variant="h2"
           sx={{ color: theme.palette.primary.main }}
         >{`${state?.songName}`}</Typography>
         <img
-          src="/public/album-cover.jpg"
+          src={state?.albumCoverUrl}
           style={{
-            width: '12vw',
-            height: '22vh',
+            width: '18rem',
+            height: '18rem',
             borderRadius: '2%',
             boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.8)',
           }}
