@@ -1,14 +1,14 @@
-import { useContext } from 'react';
 import { SongProps } from '../components/GameInProgress';
 import { socketEmit } from '../../socketIO/SocketEmits';
-import { GameStatusContext } from '../../providers/GameStatusProvider';
 import useGameNavigation from './useGameNavigation';
-import { EndRoundResponse, ScoresProps } from '../GameInterfaces';
+import { EndRoundResponse, RejoinResponse, ScoresProps } from '../GameInterfaces';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 const useGameRequests = () => {
-  const { gameProps } = useContext(GameStatusContext);
+  const [pinCode] = useLocalStorage<number>('pinCode');
   const { endGame, answerRevail, startGame } = useGameNavigation();
-  const pinCode = gameProps?.pinCode;
+  const [gameSecret] = useLocalStorage('gameSecret');
+
   const nextSongRequest = async () => {
     return await socketEmit<SongProps>('next-round', pinCode);
   };
@@ -29,11 +29,16 @@ const useGameRequests = () => {
     if (res) startGame(songProps);
   };
 
+  const rejoinGameRequest = async () => {
+    return await socketEmit<RejoinResponse>('rejoin-game', undefined, {gameSecret : gameSecret, gameId : pinCode});
+  };
+
   return {
     nextSongRequest,
     endGameRequest,
     endRoundRequest,
     startRoundRequest,
+    rejoinGameRequest
   };
 };
 

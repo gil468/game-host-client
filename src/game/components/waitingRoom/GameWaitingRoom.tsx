@@ -4,7 +4,6 @@ import { GameStatusContext } from '../../../providers/GameStatusProvider';
 import './GameWaitingRoom.css';
 import WaitingPlayerBox from './WaitingPlayerBox';
 import MainWrapper from '../../../components/MainWrapper';
-import useBackHome from '../../../hooks/useBackHome';
 import useGameRequests from '../../handlers/useGameRequests';
 
 interface MainPageProps {
@@ -15,13 +14,9 @@ const GameWaitingRoom = (props: MainPageProps) => {
   const { gameProps, setGameProps } = useContext(GameStatusContext);
   const { startRoundRequest, nextSongRequest } = useGameRequests();
 
-  const state = useBackHome<{ pinCode: number; rounds: number }>();
-
   useEffect(() => {
     setGameProps({
-      pinCode: state?.pinCode,
-      gameStatus: 'WaitingRoom',
-      gameRounds: state?.rounds,
+      gameStatus: 'WaitingRoom'
     });
   }, []);
 
