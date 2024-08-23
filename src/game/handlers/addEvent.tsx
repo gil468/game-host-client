@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import {
   GameState,
   GameStatusContext,
@@ -15,13 +15,14 @@ interface AddEventProps {
 const useAddEvent = (props: AddEventProps) => {
   const { eventName, callback, stateArray, newStatus } = props;
 
-  const { gameStatus, setGameStatus } = useContext(GameStatusContext);
+  const { gameProps, setGameProps } = useContext(GameStatusContext);
+  const gameStatus = useMemo(() => gameProps?.gameStatus, [gameProps]);
 
   useEffect(() => {
-    if (stateArray.includes(gameStatus)) {
+    if (gameStatus && stateArray.includes(gameStatus)) {
       const handleEvent = (...args: any[]) => {
         callback(...args);
-        newStatus && setGameStatus(newStatus);
+        newStatus && setGameProps({ gameStatus: newStatus });
       };
 
       socket.on(eventName, handleEvent);
@@ -31,7 +32,7 @@ const useAddEvent = (props: AddEventProps) => {
         socket.off(eventName, handleEvent);
       };
     }
-  }, [eventName, callback, stateArray, gameStatus, newStatus]); // Specify dependencies clearly
+  }, [eventName, callback, stateArray, newStatus]); // Specify dependencies clearly
 };
 
 export default useAddEvent;

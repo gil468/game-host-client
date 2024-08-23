@@ -1,16 +1,12 @@
 import { Typography, Stack } from '@mui/material';
-import { FaMedal } from 'react-icons/fa';
+import { FaMedal, FaEquals } from 'react-icons/fa';
 import { SiFireship } from 'react-icons/si';
-import { useMemo } from 'react';
-import useBackHome from '../../hooks/useBackHome';
+import { MdAcUnit } from 'react-icons/md';
+import { ReactNode, useMemo } from 'react';
 import { ScoresProps } from '../GameInterfaces';
+import useBackHome from '../../hooks/useBackHome';
 
 const GameLeaderboardPage = () => {
-  // const [showCountdown, setShowCountdown] = useState<boolean>(false);
-  // const [songProps, setSongProps] = useState<SongProps>();
-
-  // const { nextSongRequest, startRoundRequest } = useGameRequests();
-
   const scores = useBackHome<{ scores: ScoresProps }>()?.scores ?? [];
 
   const sortedScores = useMemo(
@@ -25,7 +21,7 @@ const GameLeaderboardPage = () => {
         {sortedScores.map((player, index) => (
           <div
             key={index}
-            style={{ display: 'grid', gridTemplateColumns: '5% 95%', gap: 10 }}
+            style={{ display: 'grid', gridTemplateColumns: '5% 95%', gap: 10, alignItems : 'center' }}
           >
             {index < 3 ? (
               <FaMedal
@@ -39,24 +35,21 @@ const GameLeaderboardPage = () => {
             )}
             <div
               style={{
+                alignItems : 'center',
                 display: 'flex',
                 flexDirection: 'row',
                 border: '1px solid',
                 borderRadius: 5,
-                padding: '10px',
+                padding: '15px',
                 justifyContent: 'space-between',
               }}
             >
-              <Stack direction="row" spacing={2}>
-                <Typography>{player.userName}</Typography>
-                <Typography sx={{ color: '#00CC00' }}>+100</Typography>{' '}
-                {/* To-Do: Add functionality for scoring */}
-                <SiFireship
-                  style={{ color: 'orangered', width: '2rem', height: '2rem' }}
-                />
+              <Typography>{player.userName}</Typography>
+              <Stack sx={{alignItems : 'center'}} direction="row"> 
+                <GainedScoreView  score={player.gainedScore}/>
+                 <Typography sx={{marginLeft : '1rem'}}>{player.score}</Typography>
                 {/* To-Do: Add functionality for streak */}
               </Stack>
-              <Typography>{player.score}</Typography>
             </div>
           </div>
         ))}
@@ -64,5 +57,30 @@ const GameLeaderboardPage = () => {
     </>
   );
 };
+
+const GainedScoreView = ({score} : {score : number}) => {
+
+const props : {icon : ReactNode, color : string, prefixText? : string} = 
+  score === 0 ? {
+      color : 'black',
+      icon : <FaEquals style={{color : 'black', width: '0.75rem', height: '0.75rem'}}/>
+  } : score > 0 ? {
+    color : 'green',
+    icon : <SiFireship style={{ color: 'orangered', width: '1rem', height: '1rem' }}/>,
+    prefixText : '+'
+  } : {
+    color : 'red',
+    icon : <MdAcUnit style={{ color: 'lightblue', width: '1rem', height: '1rem' }}/>,
+    prefixText : '-'
+  }
+ 
+
+return (
+  <div style={{display:'flex', alignItems : 'center'}}>
+  <Typography color={props.color}>{`${props.prefixText ?? ''} ${score}`}</Typography>
+  {props.icon}
+  </div>
+)
+}
 
 export default GameLeaderboardPage;

@@ -3,7 +3,8 @@ import useGameNavigation from '../handlers/useGameNavigation';
 import { ScoresProps } from '../GameInterfaces';
 import { Fireworks } from '@fireworks-js/react';
 import type { FireworksHandlers } from '@fireworks-js/react';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
+import useBackHome from '../../hooks/useBackHome';
 
 export interface EndGamePageProps {
   scores: ScoresProps;
@@ -11,14 +12,14 @@ export interface EndGamePageProps {
 
 const EndGamePage = () => {
   const ref = useRef<FireworksHandlers>(null);
-
-  // const winner = useMemo(() => {
-  //   return scores
-  //     ? scores.sort((a, b) => {
-  //         return b.score - a.score;
-  //       })[0].userName
-  //     : 'No Winner';
-  // }, [scores]);
+  const scores = useBackHome<EndGamePageProps>()?.scores;
+  const winner = useMemo(() => {
+    return scores
+      ? scores.sort((a, b) => {
+          return b.score - a.score;
+        })[0].userName
+      : 'No Winner';
+  }, [scores]);
 
   const { backToHome } = useGameNavigation();
 
@@ -38,7 +39,7 @@ const EndGamePage = () => {
       <Box component="img" src="../../../public/winner.svg" />
       {/* <Typography variant="h4" className="fade-in" color="white">{`${winner}`}</Typography> */}
       <Typography variant="h4" className="fade-in" color="white">
-        Gil Segev
+        {winner}
       </Typography>
       <Button variant="contained" onClick={backToHome} sx={{ width: '20vw' }}>
         Back To Main Page

@@ -13,6 +13,7 @@ import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import MainWrapper from '../../components/MainWrapper';
 import { useNavigate } from 'react-router-dom';
 import { createGameRequest } from '../../socketIO/SocketEmits';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 export type GameCreationProps = GameSettings & { playlistId: string };
 
@@ -23,22 +24,14 @@ const GameCreatorPage = () => {
   const handleForward = () => setCurrStep((x) => x + 1);
 
   const [gameSettings, setGameSettings] = useState<GameSettings>({
-    numberOfRounds: 10,
-    permitBuzzerTwiceEnabled: true,
-    punishmentPointsEnabled: true,
-    timeBasedPointsEnabled: true,
+    totalRounds: 10,
+    isBuzzerTwiceAllowed: true,
+    isPunishmentScoreAllowed: true,
+    isTimeBasedScore: true,
   });
   const [playlistId, setPlaylistId] = useState<string | undefined>();
-
-  const saveToLocalStorage = (
-    key: string,
-    value: any,
-    expirationMinutes: number
-  ) => {
-    const expirationTime = new Date().getTime() + expirationMinutes * 60 * 1000; // Convert minutes to milliseconds
-    const data = { value, expirationTime };
-    localStorage.setItem(key, JSON.stringify(data));
-  };
+  const [_, setPinCode] = useLocalStorage('pinCode');
+  const [__, setGameSecret] = useLocalStorage('gameSecret');
 
   const launchNewGame = async () => {
     const res = await createGameRequest({
@@ -46,10 +39,10 @@ const GameCreatorPage = () => {
       playlistId: playlistId!,
     });
     if (res) {
-      saveToLocalStorage('pinCode', res.gameId, 0.1);
-      saveToLocalStorage('gameSecret', res.gameSecret, 0.1);
+      setPinCode(res.gameId);
+      setGameSecret(res.gameSecret);
       navigate('/game', {
-        state: { pinCode: res.gameId, gameSecret: res.gameSecret },
+        state: { pinCode: res.gameId, rounds: gameSettings.totalRounds },
       });
     }
   };

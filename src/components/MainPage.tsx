@@ -19,9 +19,6 @@ const StyledButton = styled(Button)`
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const handleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_SERVER_URL}/auth/spotify-login`;
-  };
 
   return (
     <Stack
@@ -35,10 +32,6 @@ const MainPage = () => {
         onClick={() => navigate('/game-creator')}
       >
         Host New Game
-      </StyledButton>
-
-      <StyledButton variant="contained" onClick={handleLogin}>
-        Spotify
       </StyledButton>
 
       <Typography

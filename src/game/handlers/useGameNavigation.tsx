@@ -1,12 +1,18 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GameStatusContext } from '../../providers/GameStatusProvider';
+import {
+  GameState,
+  GameStatusContext,
+} from '../../providers/GameStatusProvider';
 import { SongProps } from '../components/GameInProgress';
 import { ScoresProps, Song } from '../GameInterfaces';
 
 const useGameNavigation = () => {
-  const { setGameStatus } = useContext(GameStatusContext);
+  const { setGameProps } = useContext(GameStatusContext);
   const navigate = useNavigate();
+
+  const setGameStatus = (gameStatus: GameState) =>
+    setGameProps({ gameStatus: gameStatus });
 
   const backToHome = () => {
     navigate('/');
@@ -30,7 +36,8 @@ const useGameNavigation = () => {
   };
 
   const startGame = (songProps: SongProps) => {
-    navigate('/game/game-in-progress', { state: songProps });
+    navigate('/game/game-in-progress', { state: songProps.previewUrl });
+    setGameProps({ currRound: songProps.round });
     setGameStatus('Running');
   };
 

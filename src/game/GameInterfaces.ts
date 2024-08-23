@@ -5,7 +5,7 @@ export type EndRoundResponse = {
   scores: ScoresProps;
 };
 
-export type ScoresProps = Omit<Player, 'id'>[];
+export type ScoresProps = (Player & { gainedScore: number })[];
 
 export type Song = {
   title: string;
@@ -14,7 +14,6 @@ export type Song = {
 };
 
 export type Player = {
-  id: string;
   userName: string;
   score: number;
 };

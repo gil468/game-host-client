@@ -6,9 +6,9 @@ import useGameNavigation from './useGameNavigation';
 import { EndRoundResponse, ScoresProps } from '../GameInterfaces';
 
 const useGameRequests = () => {
-  const { pinCode } = useContext(GameStatusContext);
+  const { gameProps } = useContext(GameStatusContext);
   const { endGame, answerRevail, startGame } = useGameNavigation();
-
+  const pinCode = gameProps?.pinCode;
   const nextSongRequest = async () => {
     return await socketEmit<SongProps>('next-round', pinCode);
   };
@@ -20,6 +20,7 @@ const useGameRequests = () => {
 
   const endRoundRequest = async () => {
     const res = await socketEmit<EndRoundResponse>('end-round', pinCode);
+    debugger;
     if (res) answerRevail(res.correctAnswer, res.scores);
   };
 

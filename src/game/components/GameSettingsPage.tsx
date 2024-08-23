@@ -26,10 +26,10 @@ const Explanation = ({ text }: { text: string }) => (
 );
 
 export interface GameSettings {
-  numberOfRounds: number;
-  timeBasedPointsEnabled: boolean;
-  punishmentPointsEnabled: boolean;
-  permitBuzzerTwiceEnabled: boolean;
+  totalRounds: number;
+  isTimeBasedScore: boolean;
+  isPunishmentScoreAllowed: boolean;
+  isBuzzerTwiceAllowed: boolean;
 }
 
 export interface GameSettingsPageProps {
@@ -41,9 +41,8 @@ const GameSettingsPage = ({
   gameSettings,
   setGameSettings,
 }: GameSettingsPageProps) => {
-  const isError =
-    gameSettings.numberOfRounds < 1 || gameSettings.numberOfRounds > 30;
-  const isEmpty = Number.isNaN(gameSettings.numberOfRounds);
+  const isError = gameSettings.totalRounds < 1 || gameSettings.totalRounds > 30;
+  const isEmpty = Number.isNaN(gameSettings.totalRounds);
 
   const getTextFieldProps = () => {
     if (isError) {
@@ -73,9 +72,9 @@ const GameSettingsPage = ({
         <Typography variant="h4">Number of rounds:</Typography>
         <TextField
           type="number"
-          value={gameSettings.numberOfRounds}
+          value={gameSettings.totalRounds}
           onChange={(e) =>
-            setGameSettings({ numberOfRounds: parseInt(e.target.value, 10) })
+            setGameSettings({ totalRounds: parseInt(e.target.value, 10) })
           }
           inputProps={{ min: 1, max: 30 }}
           className="number-input"
@@ -94,14 +93,14 @@ const GameSettingsPage = ({
           Time based points:
         </Typography>
         <Switch
-          checked={gameSettings.timeBasedPointsEnabled}
+          checked={gameSettings.isTimeBasedScore}
           onChange={(_, status) =>
-            setGameSettings({ timeBasedPointsEnabled: status })
+            setGameSettings({ isTimeBasedScore: status })
           }
           className="switch"
         />
 
-        <Fade in={gameSettings.timeBasedPointsEnabled}>
+        <Fade in={gameSettings.isTimeBasedScore}>
           <Box sx={{ display: 'flex' }}>
             <Explanation text="Earn more points for faster answers" />
           </Box>
@@ -117,14 +116,14 @@ const GameSettingsPage = ({
         <Typography variant="h4">Enable punishment points:</Typography>
 
         <Switch
-          checked={gameSettings.punishmentPointsEnabled}
+          checked={gameSettings.isPunishmentScoreAllowed}
           onChange={(_, status) =>
-            setGameSettings({ punishmentPointsEnabled: status })
+            setGameSettings({ isPunishmentScoreAllowed: status })
           }
           className="switch"
         />
 
-        <Fade in={gameSettings.punishmentPointsEnabled}>
+        <Fade in={gameSettings.isPunishmentScoreAllowed}>
           <Box sx={{ display: 'flex' }}>
             <Explanation text="Lose points for incorrect guesses" />
           </Box>
@@ -140,14 +139,14 @@ const GameSettingsPage = ({
         <Typography variant="h4">Permit buzzzer twice:</Typography>
 
         <Switch
-          checked={gameSettings.permitBuzzerTwiceEnabled}
+          checked={gameSettings.isBuzzerTwiceAllowed}
           onChange={(_, status) =>
-            setGameSettings({ permitBuzzerTwiceEnabled: status })
+            setGameSettings({ isBuzzerTwiceAllowed: status })
           }
           className="switch"
         />
 
-        <Fade in={gameSettings.permitBuzzerTwiceEnabled}>
+        <Fade in={gameSettings.isBuzzerTwiceAllowed}>
           <Box sx={{ display: 'flex' }}>
             <Explanation text="Buzz in twice in a row per round" />
           </Box>

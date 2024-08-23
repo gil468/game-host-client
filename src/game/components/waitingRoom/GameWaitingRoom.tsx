@@ -12,14 +12,17 @@ interface MainPageProps {
 }
 
 const GameWaitingRoom = (props: MainPageProps) => {
-  const { setGameStatus, setPinCode, pinCode } = useContext(GameStatusContext);
+  const { gameProps, setGameProps } = useContext(GameStatusContext);
   const { startRoundRequest, nextSongRequest } = useGameRequests();
 
-  const state = useBackHome<{ pinCode: number }>();
+  const state = useBackHome<{ pinCode: number; rounds: number }>();
 
   useEffect(() => {
-    setGameStatus('WaitingRoom');
-    setPinCode(state?.pinCode);
+    setGameProps({
+      pinCode: state?.pinCode,
+      gameStatus: 'WaitingRoom',
+      gameRounds: state?.rounds,
+    });
   }, []);
 
   const handleStartGame = async () => {
@@ -33,12 +36,13 @@ const GameWaitingRoom = (props: MainPageProps) => {
           variant="h4"
           color={'info.main'}
           fontWeight={'bold'}
-        >{`Pincode : ${pinCode}`}</Typography>
+        >{`Pincode : ${gameProps?.pinCode}`}</Typography>
       }
       bottomContent={
         <Button
           variant="contained"
           size="large"
+          disabled={!props.joinedPlayers.length}
           onClick={handleStartGame} // TO-DO: Implement GameRequests to the server
         >
           Start Game

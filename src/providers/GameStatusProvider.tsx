@@ -1,10 +1,10 @@
 import React, { createContext, PropsWithChildren, useState } from 'react';
 
 interface GameStatusContextType {
-  gameStatus: GameState;
-  setGameStatus: React.Dispatch<React.SetStateAction<GameState>>;
-  pinCode: number | undefined;
-  setPinCode: React.Dispatch<React.SetStateAction<number | undefined>>;
+  gameProps: GameProps | undefined;
+  setGameProps: React.Dispatch<
+    React.SetStateAction<Partial<GameProps | undefined>>
+  >;
 }
 
 export type GameState =
@@ -15,16 +15,32 @@ export type GameState =
   | 'BetweenRounds'
   | 'Ended';
 
-export const GameStatusContext =
-  createContext<GameStatusContextType>(undefined);
+type GameProps = {
+  gameStatus: GameState;
+  pinCode?: number;
+  currRound: number;
+  gameRounds: number;
+};
+
+export const GameStatusContext = createContext<GameStatusContextType>(
+  {} as GameStatusContextType
+);
 
 const GameStatusProvider = ({ children }: PropsWithChildren) => {
-  const [gameStatus, setGameStatus] = useState<GameState>('None');
-  const [pinCode, setPinCode] = useState<number | undefined>(undefined);
+  const [gameProps, setGameProps] = useState<GameProps>();
 
   return (
     <GameStatusContext.Provider
-      value={{ gameStatus, setGameStatus, pinCode, setPinCode }}
+      value={{
+        gameProps,
+        setGameProps: (partial) => {
+          partial &&
+            setGameProps((curr) => ({
+              ...(curr ?? ({} as GameProps)),
+              ...partial,
+            }));
+        },
+      }}
     >
       {children}
     </GameStatusContext.Provider>

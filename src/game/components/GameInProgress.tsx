@@ -13,19 +13,19 @@ export interface SongProps {
 }
 
 const GameInProgress = () => {
-  const { gameStatus } = useContext(GameStatusContext);
+  const { gameProps } = useContext(GameStatusContext);
 
-  const isPlaying = gameStatus === 'Running';
+  const isPlaying = gameProps?.gameStatus === 'Running';
 
   const { endGameRequest, endRoundRequest } = useGameRequests();
-  const songProps = useBackHome<SongProps>();
+  const songUrl = useBackHome<string>();
   return (
     <MainWrapper
       topContent={
         <Typography
           variant="h4"
           color={'info.main'}
-        >{`Round ${songProps?.round}`}</Typography>
+        >{`Round ${gameProps?.currRound}`}</Typography>
       }
       mainComponenetProps={{
         sx: {
@@ -55,7 +55,7 @@ const GameInProgress = () => {
         ) : (
           <Pause sx={{ fontSize: 120 }} />
         )}
-        <AudioPlayer src={songProps?.previewUrl ?? ''} isPlaying={isPlaying} />
+        <AudioPlayer src={songUrl ?? ''} isPlaying={isPlaying} />
       </Stack>
       <Button variant="contained" onClick={endRoundRequest}>
         Skip Song

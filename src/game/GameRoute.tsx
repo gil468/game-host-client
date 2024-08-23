@@ -6,7 +6,6 @@ import useGameNavigation from './handlers/useGameNavigation';
 import GameInProgress from './components/GameInProgress';
 import GameWaitingRoom from './components/waitingRoom/GameWaitingRoom';
 import addEvent from './handlers/addEvent';
-import GameLeaderboardPage from './components/GameLeaderboardPage';
 import { BuzzerRevokedProps, EndRoundResponse } from './GameInterfaces';
 import RoundResultsPage from './components/RoundResultsPage';
 
@@ -71,7 +70,6 @@ const GameRoutes = () => {
         path="/"
         element={<GameWaitingRoom joinedPlayers={waitingPlayers} />}
       ></Route>
-      <Route path="/leaderboard" element={<GameLeaderboardPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
