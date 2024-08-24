@@ -4,7 +4,7 @@ import { GamePrepareDto } from '../game/components/GenreSelectionPage';
 
 export const socket = io(`${import.meta.env.VITE_SERVER_URL}/game-manager`); // Singleton pattern
 
-export const socketEmit = async <T extends any>(
+export const socketEmit = async <T>(
   eventName: string,
   room?: number,
   ...args: any[]

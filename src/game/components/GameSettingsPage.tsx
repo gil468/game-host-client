@@ -1,29 +1,6 @@
-import {
-  Stack,
-  Typography,
-  TextField,
-  Switch,
-  Paper,
-  Box,
-  Fade,
-} from '@mui/material';
+import { Stack, Typography, TextField, Switch, Tooltip } from '@mui/material';
 import './GameSettingsPage.css';
-
-const Explanation = ({ text }: { text: string }) => (
-  <Paper
-    sx={{
-      m: 0,
-      width: { lg: '7vw', xl: '6vw' },
-      height: { lg: '13vh', xl: '10vh' },
-      backgroundColor: 'white',
-    }}
-    elevation={6}
-  >
-    <Typography sx={{ fontSize: { lg: '0.95rem', xl: '1.7vh' } }}>
-      {text}
-    </Typography>
-  </Paper>
-);
+import HelpIcon from '@mui/icons-material/Help';
 
 export interface GameSettings {
   totalRounds: number;
@@ -61,8 +38,13 @@ const GameSettingsPage = ({
   };
 
   return (
-    <Stack width="100%" alignItems={'center'} spacing={2}>
-      <Stack></Stack>
+    <Stack
+      direction="column"
+      height={'100%'}
+      width={'100%'}
+      justifyContent="space-evenly"
+      paddingLeft={5}
+    >
       <Stack
         direction="row"
         alignItems="center"
@@ -76,8 +58,9 @@ const GameSettingsPage = ({
           onChange={(e) =>
             setGameSettings({ totalRounds: parseInt(e.target.value, 10) })
           }
-          inputProps={{ min: 1, max: 30 }}
+          inputProps={{ min: 1, max: 30, style: { padding: 8 } }}
           className="number-input"
+          maxRows={1}
           sx={{ width: '8rem' }}
           {...getTextFieldProps()}
         />
@@ -100,11 +83,9 @@ const GameSettingsPage = ({
           className="switch"
         />
 
-        <Fade in={gameSettings.isTimeBasedScore}>
-          <Box sx={{ display: 'flex' }}>
-            <Explanation text="Earn more points for faster answers" />
-          </Box>
-        </Fade>
+        <Tooltip arrow title="Earn more points for faster answers">
+          <HelpIcon />
+        </Tooltip>
       </Stack>
 
       <Stack
@@ -123,11 +104,9 @@ const GameSettingsPage = ({
           className="switch"
         />
 
-        <Fade in={gameSettings.isPunishmentScoreAllowed}>
-          <Box sx={{ display: 'flex' }}>
-            <Explanation text="Lose points for incorrect guesses" />
-          </Box>
-        </Fade>
+        <Tooltip arrow title="Lose points for incorrect guesses">
+          <HelpIcon />
+        </Tooltip>
       </Stack>
 
       <Stack
@@ -136,7 +115,7 @@ const GameSettingsPage = ({
         justifyContent="flex-start"
         spacing={3}
       >
-        <Typography variant="h4">Permit buzzzer twice:</Typography>
+        <Typography variant="h4">Allow buzzer twice:</Typography>
 
         <Switch
           checked={gameSettings.isBuzzerTwiceAllowed}
@@ -146,11 +125,9 @@ const GameSettingsPage = ({
           className="switch"
         />
 
-        <Fade in={gameSettings.isBuzzerTwiceAllowed}>
-          <Box sx={{ display: 'flex' }}>
-            <Explanation text="Buzz in twice in a row per round" />
-          </Box>
-        </Fade>
+        <Tooltip arrow title="Allow players to buzzer twice (or more) in a row">
+          <HelpIcon />
+        </Tooltip>
       </Stack>
     </Stack>
   );
