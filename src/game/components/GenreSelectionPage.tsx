@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import { Stack, Typography, CircularProgress, TextField } from '@mui/material';
+import { Stack, Typography, CircularProgress } from '@mui/material';
 import CustomGenreCard from './CustomGenreCard';
 import TabsMenu from './TabsMenu';
 import { prepareGameRequest } from '../../socketIO/SocketEmits';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import { CustomPlaylistCard } from './CustomPlaylistCard';
 
 export interface PlaylistDto {
   id: string;
@@ -86,18 +87,7 @@ const GenreSelectionPage = (props: GenreSelectionPageProps) => {
         alignItems={'center'}
       >
         {currTab === PlaylistOptions.MyPlaylists ? (
-          <TextField
-            sx={{ backgroundColor: 'primary.main' }}
-            placeholder="Playlist link"
-            onChange={(e) => {
-              if (e.target.value) {
-                const regex = e.target.value.match(/playlist\/([a-zA-Z0-9]+)/);
-                if (regex && regex[1].length === 22)
-                  props.setPlaylistId(regex[1]);
-                else props.setPlaylistId(undefined);
-              }
-            }}
-          ></TextField>
+          <CustomPlaylistCard setPlaylistId={props.setPlaylistId} />
         ) : isLoading ? (
           <CircularProgress />
         ) : currPlaylists.length ? (
