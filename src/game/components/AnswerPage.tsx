@@ -18,18 +18,18 @@ const AnswerPage = () => {
       direction="column"
       alignItems="center"
       justifyContent="center"
-      spacing={4}
+      spacing={2}
       height={'100%'}
     >
-      <Typography variant="h4" fontSize={'2.2rem'}>
+      <Typography variant="h4" fontSize={'1.8rem'}>
         The song was:
       </Typography>
       <Stack alignItems={'center'} spacing={2}>
         <img
           src={state?.albumCoverUrl}
           style={{
-            width: '15rem',
-            height: '15rem',
+            width: '13rem',
+            height: '13rem',
             borderRadius: '2%',
             boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.8)',
           }}
