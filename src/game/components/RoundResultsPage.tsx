@@ -41,13 +41,13 @@ const RoundResultsPage = () => {
     <>
       <MainWrapper
         topContent={
-          <div style={{ width: '100%' }}>
+          <Box style={{ width: '100%', alignItems : 'center', display : 'flex', flexDirection : 'column' }}>
             <Typography variant="h4">{`Round ${gameProps?.currRound} / ${gameProps?.gameRounds}`}</Typography>
             <Box
               sx={{
                 display: 'grid',
                 width: '70%',
-                gridTemplateColumns: '5% 90% 5%',
+                gridTemplateColumns: '5% 90% 5%'
               }}
             >
               {/* Back Button */}
@@ -85,7 +85,7 @@ const RoundResultsPage = () => {
                 <div></div>
               )}
             </Box>
-          </div>
+          </Box>
         }
         bottomContent={
           <>

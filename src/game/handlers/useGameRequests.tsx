@@ -20,7 +20,6 @@ const useGameRequests = () => {
 
   const endRoundRequest = async () => {
     const res = await socketEmit<EndRoundResponse>('end-round', pinCode);
-    debugger;
     if (res) answerRevail(res.correctAnswer, res.scores);
   };
 

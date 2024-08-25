@@ -16,16 +16,15 @@ const GameRoutes = () => {
   const [waitingPlayers, setWaitingPlayers] = useState<string[]>([]);
   const { answerRevail } = useGameNavigation();
   const { rejoinGameRequest } = useGameRequests();
-  const { gameProps, setGameProps } = useContext(GameStatusContext);
+  const { setGameProps } = useContext(GameStatusContext);
   const [__, setGameSecret] = useLocalStorage('gameSecret');
+  const [navigationEntry] = performance.getEntriesByType('navigation');
 
   const state = useLocation().state as { pinCode: number; rounds: number }
 
   useEffect(() => {
     const rejoinGame = async () => {
-    console.log('in rejoin`')
     const res = await rejoinGameRequest();
-    console.log(res)
     setGameProps({
       currRound : res.round,
       gameRounds : res.totalRounds,
@@ -37,13 +36,17 @@ const GameRoutes = () => {
      setGameSecret(res.gameSecret)
      setWaitingPlayers(Object.values(res.gamePlayers).map(x => x.userName))
     }
-    setGameProps({
-      pinCode: state?.pinCode,
-      gameRounds: state?.rounds,
-    });
-    if(gameProps?.gameStatus === undefined){
-    rejoinGame();
-  }
+
+    if ((navigationEntry as PerformanceNavigationTiming).type === 'reload'){
+      rejoinGame();
+    }
+    else {
+      setGameProps({
+        pinCode: state?.pinCode,
+        gameRounds: state?.rounds,
+      });
+    }
+
   }, []);
 
   addEvent({
