@@ -1,5 +1,5 @@
 import { Typography, Stack } from '@mui/material';
-import { FaMedal, FaEquals } from 'react-icons/fa';
+import { FaMedal } from 'react-icons/fa';
 import { SiFireship } from 'react-icons/si';
 import { MdAcUnit } from 'react-icons/md';
 import { ReactNode, useMemo } from 'react';
@@ -21,7 +21,12 @@ const GameLeaderboardPage = () => {
         {sortedScores.map((player, index) => (
           <div
             key={index}
-            style={{ display: 'grid', gridTemplateColumns: '5% 95%', gap: 10, alignItems : 'center' }}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '5% 95%',
+              gap: 10,
+              alignItems: 'center',
+            }}
           >
             {index < 3 ? (
               <FaMedal
@@ -35,7 +40,7 @@ const GameLeaderboardPage = () => {
             )}
             <div
               style={{
-                alignItems : 'center',
+                alignItems: 'center',
                 display: 'flex',
                 flexDirection: 'row',
                 border: '1px solid',
@@ -45,9 +50,11 @@ const GameLeaderboardPage = () => {
               }}
             >
               <Typography>{player.userName}</Typography>
-              <Stack sx={{alignItems : 'center'}} direction="row"> 
-                <GainedScoreView  score={player.gainedScore}/>
-                 <Typography sx={{marginLeft : '1rem'}}>{player.score}</Typography>
+              <Stack sx={{ alignItems: 'center' }} direction="row">
+                <GainedScoreView score={player.gainedScore} />
+                <Typography sx={{ marginLeft: '1rem' }}>
+                  {player.score}
+                </Typography>
                 {/* To-Do: Add functionality for streak */}
               </Stack>
             </div>
@@ -58,29 +65,37 @@ const GameLeaderboardPage = () => {
   );
 };
 
-const GainedScoreView = ({score} : {score : number}) => {
+const GainedScoreView = ({ score }: { score: number }) => {
+  const props: { icon: ReactNode; color: string; prefixText?: string } =
+    score > 0
+      ? {
+          color: 'green',
+          icon: (
+            <SiFireship
+              style={{ color: 'orangered', width: '1rem', height: '1rem' }}
+            />
+          ),
+          prefixText: '+',
+        }
+      : {
+          color: 'red',
+          icon: (
+            <MdAcUnit
+              style={{ color: 'lightblue', width: '1.5rem', height: '1.5rem' }}
+            />
+          ),
+        };
 
-const props : {icon : ReactNode, color : string, prefixText? : string} = 
-  score === 0 ? {
-      color : 'black',
-      icon : <FaEquals style={{color : 'black', width: '0.75rem', height: '0.75rem'}}/>
-  } : score > 0 ? {
-    color : 'green',
-    icon : <SiFireship style={{ color: 'orangered', width: '1rem', height: '1rem' }}/>,
-    prefixText : '+'
-  } : {
-    color : 'red',
-    icon : <MdAcUnit style={{ color: 'lightblue', width: '1rem', height: '1rem' }}/>,
-    prefixText : '-'
-  }
- 
-
-return (
-  <div style={{display:'flex', alignItems : 'center'}}>
-  <Typography color={props.color}>{`${props.prefixText ?? ''} ${score}`}</Typography>
-  {props.icon}
-  </div>
-)
-}
+  return (
+    score !== 0 && (
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Typography
+          color={props.color}
+        >{`${props.prefixText ?? ''} ${score}`}</Typography>
+        {props.icon}
+      </div>
+    )
+  );
+};
 
 export default GameLeaderboardPage;

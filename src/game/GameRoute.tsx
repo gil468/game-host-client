@@ -11,6 +11,7 @@ import RoundResultsPage from './components/RoundResultsPage';
 
 const GameRoutes = () => {
   const [waitingPlayers, setWaitingPlayers] = useState<string[]>([]);
+  const [guessingPlayer, setGuessingPlayer] = useState<string>();
   const { answerRevail } = useGameNavigation();
 
   addEvent({
@@ -24,7 +25,9 @@ const GameRoutes = () => {
 
   addEvent({
     eventName: 'buzzer-granted',
-    callback: () => {},
+    callback: (player) => {
+      setGuessingPlayer(player.playerName);
+    },
     newStatus: 'Buzzered',
     stateArray: ['Running'],
   });
@@ -32,15 +35,16 @@ const GameRoutes = () => {
   addEvent({
     eventName: 'buzzer-revoked',
     callback: (answerResponse: BuzzerRevokedProps) => {
+      setGuessingPlayer(undefined);
       const halfAnswer = answerResponse.artist || answerResponse.title;
-      enqueueSnackbar(
-        `${halfAnswer ? 'half' : 'wrong'} answer by ${answerResponse.answeredBy} ${answerResponse.artist ?? answerResponse.title ?? ''}`,
-        {
-          variant: 'error',
-          autoHideDuration: 1000,
-          anchorOrigin: { horizontal: 'center', vertical: 'top' },
-        }
-      );
+      const message = halfAnswer
+        ? `${answerResponse.answeredBy} guessed the ${answerResponse.artist ? 'artist' : 'title'} of the song`
+        : `wrong answer by ${answerResponse.answeredBy}`;
+      enqueueSnackbar(message, {
+        variant: halfAnswer ? 'success' : 'error',
+        autoHideDuration: 2000,
+        anchorOrigin: { horizontal: 'center', vertical: 'top' },
+      });
     },
     newStatus: 'Running',
     stateArray: ['Buzzered'],
@@ -50,9 +54,10 @@ const GameRoutes = () => {
   addEvent({
     eventName: 'round-ended',
     callback: (x: EndRoundResponse) => {
+      setGuessingPlayer(undefined);
       enqueueSnackbar('correct answer', {
         variant: 'success',
-        autoHideDuration: 1000,
+        autoHideDuration: 2000,
         anchorOrigin: { horizontal: 'center', vertical: 'top' },
         onClose: () => answerRevail(x.correctAnswer, x.scores),
       });
@@ -63,7 +68,10 @@ const GameRoutes = () => {
 
   return (
     <Routes>
-      <Route path="/game-in-progress" element={<GameInProgress />} />
+      <Route
+        path="/game-in-progress"
+        element={<GameInProgress guessingPlayer={guessingPlayer} />}
+      />
       <Route path="/answer-revail" element={<RoundResultsPage />} />
       <Route path="/end-game" element={<EndGamePage />} />
       <Route

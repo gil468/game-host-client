@@ -12,7 +12,11 @@ export interface SongProps {
   round: number;
 }
 
-const GameInProgress = () => {
+type Props = {
+  guessingPlayer: string;
+};
+
+const GameInProgress = ({ guessingPlayer }: Props) => {
   const { gameProps } = useContext(GameStatusContext);
 
   const isPlaying = gameProps?.gameStatus === 'Running';
@@ -46,7 +50,7 @@ const GameInProgress = () => {
           {isPlaying ? 'Song is Playing' : 'Song is Paused'}
         </Typography>
         <Typography color="primary" variant={'h5'}>
-          {isPlaying ? 'Someone knows?...' : 'Take a guess...'}
+          {isPlaying ? 'Someone knows?...' : `${guessingPlayer} is guessing`}
         </Typography>
       </Stack>
       <Stack gap={2} sx={{ width: '60%', alignItems: 'center' }}>
