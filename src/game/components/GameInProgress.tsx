@@ -13,7 +13,7 @@ export interface SongProps {
 }
 
 type Props = {
-  guessingPlayer: string;
+  guessingPlayer: string | undefined;
 };
 
 const GameInProgress = ({ guessingPlayer }: Props) => {
