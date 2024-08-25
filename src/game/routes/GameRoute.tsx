@@ -3,7 +3,6 @@ import GameCreatorPage from '../components/GameCreatorPage';
 import InGameRoute from './InGameRoute';
 
 const GameRoutes = () => {
-
   return (
     <Routes>
       <Route path="/" element={<GameCreatorPage />}></Route>
