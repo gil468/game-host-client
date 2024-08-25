@@ -4,6 +4,10 @@ export const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
+      main: '#aa6af7',
+      contrastText: '#ffffff',
+    },
+    secondary: {
       main: '#bb86fc',
       contrastText: '#ffffff',
     },

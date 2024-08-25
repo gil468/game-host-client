@@ -1,5 +1,5 @@
 import { Typography, Stack } from '@mui/material';
-import { FaMedal, FaEquals } from 'react-icons/fa';
+import { FaMedal } from 'react-icons/fa';
 import { SiFireship } from 'react-icons/si';
 import { MdAcUnit } from 'react-icons/md';
 import { ReactNode, useMemo } from 'react';
@@ -67,42 +67,34 @@ const GameLeaderboardPage = () => {
 
 const GainedScoreView = ({ score }: { score: number }) => {
   const props: { icon: ReactNode; color: string; prefixText?: string } =
-    score === 0
+    score > 0
       ? {
-          color: 'black',
+          color: 'green',
           icon: (
-            <FaEquals
-              style={{ color: 'black', width: '0.75rem', height: '0.75rem' }}
+            <SiFireship
+              style={{ color: 'orangered', width: '1rem', height: '1rem' }}
             />
           ),
+          prefixText: '+',
         }
-      : score > 0
-        ? {
-            color: 'green',
-            icon: (
-              <SiFireship
-                style={{ color: 'orangered', width: '1rem', height: '1rem' }}
-              />
-            ),
-            prefixText: '+',
-          }
-        : {
-            color: 'red',
-            icon: (
-              <MdAcUnit
-                style={{ color: 'lightblue', width: '1rem', height: '1rem' }}
-              />
-            ),
-            prefixText: '-',
-          };
+      : {
+          color: 'red',
+          icon: (
+            <MdAcUnit
+              style={{ color: 'lightblue', width: '1.5rem', height: '1.5rem' }}
+            />
+          ),
+        };
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <Typography
-        color={props.color}
-      >{`${props.prefixText ?? ''} ${score}`}</Typography>
-      {props.icon}
-    </div>
+    score !== 0 && (
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Typography
+          color={props.color}
+        >{`${props.prefixText ?? ''} ${score}`}</Typography>
+        {props.icon}
+      </div>
+    )
   );
 };
 

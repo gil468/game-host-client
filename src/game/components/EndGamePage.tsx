@@ -1,10 +1,11 @@
-import { Button, Stack, Typography, Box } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import useGameNavigation from '../handlers/useGameNavigation';
 import { ScoresProps } from '../GameInterfaces';
 import { Fireworks } from '@fireworks-js/react';
 import type { FireworksHandlers } from '@fireworks-js/react';
 import { useMemo, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+import winnerSvg from '../../../public/winner.svg';
 
 export interface EndGamePageProps {
   scores: ScoresProps;
@@ -36,7 +37,7 @@ const EndGamePage = () => {
           position: 'fixed',
         }}
       />
-      <Box component="img" src="../../../public/winner.svg" />
+      <Box component="img" src={winnerSvg} />
       {/* <Typography variant="h4" className="fade-in" color="white">{`${winner}`}</Typography> */}
       <Typography variant="h4" className="fade-in" color="white">
         {winner}

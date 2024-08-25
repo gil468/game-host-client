@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   IconButton,
+  Stack,
   Step,
   StepLabel,
   Stepper,
@@ -26,8 +27,7 @@ const RoundResultsPage = () => {
     useGameRequests();
   const [songProps, setSongProps] = useState<SongProps>();
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
-
-  const { gameProps } = useContext(GameStatusContext);
+  const { gameProps} = useContext(GameStatusContext);
 
   const nextRound = async () => {
     const res = await nextSongRequest();
@@ -44,41 +44,38 @@ const RoundResultsPage = () => {
           <Box
             style={{
               width: '100%',
-              alignItems: 'center',
-              display: 'flex',
-              flexDirection: 'column',
+              display : 'flex',
+              flexDirection : 'column',
+              alignItems : 'center'
             }}
           >
             <Typography variant="h4">{`Round ${gameProps?.currRound} / ${gameProps?.gameRounds}`}</Typography>
-            <Box
-              sx={{
-                display: 'grid',
-                width: '70%',
-                gridTemplateColumns: '5% 90% 5%',
-              }}
+            <Stack
+             sx={{
+              display: 'grid',
+              width: '70%',
+              gridTemplateColumns: '5% 90% 5%',
+              alignItems : 'center'
+            }}
             >
               {/* Back Button */}
               {currStep !== 0 ? (
-                <IconButton
-                  disabled={currStep === 0}
-                  onClick={handleBack}
-                  sx={{ mr: 2 }}
-                  disableRipple
-                >
+                <IconButton disableRipple color="info" onClick={handleBack}>
                   <ArrowBackIos />
                 </IconButton>
-              ) : (
-                <div></div>
-              )}
+              ) : <div></div>}
 
-              <Stepper activeStep={currStep}>
-                <Step key="answer" completed={currStep === 1}>
-                  <StepLabel>Round Answer</StepLabel>
-                </Step>
-                <Step key="leaderboard">
-                  <StepLabel>Leaderboard</StepLabel>
-                </Step>
-              </Stepper>
+              <Stack>
+                <Stepper activeStep={currStep}>
+                  <Step key="answer" completed={currStep === 1}>
+                    <StepLabel>Round Answer</StepLabel>
+                  </Step>
+                  <Step key="leaderboard">
+                    <StepLabel>Leaderboard</StepLabel>
+                  </Step>
+                </Stepper>
+              </Stack>
+
               {currStep !== 1 ? (
                 <IconButton
                   onClick={handleForward}
@@ -91,7 +88,7 @@ const RoundResultsPage = () => {
               ) : (
                 <div></div>
               )}
-            </Box>
+            </Stack>
           </Box>
         }
         bottomContent={

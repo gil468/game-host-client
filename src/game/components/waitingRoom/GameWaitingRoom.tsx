@@ -43,7 +43,7 @@ const GameWaitingRoom = (props: MainPageProps) => {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, 25%)',
+            gridTemplateColumns: 'repeat(auto-fill, 50%)',
             padding: '10px',
           }}
         >

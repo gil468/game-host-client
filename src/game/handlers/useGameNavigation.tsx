@@ -41,7 +41,8 @@ const useGameNavigation = () => {
   const answerRevail = (correctAnswer: Song, scores: ScoresProps) => {
     navigate(`../answer-revail`, {
       state: {
-        songName: `${correctAnswer.title} By ${correctAnswer.artist}`,
+        songName: correctAnswer.title,
+        artist: correctAnswer.artist,
         scores: scores,
         albumCoverUrl: correctAnswer.albumCoverUrl,
       },
