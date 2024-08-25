@@ -30,9 +30,12 @@ export const CustomPlaylistCard = ({ setPlaylistId }: Props) => {
         onChange={(e) => {
           if (e.target.value) {
             const regex = e.target.value.match(/playlist\/([a-zA-Z0-9]+)/);
-            if (regex && regex[1].length === 22) setPlaylistId(regex[1]);
-            else setPlaylistId(undefined);
+            if (regex && regex[1].length === 22) {
+              setPlaylistId(regex[1]);
+              return;
+            }
           }
+          setPlaylistId(undefined);
         }}
       />
     </Card>
