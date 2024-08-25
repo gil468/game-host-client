@@ -1,18 +1,52 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import EndGamePage from './components/EndGamePage';
+import EndGamePage from '../components/EndGamePage';
+import GameInProgress from '../components/GameInProgress';
+import RoundResultsPage from '../components/RoundResultsPage';
+import GameWaitingRoom from '../components/waitingRoom/GameWaitingRoom';
 import { enqueueSnackbar } from 'notistack';
-import { useState } from 'react';
-import useGameNavigation from './handlers/useGameNavigation';
-import GameInProgress from './components/GameInProgress';
-import GameWaitingRoom from './components/waitingRoom/GameWaitingRoom';
-import addEvent from './handlers/addEvent';
-import { BuzzerRevokedProps, EndRoundResponse } from './GameInterfaces';
-import RoundResultsPage from './components/RoundResultsPage';
+import { useState, useContext, useEffect } from 'react';
+import useLocalStorage from '../../hooks/useLocalStorage';
+import {
+  GameState,
+  GameStatusContext,
+} from '../../providers/GameStatusProvider';
+import { BuzzerRevokedProps, EndRoundResponse } from '../GameInterfaces';
+import addEvent from '../handlers/addEvent';
+import useGameNavigation from '../handlers/useGameNavigation';
+import useGameRequests from '../handlers/useGameRequests';
 
-const GameRoutes = () => {
+const InGameRoute = () => {
   const [waitingPlayers, setWaitingPlayers] = useState<string[]>([]);
   const [guessingPlayer, setGuessingPlayer] = useState<string>();
   const { answerRevail } = useGameNavigation();
+  const { rejoinGameRequest } = useGameRequests();
+  const { setGameProps } = useContext(GameStatusContext);
+  const [__, setGameSecret] = useLocalStorage('gameSecret');
+  const [navigationEntry] = performance.getEntriesByType('navigation');
+
+  const rejoinStatusToGameStatus: Record<string, GameState> = {
+    CREATED: 'WaitingRoom',
+    PENDING_ROUND_START: 'BetweenRounds',
+    ROUND_IN_PROGRESS: 'Running',
+    ROUND_ENDED: 'BetweenRounds',
+  };
+
+  useEffect(() => {
+    const rejoinGame = async () => {
+      const res = await rejoinGameRequest();
+      setGameProps({
+        currRound: res.round,
+        gameRounds: res.totalRounds,
+        gameStatus: rejoinStatusToGameStatus[res.gameStatus] ?? 'None',
+      });
+      setGameSecret(res.gameSecret);
+      setWaitingPlayers(Object.values(res.gamePlayers).map((x) => x.userName));
+    };
+
+    if ((navigationEntry as PerformanceNavigationTiming).type === 'reload') {
+      rejoinGame();
+    }
+  }, []);
 
   addEvent({
     eventName: 'player-joined',
@@ -65,7 +99,6 @@ const GameRoutes = () => {
     newStatus: 'BetweenRounds',
     stateArray: ['Buzzered'],
   });
-
   return (
     <Routes>
       <Route
@@ -83,4 +116,4 @@ const GameRoutes = () => {
   );
 };
 
-export default GameRoutes;
+export default InGameRoute;

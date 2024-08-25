@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   IconButton,
   Stack,
@@ -26,8 +27,7 @@ const RoundResultsPage = () => {
     useGameRequests();
   const [songProps, setSongProps] = useState<SongProps>();
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
-
-  const { gameProps } = useContext(GameStatusContext);
+  const { gameProps} = useContext(GameStatusContext);
 
   const nextRound = async () => {
     const res = await nextSongRequest();
@@ -41,21 +41,31 @@ const RoundResultsPage = () => {
     <>
       <MainWrapper
         topContent={
-          <div style={{ width: '100%' }}>
+          <Box
+            style={{
+              width: '100%',
+              display : 'flex',
+              flexDirection : 'column',
+              alignItems : 'center'
+            }}
+          >
             <Typography variant="h4">{`Round ${gameProps?.currRound} / ${gameProps?.gameRounds}`}</Typography>
             <Stack
-              direction={'row'}
-              justifyContent={'center'}
-              alignItems={'center'}
+             sx={{
+              display: 'grid',
+              width: '70%',
+              gridTemplateColumns: '5% 90% 5%',
+              alignItems : 'center'
+            }}
             >
               {/* Back Button */}
-              {currStep !== 0 && (
-                <IconButton color="info" onClick={handleBack}>
+              {currStep !== 0 ? (
+                <IconButton disableRipple color="info" onClick={handleBack}>
                   <ArrowBackIos />
                 </IconButton>
-              )}
+              ) : <div></div>}
 
-              <Stack width={'70%'}>
+              <Stack>
                 <Stepper activeStep={currStep}>
                   <Step key="answer" completed={currStep === 1}>
                     <StepLabel>Round Answer</StepLabel>
@@ -79,7 +89,7 @@ const RoundResultsPage = () => {
                 <div></div>
               )}
             </Stack>
-          </div>
+          </Box>
         }
         bottomContent={
           <>

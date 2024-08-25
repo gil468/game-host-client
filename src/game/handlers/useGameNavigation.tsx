@@ -1,26 +1,45 @@
 import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   GameState,
   GameStatusContext,
 } from '../../providers/GameStatusProvider';
 import { SongProps } from '../components/GameInProgress';
 import { ScoresProps, Song } from '../GameInterfaces';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 const useGameNavigation = () => {
   const { setGameProps } = useContext(GameStatusContext);
   const navigate = useNavigate();
+  const [_, setGameSecret] = useLocalStorage('gameSecret');
+  const { gameId } = useParams();
 
   const setGameStatus = (gameStatus: GameState) =>
     setGameProps({ gameStatus: gameStatus });
 
-  const backToHome = () => {
-    navigate('/');
-    setGameStatus('None');
+  const createGame = (
+    pinCode: string,
+    totalRounds: number,
+    gameSecret: string
+  ) => {
+    setGameProps({
+      gameRounds: totalRounds,
+      gameStatus: 'WaitingRoom',
+    });
+    setGameSecret(gameSecret);
+    navigate(`/game/${pinCode}`);
+  };
+
+  const startGame = (songProps: SongProps) => {
+    navigate(`/game/${gameId}/game-in-progress`, {
+      state: songProps.previewUrl,
+    });
+    setGameProps({ currRound: songProps.round });
+    setGameStatus('Running');
   };
 
   const answerRevail = (correctAnswer: Song, scores: ScoresProps) => {
-    navigate('/game/answer-revail', {
+    navigate(`../answer-revail`, {
       state: {
         songName: correctAnswer.title,
         artist: correctAnswer.artist,
@@ -32,39 +51,21 @@ const useGameNavigation = () => {
   };
 
   const endGame = (scores: ScoresProps) => {
-    navigate('/game/end-game', { state: { scores: scores } });
+    navigate('../end-game', { state: { scores: scores } });
     setGameStatus('Ended');
   };
 
-  const startGame = (songProps: SongProps) => {
-    navigate('/game/game-in-progress', { state: songProps.previewUrl });
-    setGameProps({ currRound: songProps.round });
-    setGameStatus('Running');
-  };
-
-  const gameSettings = () => {
-    navigate('/game/settings');
-    setGameStatus('None');
-  };
-
-  const openLeaderboard = (scores: ScoresProps) => {
-    navigate('/game/leaderboard', { state: { scores: scores } });
-    setGameStatus('BetweenRounds');
-  };
-
-  const genreSelection = () => {
-    navigate('/game/genre-selection'); // TO-DO: Implement Genre Selection state
+  const backToHome = () => {
+    navigate('/');
     setGameStatus('None');
   };
 
   return {
-    backToHome,
+    createGame,
     answerRevail,
     endGame,
     startGame,
-    gameSettings,
-    openLeaderboard,
-    genreSelection,
+    backToHome,
   };
 };
 

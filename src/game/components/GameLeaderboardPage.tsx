@@ -4,10 +4,10 @@ import { SiFireship } from 'react-icons/si';
 import { MdAcUnit } from 'react-icons/md';
 import { ReactNode, useMemo } from 'react';
 import { ScoresProps } from '../GameInterfaces';
-import useBackHome from '../../hooks/useBackHome';
+import { useLocation } from 'react-router-dom';
 
 const GameLeaderboardPage = () => {
-  const scores = useBackHome<{ scores: ScoresProps }>()?.scores ?? [];
+  const scores = (useLocation().state as { scores: ScoresProps }).scores ?? [];
 
   const sortedScores = useMemo(
     () => scores.sort((a, b) => b.score - a.score),

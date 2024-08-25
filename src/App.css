@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-image: url('../web-bg.svg');
+  background-image: url('../public/web-bg.svg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -49,5 +49,5 @@
 
 @font-face {
   font-family: 'MusicMasterFont';
-  src: url('../PoetsenOne-Regular.ttf') format('truetype');
+  src: url('../public/PoetsenOne-Regular.ttf') format('truetype');
 }

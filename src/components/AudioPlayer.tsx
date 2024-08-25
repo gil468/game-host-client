@@ -13,7 +13,6 @@ interface CustomAudioPlayerProps
 const CustomAudioPlayer = ({ isPlaying, ...props }: CustomAudioPlayerProps) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [progress, setProgress] = useState(0);
-
   const handleTimeUpdate = () => {
     if (audioRef.current) {
       const currentProgress =
@@ -23,10 +22,13 @@ const CustomAudioPlayer = ({ isPlaying, ...props }: CustomAudioPlayerProps) => {
   };
 
   const handleSongPlaying = useCallback(() => {
-    if (isPlaying) {
-      audioRef.current?.play();
-    } else {
-      audioRef.current?.pause();
+    const audio = audioRef.current;
+    if (audio) {
+      if (isPlaying) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
     }
   }, [isPlaying]);
 
@@ -35,7 +37,7 @@ const CustomAudioPlayer = ({ isPlaying, ...props }: CustomAudioPlayerProps) => {
   }, [handleSongPlaying]);
 
   return (
-    <Stack sx={{ width: '100%', marginTop: '10px' }}>
+    <Stack sx={{ width: '100%', marginTop: '10px', alignItems: 'center' }}>
       <audio
         autoPlay
         onTimeUpdate={handleTimeUpdate}

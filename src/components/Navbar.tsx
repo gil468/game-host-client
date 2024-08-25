@@ -8,7 +8,14 @@ const Navbar = () => {
       spacing={10}
       sx={{ marginTop: 1 }}
     >
-      <img src="/music-master-logo-small.svg" alt="logo" />
+      <img
+        src="/music-master-logo-small.svg"
+        alt="logo"
+        style={{ cursor: 'pointer' }}
+        onClick={() => {
+          window.location.href = '/';
+        }}
+      />
     </Stack>
   );
 };

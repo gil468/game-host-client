@@ -5,6 +5,15 @@ export type EndRoundResponse = {
   scores: ScoresProps;
 };
 
+export type RejoinResponse = {
+  round: number;
+  totalRounds: number;
+  gameId: string;
+  gameStatus: string;
+  gameSecret: string;
+  gamePlayers: Record<string, Player>;
+};
+
 export type ScoresProps = (Player & { gainedScore: number })[];
 
 export type Song = {

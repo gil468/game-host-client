@@ -17,7 +17,6 @@ export type GameState =
 
 type GameProps = {
   gameStatus: GameState;
-  pinCode?: number;
   currRound: number;
   gameRounds: number;
 };
