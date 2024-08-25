@@ -4,7 +4,7 @@ import { ScoresProps } from '../GameInterfaces';
 import { Fireworks } from '@fireworks-js/react';
 import type { FireworksHandlers } from '@fireworks-js/react';
 import { useMemo, useRef } from 'react';
-import useBackHome from '../../hooks/useBackHome';
+import { useLocation } from 'react-router-dom';
 
 export interface EndGamePageProps {
   scores: ScoresProps;
@@ -12,7 +12,7 @@ export interface EndGamePageProps {
 
 const EndGamePage = () => {
   const ref = useRef<FireworksHandlers>(null);
-  const scores = useBackHome<EndGamePageProps>()?.scores;
+  const scores = (useLocation().state as EndGamePageProps).scores;
   const winner = useMemo(() => {
     return scores
       ? scores.sort((a, b) => {

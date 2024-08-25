@@ -1,28 +1,20 @@
 import { Box, Button, Typography } from '@mui/material';
-import { useContext, useEffect } from 'react';
-import { GameStatusContext } from '../../../providers/GameStatusProvider';
 import './GameWaitingRoom.css';
 import WaitingPlayerBox from './WaitingPlayerBox';
 import MainWrapper from '../../../components/MainWrapper';
 import useGameRequests from '../../handlers/useGameRequests';
+import { useParams } from 'react-router-dom';
 
 interface MainPageProps {
   joinedPlayers: string[];
 }
 
 const GameWaitingRoom = (props: MainPageProps) => {
-  const { gameProps, setGameProps } = useContext(GameStatusContext);
   const { startRoundRequest, nextSongRequest } = useGameRequests();
-
-  useEffect(() => {
-    setGameProps({
-      gameStatus: 'WaitingRoom'
-    });
-  }, []);
-
   const handleStartGame = async () => {
     await startRoundRequest(await nextSongRequest());
   };
+  const { gameId } = useParams();
 
   return (
     <MainWrapper
@@ -31,7 +23,7 @@ const GameWaitingRoom = (props: MainPageProps) => {
           variant="h4"
           color={'info.main'}
           fontWeight={'bold'}
-        >{`Pincode : ${gameProps?.pinCode}`}</Typography>
+        >{`Pincode : ${gameId}`}</Typography>
       }
       bottomContent={
         <Button

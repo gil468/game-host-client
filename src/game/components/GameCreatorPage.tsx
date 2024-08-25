@@ -11,17 +11,16 @@ import GenreSelectionPage from './GenreSelectionPage';
 import { useState } from 'react';
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material';
 import MainWrapper from '../../components/MainWrapper';
-import { useNavigate } from 'react-router-dom';
-import { createGameRequest } from '../../socketIO/SocketEmits';
-import useLocalStorage from '../../hooks/useLocalStorage';
+import useGameRequests from '../handlers/useGameRequests';
 
 export type GameCreationProps = GameSettings & { playlistId: string };
 
 const GameCreatorPage = () => {
   const [currStep, setCurrStep] = useState<number>(0);
-  const navigate = useNavigate();
   const handleBack = () => setCurrStep((x) => x - 1);
   const handleForward = () => setCurrStep((x) => x + 1);
+
+  const { createGameRequest } = useGameRequests();
 
   const [gameSettings, setGameSettings] = useState<GameSettings>({
     totalRounds: 10,
@@ -30,22 +29,6 @@ const GameCreatorPage = () => {
     isTimeBasedScore: true,
   });
   const [playlistId, setPlaylistId] = useState<string | undefined>();
-  const [_, setPinCode] = useLocalStorage('pinCode');
-  const [__, setGameSecret] = useLocalStorage('gameSecret');
-
-  const launchNewGame = async () => {
-    const res = await createGameRequest({
-      ...gameSettings,
-      playlistId: playlistId!,
-    });
-    if (res) {
-      setPinCode(res.gameId);
-      setGameSecret(res.gameSecret);
-      navigate('/game', {
-        state: { pinCode: res.gameId, rounds: gameSettings.totalRounds },
-      });
-    }
-  };
 
   return (
     <>
@@ -97,7 +80,10 @@ const GameCreatorPage = () => {
         bottomContent={
           <Button
             variant="contained"
-            onClick={launchNewGame}
+            onClick={() =>
+              playlistId &&
+              createGameRequest({ ...gameSettings, playlistId: playlistId })
+            }
             disabled={!playlistId}
           >
             Create Game

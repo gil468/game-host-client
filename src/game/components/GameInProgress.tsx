@@ -4,8 +4,8 @@ import { Pause, MusicNote } from '@mui/icons-material';
 import AudioPlayer from '../../components/AudioPlayer';
 import { GameStatusContext } from '../../providers/GameStatusProvider';
 import MainWrapper from '../../components/MainWrapper';
-import useBackHome from '../../hooks/useBackHome';
 import useGameRequests from '../handlers/useGameRequests';
+import { useLocation } from 'react-router-dom';
 
 export interface SongProps {
   previewUrl: string;
@@ -18,7 +18,7 @@ const GameInProgress = () => {
   const isPlaying = gameProps?.gameStatus === 'Running';
 
   const { endGameRequest, endRoundRequest } = useGameRequests();
-  const songUrl = useBackHome<string>();
+  const songUrl = useLocation().state as string;
   return (
     <MainWrapper
       topContent={

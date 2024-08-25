@@ -1,7 +1,7 @@
 import { Stack, Typography } from '@mui/material';
-import useBackHome from '../../hooks/useBackHome';
 import { ScoresProps } from '../GameInterfaces';
 import { theme } from '../../theme';
+import { useLocation } from 'react-router-dom';
 
 export interface AnswerPageProps {
   songName: string;
@@ -10,7 +10,7 @@ export interface AnswerPageProps {
 }
 
 const AnswerPage = () => {
-  const state = useBackHome<AnswerPageProps>();
+  const state = useLocation().state as AnswerPageProps;
 
   return (
     <Stack width="100%" alignItems={'center'}>

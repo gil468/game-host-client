@@ -27,10 +27,7 @@ const MainPage = () => {
       spacing={10}
       sx={{ marginTop: 8 }}
     >
-      <StyledButton
-        variant="contained"
-        onClick={() => navigate('/game-creator')}
-      >
+      <StyledButton variant="contained" onClick={() => navigate('/game')}>
         Host New Game
       </StyledButton>
 

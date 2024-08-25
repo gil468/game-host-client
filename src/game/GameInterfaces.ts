@@ -6,13 +6,13 @@ export type EndRoundResponse = {
 };
 
 export type RejoinResponse = {
-  round : number,
-  totalRounds : number,
-  gameId : number,
-  gameStatus : string,
-  gameSecret : string,
-  gamePlayers : Record<string, Player>
-}
+  round: number;
+  totalRounds: number;
+  gameId: string;
+  gameStatus: string;
+  gameSecret: string;
+  gamePlayers: Record<string, Player>;
+};
 
 export type ScoresProps = (Player & { gainedScore: number })[];
 
