@@ -39,7 +39,7 @@ const useGameNavigation = () => {
   };
 
   const answerRevail = (correctAnswer: Song, scores: ScoresProps) => {
-    navigate(`../answer-revail`, {
+    navigate(`/game/${gameId}/answer-revail`, {
       state: {
         songName: correctAnswer.title,
         artist: correctAnswer.artist,
@@ -51,7 +51,7 @@ const useGameNavigation = () => {
   };
 
   const endGame = (scores: ScoresProps) => {
-    navigate('../end-game', { state: { scores: scores } });
+    navigate(`/game/${gameId}/end-game`, { state: { scores: scores } });
     setGameStatus('Ended');
   };
 

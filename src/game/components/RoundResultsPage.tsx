@@ -27,7 +27,7 @@ const RoundResultsPage = () => {
     useGameRequests();
   const [songProps, setSongProps] = useState<SongProps>();
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
-  const { gameProps} = useContext(GameStatusContext);
+  const { gameProps } = useContext(GameStatusContext);
 
   const nextRound = async () => {
     const res = await nextSongRequest();
@@ -44,26 +44,28 @@ const RoundResultsPage = () => {
           <Box
             style={{
               width: '100%',
-              display : 'flex',
-              flexDirection : 'column',
-              alignItems : 'center'
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
             }}
           >
             <Typography variant="h4">{`Round ${gameProps?.currRound} / ${gameProps?.gameRounds}`}</Typography>
             <Stack
-             sx={{
-              display: 'grid',
-              width: '70%',
-              gridTemplateColumns: '5% 90% 5%',
-              alignItems : 'center'
-            }}
+              sx={{
+                display: 'grid',
+                width: '70%',
+                gridTemplateColumns: '5% 90% 5%',
+                alignItems: 'center',
+              }}
             >
               {/* Back Button */}
               {currStep !== 0 ? (
                 <IconButton disableRipple color="info" onClick={handleBack}>
                   <ArrowBackIos />
                 </IconButton>
-              ) : <div></div>}
+              ) : (
+                <div></div>
+              )}
 
               <Stack>
                 <Stepper activeStep={currStep}>
