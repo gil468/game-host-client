@@ -1,4 +1,11 @@
-import { Stack, Typography, TextField, Switch, Tooltip } from '@mui/material';
+import {
+  Stack,
+  Typography,
+  TextField,
+  Switch,
+  Tooltip,
+  SxProps,
+} from '@mui/material';
 import './GameSettingsPage.css';
 import HelpIcon from '@mui/icons-material/Help';
 
@@ -21,6 +28,13 @@ const GameSettingsPage = ({
   const isError = gameSettings.totalRounds < 1 || gameSettings.totalRounds > 30;
   const isEmpty = Number.isNaN(gameSettings.totalRounds);
 
+  const settingStyle: SxProps = {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '24px',
+  };
+
   const getTextFieldProps = () => {
     if (isError) {
       return {
@@ -41,16 +55,11 @@ const GameSettingsPage = ({
     <Stack
       direction="column"
       height={'100%'}
-      width={'100%'}
       justifyContent="space-evenly"
       paddingLeft={5}
+      paddingRight={5}
     >
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="flex-start"
-        spacing={3}
-      >
+      <Stack sx={{ ...settingStyle }}>
         <Typography variant="h4">Number of rounds:</Typography>
         <TextField
           type="number"
@@ -58,7 +67,11 @@ const GameSettingsPage = ({
           onChange={(e) =>
             setGameSettings({ totalRounds: parseInt(e.target.value, 10) })
           }
-          inputProps={{ min: 1, max: 30, style: { padding: 8 } }}
+          inputProps={{
+            min: 1,
+            max: 30,
+            style: { padding: 8, textAlign: 'center' },
+          }}
           className="number-input"
           maxRows={1}
           sx={{ width: '8rem' }}
@@ -66,16 +79,12 @@ const GameSettingsPage = ({
         />
       </Stack>
 
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="flex-start"
-        spacing={3}
-      >
+      <Stack sx={settingStyle}>
         <Typography variant="h4" sx={{ display: 'flex-end' }}>
           Time based points:
         </Typography>
         <Switch
+          sx={{ marginLeft: 'auto' }}
           checked={gameSettings.isTimeBasedScore}
           onChange={(_, status) =>
             setGameSettings({ isTimeBasedScore: status })
@@ -88,12 +97,7 @@ const GameSettingsPage = ({
         </Tooltip>
       </Stack>
 
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="flex-start"
-        spacing={3}
-      >
+      <Stack sx={settingStyle}>
         <Typography variant="h4">Enable punishment points:</Typography>
 
         <Switch
@@ -101,6 +105,7 @@ const GameSettingsPage = ({
           onChange={(_, status) =>
             setGameSettings({ isPunishmentScoreAllowed: status })
           }
+          sx={{ marginLeft: 'auto' }}
           className="switch"
         />
 
@@ -109,12 +114,7 @@ const GameSettingsPage = ({
         </Tooltip>
       </Stack>
 
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="flex-start"
-        spacing={3}
-      >
+      <Stack sx={settingStyle}>
         <Typography variant="h4">Allow buzzer twice:</Typography>
 
         <Switch
@@ -122,6 +122,7 @@ const GameSettingsPage = ({
           onChange={(_, status) =>
             setGameSettings({ isBuzzerTwiceAllowed: status })
           }
+          sx={{ marginLeft: 'auto' }}
           className="switch"
         />
 
