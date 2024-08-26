@@ -94,24 +94,16 @@ const RoundResultsPage = () => {
           </Box>
         }
         bottomContent={
-          <>
-            {gameProps && gameProps?.currRound < gameProps?.gameRounds ? (
-              <Button
-                variant="contained"
-                onClick={nextRound}
-                // disabled={!songProps}
-              >
+          <div style={{ display: 'flex', gap: 20 }}>
+            <Button variant="contained" color="error" onClick={endGameRequest}>
+              End Game
+            </Button>
+            {gameProps && gameProps?.currRound < gameProps?.gameRounds && (
+              <Button variant="contained" onClick={nextRound}>
                 Next round
               </Button>
-            ) : (
-              <Button
-                variant="contained"
-                onClick={endGameRequest}
-                // disabled={!songProps}
-              >
-                End Game
-              </Button>
             )}
+
             {showCountdown && (
               <CountdownExample
                 onEnd={async () => {
@@ -119,7 +111,7 @@ const RoundResultsPage = () => {
                 }}
               />
             )}
-          </>
+          </div>
         }
       >
         {currStep === 0 ? <AnswerPage /> : <GameLeaderboardPage />}
