@@ -17,7 +17,6 @@ const WaitingPlayerBox = (props: WaitingPlayerBoxProps) => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '10px',
-        width: '80%',
         overflow: 'hidden',
       }}
     >

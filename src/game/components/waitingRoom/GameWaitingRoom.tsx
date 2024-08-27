@@ -43,9 +43,11 @@ const GameWaitingRoom = (props: MainPageProps) => {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, 50%)',
-            padding: '10px',
+            gridTemplateColumns: 'repeat(auto-fill, 40%)',
             width: '100%',
+            paddingLeft: '5%',
+            paddingTop: '2rem',
+            gap: '10%',
           }}
         >
           {props.joinedPlayers.map((player) => (
