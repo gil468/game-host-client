@@ -84,16 +84,17 @@ const InGameRoute = () => {
     stateArray: ['Buzzered'],
   });
 
-  // Tell Oren to change the array that sent back
   addEvent({
     eventName: 'round-ended',
     callback: (x: EndRoundResponse) => {
-      setGuessingPlayer(undefined);
       enqueueSnackbar('correct answer', {
         variant: 'success',
         autoHideDuration: 2000,
         anchorOrigin: { horizontal: 'center', vertical: 'top' },
-        onClose: () => answerRevail(x.correctAnswer, x.scores),
+        onClose: () => {
+          answerRevail(x.correctAnswer, x.scores);
+          setGuessingPlayer(undefined);
+        },
       });
     },
     newStatus: 'BetweenRounds',
