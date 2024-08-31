@@ -6,6 +6,7 @@ import type { FireworksHandlers } from '@fireworks-js/react';
 import { useMemo, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import winnerSvg from '../../../public/winner.svg';
+import Avatar, { genConfig } from 'react-nice-avatar';
 
 export interface EndGamePageProps {
   scores: ScoresProps;
@@ -39,9 +40,16 @@ const EndGamePage = () => {
       />
       <Box component="img" src={winnerSvg} />
       {/* <Typography variant="h4" className="fade-in" color="white">{`${winner}`}</Typography> */}
-      <Typography variant="h4" className="fade-in" color="white">
-        {winner}
-      </Typography>
+
+      <Stack direction={'row'} gap={2} alignItems={'center'}>
+        <Avatar
+          style={{ width: '3rem', height: '3rem' }}
+          {...genConfig(winner)}
+        />
+        <Typography variant="h4" className="fade-in" color="white">
+          {winner}
+        </Typography>
+      </Stack>
       <Button variant="contained" onClick={backToHome} sx={{ width: '20vw' }}>
         Back To Main Page
       </Button>

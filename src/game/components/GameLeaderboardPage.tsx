@@ -5,6 +5,7 @@ import { MdAcUnit } from 'react-icons/md';
 import { ReactNode, useMemo } from 'react';
 import { ScoresProps } from '../GameInterfaces';
 import { useLocation } from 'react-router-dom';
+import Avatar, { genConfig } from 'react-nice-avatar';
 
 const GameLeaderboardPage = () => {
   const scores = (useLocation().state as { scores: ScoresProps }).scores ?? [];
@@ -49,7 +50,13 @@ const GameLeaderboardPage = () => {
                 justifyContent: 'space-between',
               }}
             >
-              <Typography>{player.userName}</Typography>
+              <Stack direction="row" gap={2} alignItems="center">
+                <Avatar
+                  style={{ width: '3rem', height: '3rem' }}
+                  {...genConfig(player.userName)}
+                />
+                <Typography>{player.userName}</Typography>
+              </Stack>
               <Stack sx={{ alignItems: 'center' }} direction="row">
                 <GainedScoreView score={player.gainedScore} />
                 <Typography sx={{ marginLeft: '1rem' }}>
