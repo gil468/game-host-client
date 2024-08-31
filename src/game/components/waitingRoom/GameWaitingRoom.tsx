@@ -1,9 +1,10 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import './GameWaitingRoom.css';
 import WaitingPlayerBox from './WaitingPlayerBox';
 import MainWrapper from '../../../components/MainWrapper';
 import useGameRequests from '../../handlers/useGameRequests';
 import { useParams } from 'react-router-dom';
+import { QRCodeSVG } from 'qrcode.react';
 
 interface MainPageProps {
   joinedPlayers: string[];
@@ -19,11 +20,24 @@ const GameWaitingRoom = (props: MainPageProps) => {
   return (
     <MainWrapper
       topContent={
-        <Typography
-          variant="h4"
-          color={'info.main'}
-          fontWeight={'bold'}
-        >{`Pincode : ${gameId}`}</Typography>
+        <Stack
+          paddingTop={2}
+          direction={'row'}
+          justifyContent={'center'}
+          alignItems={'center'}
+          gap={4}
+        >
+          <Typography
+            variant="h4"
+            color={'info.main'}
+            fontWeight={'bold'}
+          >{`Pincode : ${gameId}`}</Typography>
+          <Stack boxShadow={'0px 4px 8px'} border={'1px solid white'}>
+            <QRCodeSVG
+              value={`${import.meta.env.PLAYER_CLIENT_URL}?gameId=${gameId}`}
+            />
+          </Stack>
+        </Stack>
       }
       bottomContent={
         <Button

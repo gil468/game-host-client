@@ -18,28 +18,30 @@ const MainWrapper = ({
     <Box
       {...props}
       sx={{
-        display: 'grid',
+        display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyItems: 'center',
-        gridTemplateRows: '1fr 70% 1fr',
         height: '100%',
-        flexGrow: 1,
         gap: 2,
         ...props.sx,
       }}
     >
-      {topContent ?? <div></div>}
+      <Box flex="0 1 auto">{topContent ?? <div></div>}</Box>
       <Paper
         {...mainComponenetProps}
         sx={{
           width: '70%',
           height: '100%',
+          flex: '1',
           ...mainComponenetProps?.sx,
         }}
       >
         {children}
       </Paper>
-      {bottomContent ?? <div></div>}
+      <Box marginBottom={1} flex="0 1 auto">
+        {bottomContent ?? <div></div>}
+      </Box>
     </Box>
   );
 };
