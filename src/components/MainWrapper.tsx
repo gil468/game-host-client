@@ -1,5 +1,5 @@
 import { PropsWithChildren, ReactNode } from 'react';
-import { Paper, Box, BoxProps, PaperProps } from '@mui/material';
+import { Paper, Box, BoxProps, PaperProps, Stack } from '@mui/material';
 
 interface MainWrapperProps extends BoxProps {
   topContent?: ReactNode;
@@ -23,11 +23,14 @@ const MainWrapper = ({
         alignItems: 'center',
         justifyItems: 'center',
         height: '100%',
+        width: '100%',
         gap: 2,
         ...props.sx,
       }}
     >
-      <Box flex="0 1 auto">{topContent ?? <div></div>}</Box>
+      <Stack width={'100%'} alignItems={'center'} flex="0 1 auto">
+        {topContent ?? <div></div>}
+      </Stack>
       <Paper
         {...mainComponenetProps}
         sx={{
@@ -39,9 +42,14 @@ const MainWrapper = ({
       >
         {children}
       </Paper>
-      <Box marginBottom={1} flex="0 1 auto">
+      <Stack
+        width={'100%'}
+        alignItems={'center'}
+        marginBottom={1}
+        flex="0 1 auto"
+      >
         {bottomContent ?? <div></div>}
-      </Box>
+      </Stack>
     </Box>
   );
 };
