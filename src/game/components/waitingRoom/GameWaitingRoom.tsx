@@ -34,7 +34,7 @@ const GameWaitingRoom = (props: MainPageProps) => {
           >{`Pincode : ${gameId}`}</Typography>
           <Stack boxShadow={'0px 4px 8px'} border={'1px solid white'}>
             <QRCodeSVG
-              value={`${import.meta.env.PLAYER_CLIENT_URL}?gameId=${gameId}`}
+              value={`${import.meta.env.VITE_PLAYER_CLIENT_URL}?gameId=${gameId}`}
             />
           </Stack>
         </Stack>
