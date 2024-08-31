@@ -5,12 +5,19 @@ export type EndRoundResponse = {
   scores: ScoresProps;
 };
 
+export type ServerStatusGame =
+  | 'CREATED'
+  | 'PENDING_ROUND_START'
+  | 'ROUND_IN_PROGRESS'
+  | 'ROUND_ENDED';
+
 export type RejoinResponse = {
   round: number;
   totalRounds: number;
   gameId: string;
-  gameStatus: string;
+  gameStatus: ServerStatusGame;
   gameSecret: string;
+  roundData: { currentGuessingPlayer?: string };
   gamePlayers: Record<string, Player>;
 };
 

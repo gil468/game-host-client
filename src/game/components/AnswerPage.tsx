@@ -36,7 +36,7 @@ const AnswerPage = () => {
         />
         <Stack>
           <Typography
-            variant="h3"
+            variant="h4"
             sx={{ color: theme.palette.primary.main }}
           >{`${state?.songName}`}</Typography>
           <Typography

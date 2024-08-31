@@ -1,4 +1,9 @@
-import { LinearProgress, Stack, linearProgressClasses } from '@mui/material';
+import {
+  Button,
+  LinearProgress,
+  Stack,
+  linearProgressClasses,
+} from '@mui/material';
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 
 interface CustomAudioPlayerProps
@@ -13,6 +18,7 @@ interface CustomAudioPlayerProps
 const CustomAudioPlayer = ({ isPlaying, ...props }: CustomAudioPlayerProps) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [progress, setProgress] = useState(0);
+  const [needsRefresh, setNeedRefresh] = useState<boolean>(false);
   const handleTimeUpdate = () => {
     if (audioRef.current) {
       const currentProgress =
@@ -25,7 +31,7 @@ const CustomAudioPlayer = ({ isPlaying, ...props }: CustomAudioPlayerProps) => {
     const audio = audioRef.current;
     if (audio) {
       if (isPlaying) {
-        audio.play();
+        audio.play().catch(() => setNeedRefresh(true));
       } else {
         audio.pause();
       }
@@ -45,20 +51,32 @@ const CustomAudioPlayer = ({ isPlaying, ...props }: CustomAudioPlayerProps) => {
         {...props}
         ref={audioRef}
       />
-      <LinearProgress
-        color="secondary"
-        sx={{
-          alignSelf: 'center',
-          width: '100%',
-          height: 30,
-          borderRadius: 5,
-          [`& .${linearProgressClasses.bar}`]: {
+      {needsRefresh ? (
+        <Button
+          variant="contained"
+          onClick={() => {
+            setNeedRefresh(false);
+            handleSongPlaying();
+          }}
+        >
+          Refresh
+        </Button>
+      ) : (
+        <LinearProgress
+          color="secondary"
+          sx={{
+            alignSelf: 'center',
+            width: '100%',
+            height: 30,
             borderRadius: 5,
-          },
-        }}
-        variant="determinate"
-        value={progress}
-      />
+            [`& .${linearProgressClasses.bar}`]: {
+              borderRadius: 5,
+            },
+          }}
+          variant="determinate"
+          value={progress}
+        />
+      )}
     </Stack>
   );
 };

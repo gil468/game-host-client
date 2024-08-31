@@ -18,6 +18,8 @@ import useGameRequests from '../handlers/useGameRequests';
 import { SongProps } from './GameInProgress';
 import CountdownExample from '../../components/Countdown';
 import { GameStatusContext } from '../../providers/GameStatusProvider';
+import { useLocation } from 'react-router-dom';
+import { ScoresProps } from '../GameInterfaces';
 
 const RoundResultsPage = () => {
   const [currStep, setCurrStep] = useState<number>(0);
@@ -28,6 +30,8 @@ const RoundResultsPage = () => {
   const [songProps, setSongProps] = useState<SongProps>();
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
   const { gameProps } = useContext(GameStatusContext);
+
+  const scores = (useLocation().state as { scores: ScoresProps })?.scores ?? [];
 
   const nextRound = async () => {
     const res = await nextSongRequest();
@@ -40,6 +44,9 @@ const RoundResultsPage = () => {
   return (
     <>
       <MainWrapper
+        mainComponenetProps={{
+          sx: { display: 'flex', flexDirection: 'column', overflowY: 'auto' },
+        }}
         topContent={
           <Box
             style={{
@@ -114,7 +121,11 @@ const RoundResultsPage = () => {
           </div>
         }
       >
-        {currStep === 0 ? <AnswerPage /> : <GameLeaderboardPage />}
+        {currStep === 0 ? (
+          <AnswerPage />
+        ) : (
+          <GameLeaderboardPage scores={scores} />
+        )}
       </MainWrapper>
     </>
   );

@@ -12,7 +12,10 @@ const root = ReactDOM.createRoot(
 root.render(
   <StrictMode>
     <ThemeProvider theme={theme}>
-      <SnackbarProvider>
+      <SnackbarProvider
+        anchorOrigin={{ horizontal: 'center', vertical: 'top' }}
+        autoHideDuration={4000}
+      >
         <App />
       </SnackbarProvider>
     </ThemeProvider>

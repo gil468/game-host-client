@@ -10,7 +10,11 @@ import {
   GameState,
   GameStatusContext,
 } from '../../providers/GameStatusProvider';
-import { BuzzerRevokedProps, EndRoundResponse } from '../GameInterfaces';
+import {
+  BuzzerRevokedProps,
+  EndRoundResponse,
+  ServerStatusGame,
+} from '../GameInterfaces';
 import addEvent from '../handlers/addEvent';
 import useGameNavigation from '../handlers/useGameNavigation';
 import useGameRequests from '../handlers/useGameRequests';
@@ -24,7 +28,7 @@ const InGameRoute = () => {
   const [__, setGameSecret] = useLocalStorage('gameSecret');
   const [navigationEntry] = performance.getEntriesByType('navigation');
 
-  const rejoinStatusToGameStatus: Record<string, GameState> = {
+  const rejoinStatusToGameStatus: Record<ServerStatusGame, GameState> = {
     CREATED: 'WaitingRoom',
     PENDING_ROUND_START: 'BetweenRounds',
     ROUND_IN_PROGRESS: 'Running',
@@ -34,15 +38,21 @@ const InGameRoute = () => {
   useEffect(() => {
     const rejoinGame = async () => {
       const res = await rejoinGameRequest();
+      const guessingPlayer =
+        res.gameStatus === 'ROUND_IN_PROGRESS' &&
+        res.roundData.currentGuessingPlayer;
+      if (guessingPlayer)
+        setGuessingPlayer(res.gamePlayers[guessingPlayer].userName);
       setGameProps({
         currRound: res.round,
         gameRounds: res.totalRounds,
-        gameStatus: rejoinStatusToGameStatus[res.gameStatus] ?? 'None',
+        gameStatus: guessingPlayer
+          ? 'Buzzered'
+          : (rejoinStatusToGameStatus[res.gameStatus] ?? 'None'),
       });
       setGameSecret(res.gameSecret);
       setWaitingPlayers(Object.values(res.gamePlayers).map((x) => x.userName));
     };
-
     if ((navigationEntry as PerformanceNavigationTiming).type === 'reload') {
       rejoinGame();
     }
@@ -76,8 +86,6 @@ const InGameRoute = () => {
         : `wrong answer by ${answerResponse.answeredBy}`;
       enqueueSnackbar(message, {
         variant: halfAnswer ? 'success' : 'error',
-        autoHideDuration: 2000,
-        anchorOrigin: { horizontal: 'center', vertical: 'top' },
       });
     },
     newStatus: 'Running',
@@ -89,8 +97,6 @@ const InGameRoute = () => {
     callback: (x: EndRoundResponse) => {
       enqueueSnackbar('correct answer', {
         variant: 'success',
-        autoHideDuration: 2000,
-        anchorOrigin: { horizontal: 'center', vertical: 'top' },
         onClose: () => {
           answerRevail(x.correctAnswer, x.scores);
           setGuessingPlayer(undefined);

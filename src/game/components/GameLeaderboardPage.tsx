@@ -4,12 +4,9 @@ import { SiFireship } from 'react-icons/si';
 import { MdAcUnit } from 'react-icons/md';
 import { ReactNode, useMemo } from 'react';
 import { ScoresProps } from '../GameInterfaces';
-import { useLocation } from 'react-router-dom';
 import Avatar, { genConfig } from 'react-nice-avatar';
 
-const GameLeaderboardPage = () => {
-  const scores = (useLocation().state as { scores: ScoresProps }).scores ?? [];
-
+const GameLeaderboardPage = ({ scores }: { scores: ScoresProps }) => {
   const sortedScores = useMemo(
     () => scores.sort((a, b) => b.score - a.score),
     [scores]

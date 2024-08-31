@@ -6,9 +6,9 @@
   background-repeat: no-repeat;
   width: 100vw;
   height: 100vh;
-  display: flex;
+  display: grid;
+  grid-template-rows: 15% 85%;
   overflow-y: hidden;
-  flex-direction: column;
 }
 
 .App-logo {
