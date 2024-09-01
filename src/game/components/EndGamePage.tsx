@@ -31,7 +31,7 @@ const EndGamePage = () => {
     <Stack>
       <Fireworks
           ref={ref}
-          options={{ opacity: 0.5, acceleration: 1, mouse : {click : true, move : true, max  :5} }}
+          options={{ opacity: 0.5, acceleration: 1}}
           style={{
             top: 0,
             left: 0,
