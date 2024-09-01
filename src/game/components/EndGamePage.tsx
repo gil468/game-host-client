@@ -29,26 +29,19 @@ const EndGamePage = () => {
 
   return (
     <Stack>
+      <Fireworks
+          ref={ref}
+          options={{ opacity: 0.5, acceleration: 1, mouse : {click : true, move : true, max  :5} }}
+          style={{
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            position: 'fixed'
+          }}
+          
+        />
       <MainWrapper
-        // topContent= {
-        //   <div style={{display: 'flex'}}>
-        // <Box component="img" src={winnerSvg} style={{width : '10rem', height : '10rem'}}/>
-        // {/* <Typography variant="h4" className="fade-in" color="white">{`${winner}`}</Typography> */}
-        // <Typography variant="h4" className="fade-in" color="white">
-        //   {winner}
-        // </Typography>
-        // </div>}
-        // topContent={<Fireworks
-        //   ref={ref}
-        //   options={{ opacity: 0.5, acceleration: 1 }}
-        //   style={{
-        //     top: 0,
-        //     left: 0,
-        //     width: '100%',
-        //     height: '100%',
-        //     position: 'fixed',
-        //   }}
-        // />}
         topContent={
           <Stack
             sx={{ placeContent: 'center' }}
@@ -81,7 +74,7 @@ const EndGamePage = () => {
           sx: { display: 'flex', flexDirection: 'column', overflowY: 'auto' },
         }}
       >
-        <GameLeaderboardPage scores={scores} />
+        <GameLeaderboardPage scores={[...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,]} />
       </MainWrapper>
     </Stack>
   );

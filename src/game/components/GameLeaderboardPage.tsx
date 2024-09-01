@@ -13,7 +13,7 @@ const GameLeaderboardPage = ({ scores }: { scores: ScoresProps }) => {
   );
 
   return (
-    <>
+    <div style={{zIndex : 7777}}>
       <Typography variant="h3">Leaderboard</Typography>
       <div style={{ gap: '0.5rem', display: 'grid', padding: '1rem' }}>
         {sortedScores.map((player, index) => (
@@ -65,7 +65,7 @@ const GameLeaderboardPage = ({ scores }: { scores: ScoresProps }) => {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 
