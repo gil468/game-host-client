@@ -74,7 +74,7 @@ const EndGamePage = () => {
           sx: { display: 'flex', flexDirection: 'column', overflowY: 'auto' },
         }}
       >
-        <GameLeaderboardPage scores={[...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,...scores,]} />
+        <GameLeaderboardPage scores={scores} />
       </MainWrapper>
     </Stack>
   );
